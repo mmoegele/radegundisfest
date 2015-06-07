@@ -1,0 +1,241 @@
+/* Bootstrap Dialog */
+.bootstrap-dialog .modal-header{border-top-left-radius:4px;border-top-right-radius:4px}.bootstrap-dialog .bootstrap-dialog-title{color:#fff;display:inline-block;font-size:16px}.bootstrap-dialog .bootstrap-dialog-message{font-size:14px}.bootstrap-dialog .bootstrap-dialog-button-icon{margin-right:3px}.bootstrap-dialog .bootstrap-dialog-close-button{font-size:20px;float:right;filter:alpha(opacity=90);-moz-opacity:.9;-khtml-opacity:.9;opacity:.9}.bootstrap-dialog .bootstrap-dialog-close-button:hover{cursor:pointer;filter:alpha(opacity=100);-moz-opacity:1;-khtml-opacity:1;opacity:1}.bootstrap-dialog.type-default .modal-header{background-color:#fff}.bootstrap-dialog.type-default .bootstrap-dialog-title{color:#333}.bootstrap-dialog.type-info .modal-header{background-color:#5bc0de}.bootstrap-dialog.type-primary .modal-header{background-color:#428bca}.bootstrap-dialog.type-success .modal-header{background-color:#5cb85c}.bootstrap-dialog.type-warning .modal-header{background-color:#f0ad4e}.bootstrap-dialog.type-danger .modal-header{background-color:#d9534f}.bootstrap-dialog.size-large .bootstrap-dialog-title{font-size:24px}.bootstrap-dialog.size-large .bootstrap-dialog-close-button{font-size:30px}.bootstrap-dialog.size-large .bootstrap-dialog-message{font-size:18px}.bootstrap-dialog .icon-spin{display:inline-block;-moz-animation:spin 2s infinite linear;-o-animation:spin 2s infinite linear;-webkit-animation:spin 2s infinite linear;animation:spin 2s infinite linear}@-moz-keyframes spin{0%{-moz-transform:rotate(0deg)}100%{-moz-transform:rotate(359deg)}}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg)}}@-o-keyframes spin{0%{-o-transform:rotate(0deg)}100%{-o-transform:rotate(359deg)}}@-ms-keyframes spin{0%{-ms-transform:rotate(0deg)}100%{-ms-transform:rotate(359deg)}}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(359deg)}}
+
+
+/* CUSTOM CSS */
+
+.jumbotron {
+	background-color: #292c19;
+	color: #ffffff;
+	margin: 0em;
+	padding: 0em ;
+}
+
+h3 {
+	color: #b8bc05;
+}
+
+.h4
+{
+	color:#b0b302;
+    font-weight:bold;
+    border-bottom-style:dotted;
+    border-top-style:dotted;
+    border-bottom-color:#b0b302;
+    border-top-color:#b0b302;
+}
+
+.btn-details
+{
+    margin-left: 2em; 
+}
+
+.sponsoren
+{
+	line-height: 5;
+}
+
+.abstand-rechts {
+	margin-right: 1em; 
+}
+.absatz-festprogramm
+{
+    margin-left: 3em; text-indent: -3em
+}
+
+.braun{
+	color:#814f38;
+}
+
+.strong{
+	font-weight:bold;
+}
+
+div.maps {
+	height:400px;
+	width:auto;
+	margin:15px 0;
+	border:4px solid #000
+}
+
+ul.nav a, a.navbar-brand {
+	cursor:pointer
+}
+
+body {
+	padding-top: 50px;
+}
+
+.swform input[type=checkbox], .swform input[type="radio"] { display:none; } /* to hide the checkbox itself */
+.swform input[type=checkbox] + span:before, .swform input[type=checkbox] + label:before, .swform input[type=radio] + span:before, .swform input[type=radio] + label:before {
+  font-family: "Glyphicons Halflings";
+  display: inline-block;
+  font-weight:normal;
+}
+
+.swform input[type="radio"] + span:before, .swform input[type="radio"] + label:before  {
+  letter-spacing: 5px;
+  content: "\f10c"; /* circle-blank */
+}
+
+.swform input[type="radio"]:checked + span:before, .swform input[type="radio"]:checked + label:before {
+  letter-spacing: 5px;
+  content: "\f111"; /* circle */
+}
+
+.swform input[type="checkbox"] + span:before, .swform input[type="checkbox"] + label:before {
+  letter-spacing: 5px;
+  content: "\e157"; /* check-empty */
+}
+
+.swform input[type="checkbox"]:checked + span:before, .swform input[type="checkbox"]:checked + label:before {
+  letter-spacing: 3px;
+  content: "\e067"; /* check */
+}
+
+.swform label {font-weight:normal}
+
+.swform input[readonly] {
+     cursor: pointer;
+}
+
+.input-group-addon label {font-weight:normal;margin:0;}
+
+
+/* Fix navbar in XS view */
+.nav > li > a {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.navbar-brand {
+	font-size:16px;
+}
+
+/* sprites */
+
+.clown, .duck, .email, .geschichte, .musikicon, .oldtimer, .plusicon, .speisekarte, .sponsor, .text, .aschmid_klein, .asw_logo_klein, .buchler_klein, .franke_klein, .goeppel_klein, .hschmidt_klein, .raiba_klein, .riedelheimer_klein, .schreinertom_klein, .schwarzbraeu_klein{
+	background: url(../img/sprites.png) no-repeat;
+	display:block;
+}
+
+.clown{
+	background-position: 0 0;
+	width: 36px;
+	height: 36px;
+}
+
+.duck{
+	background-position: -49px 0;
+	width: 36px;
+	height: 36px;
+}
+
+.email{
+	background-position: -100px -1px ;
+	width: 36px;
+	height: 36px;
+}
+
+.geschichte{
+	background-position: -150px -1px ;
+	width: 36px;
+	height: 36px;
+}
+
+.musikicon{
+	background-position: -201px -2px ;
+	width: 34px;
+	height: 34px;
+}
+
+.oldtimer{
+	background-position: -248px 0;
+	width: 36px;
+	height: 38px;
+}
+
+.plusicon{
+	background-position: -300px -2px ;
+	width: 34px;
+	height: 34px;
+}
+
+.speisekarte{
+	background-position: -350px -2px ;
+	width: 36px;
+	height: 36px;
+}
+
+.sponsor{
+	background-position: -398px -2px ;
+	width: 36px;
+	height: 36px;
+}
+
+.text{
+	background-position: -449px -1px ;
+	width: 36px;
+	height: 36px;
+}
+
+.aschmid_klein{
+	background-position: -22px -43px ;
+	width: 51px;
+	height: 56px;
+}
+
+.asw_logo_klein{
+	background-position: -96px -47px ;
+	width: 322px;
+	height: 36px;
+}
+
+.buchler_klein{
+	background-position: -14px -104px ;
+	width: 67px;
+	height: 39px;
+}
+
+.franke_klein{
+	background-position: -105px -94px ;
+	width: 80px;
+	height: 32px;
+}
+
+.goeppel_klein{
+	background-position: -191px -90px ;
+	width: 72px;
+	height: 36px;
+}
+
+.hschmidt_klein{
+	background-position: -272px -87px ;
+	width: 86px;
+	height: 42px;
+}
+
+.raiba_klein{
+	background-position: -310px -136px ;
+	width: 169px;
+	height: 23px;
+}
+
+.riedelheimer_klein{
+	background-position: -19px -146px ;
+	width: 145px;
+	height: 25px;
+}
+
+.schreinertom_klein{
+	background-position: -180px -132px ;
+	width: 126px;
+	height: 37px;
+}
+
+.schwarzbraeu_klein{
+	background-position: -365px -91px ;
+	width: 58px;
+	height: 37px;
+}
+
