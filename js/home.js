@@ -599,7 +599,7 @@ jQuery(function($) {
 						action: function(dialog) {
 							dialog.enableButtons(false).setClosable(false);
 							
-							$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(options.data), contentType: 'application/json'}).success(function() {
+							$.ajax({type: 'POST', url: options.url || '/intern/helferliste', data: JSON.stringify(options.data), contentType: 'application/json'}).success(function() {
 								dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 									dialog.close(); 
 									if ( typeof(options.view) === 'function' ) {
@@ -982,12 +982,6 @@ jQuery(function($) {
 					});
 				}
 				
-				$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
-				$('<p><button class="btn btn-danger btn-xs">Ausloggen</button></p>').appendTo(bottomcontainer).find("button").on("click",function() {
-					var data = {task:"logout"};
-					swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html")}});
-				});
-	
 				//Alte Position nach neu Redern wiederherstellen
 				$(window).scrollTop(lastposition);
 				
@@ -1040,6 +1034,12 @@ jQuery(function($) {
 					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!'});
 				});
 			}
+			
+			$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
+			$('<p><button class="btn btn-danger btn-xs">Ausloggen</button></p>').appendTo(bottomcontainer).find("button").on("click",function() {
+				var data = {task:"logout"};
+				swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html"), url: "/intern/auth"}});
+			});
 		});
 		return this;
 	};
