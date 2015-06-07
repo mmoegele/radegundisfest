@@ -1038,7 +1038,7 @@ jQuery(function($) {
 			$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
 			$('<p><button class="btn btn-danger btn-xs">Ausloggen</button></p>').appendTo(bottomcontainer).find("button").on("click",function() {
 				var data = {task:"logout"};
-				swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html"), url: "/intern/auth"}});
+				swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html")}, url: "/intern/auth"});
 			});
 		});
 		return this;
