@@ -157,6 +157,41 @@ jQuery(function($) {
 			// Aktiviere LazyLoad nur bei Bildern, die nicht schon geladen sind! (geladen: element hat kein data-src mehr!)
 			$("img[data-src]",targetelement).attr("src",dummy400x300).unveil();
 		};
+
+		var swformfield = function (options) {
+			var div = $('<div class="form-group">');
+			var divi = $('<div class="input-group">').appendTo(div);
+			
+			
+			var formfield = $('<'+options.el+'>',{
+				type: options.type,
+				class: 'form-control',
+				name: options.name,
+				autocorrect: options.autocor,
+				autocapitalize: options.autocap,
+				autocomplete: options.autocomp,
+				placeholder: options.placeh,
+				style: options.style,
+				rows: options.rows,
+				value: options.value
+			});
+			
+			if ( options.type === 'hidden' ) {
+				formfield.removeClass('form-control');
+				formfield.appendTo(options.container);
+			} else if (options.type === 'checkbox') {
+				$("<label>").append(formfield).append($('<span>'+options.text+'</span>')).appendTo(divi);
+				div.appendTo(options.container);
+			} else {
+				$('<span class="input-group-addon">').html(options.text).appendTo(divi);
+				formfield.appendTo(divi);
+				$('<span class="glyphicon form-control-feedback" aria-hidden="true">').appendTo(divi);
+				if (options.extra) options.extra.appendTo(divi);
+				div.appendTo(options.container);
+			}
+			
+			return formfield;
+		}
 	
 	$(document).ready(function () {
 		
@@ -177,30 +212,10 @@ jQuery(function($) {
 			var maps = $("div.maps").removeClass("hidden");
 			var mform = $("div.mform").removeClass("hidden");
 			var mdirections = $("div.mdirections").removeClass("hidden");
-			var input = $($.parseHTML(
-				'<div><div class="swalert"></div>\
-					<div class="form-group">\
-						<div class="input-group">\
-							<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>\
-							<input type="text" class="form-control" name="login" autocorrect="off" placeholder="Startpunkt hier eingeben und auf <Route suchen> drücken">\
-						</div>\
-					</div>\
-					<div class="btn-group btn-group-justified">\
-						<a class="btn btn-success" type="button" name="search" role="button">Route suchen!</a>\
-						<a class="btn btn-warning" type="button" name="reset" role="button">Route zurücksetzen!</a>\
-					</div>\
-				</div>'));
-				
-			input.appendTo(mform);
-			
-			inputval = input.find("input");
-			input.find("a[name='search']").on("click", function() {
-				maps.swgetroute(inputval.val());
-			});
-			
-			input.find("a[name='reset']").on("click", function() {
-				maps.swmaps();
-			});
+			var location = swformfield({container:mform, el:'input', text: '<span class="glyphicon glyphicon-map-marker"></span>', type: 'text', autocor: 'off', placeh: "Startpunkt hier eingeben und auf <Route suchen> drücken"});
+			var search = $('<a class="btn btn-success" type="button" name="search" role="button">').html('Route suchen!').on("click", function() {maps.swgetroute(location.val())});
+			var reset = $('<a class="btn btn-warning" type="button" name="reset" role="button">').html('Route zurücksetzen!').on("click", function() {maps.swmaps()});
+			$('<div class="btn-group btn-group-justified">').append(search).append(reset).appendTo(mform);
 			
 			//Show Map
 			maps.swmaps();
@@ -233,45 +248,15 @@ jQuery(function($) {
 			$.ajax({type: 'GET', url: '/intern/auth'}).done(function() {
 				gototarget("/intern/");
 			}).fail(function() {
-				var logincontainer = $.parseHTML(
-				'<div><div class="swalert"></div>\
-				<div class="swform">\
-					<form>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Login</span>\
-							<input type="text" class="form-control" name="login" autocorrect="off" autocapitalize="none">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Passwort</span>\
-							<input type="password" class="form-control" name="password" autocomplete="off">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Email (optional)</span>\
-							<input type="email" class="form-control" name="email">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-					</form>\
-				</div>\
-				<div class="swcontent"></div>\
-				</div>');
+				var logincontainer = $("<div>");
+				var swalert = $('<div class="swalert">').appendTo(logincontainer);
+				var form = $('<form class="swform">').appendTo(logincontainer);
+				var elogin = swformfield({container:form, el:'input', text: 'Login', type: 'text', name: 'login', autocor: 'off', autocap:'none'});
+				var epassword = swformfield({container:form, el:'input', text: 'Passwort', type: 'password', name: 'password', autocomp: 'off'});
+				var eemail = swformfield({container:form, el:'input', text: 'Email (optional)', type: 'email', name: 'email'});
 				
-				var form = $("form",logincontainer);
-				var elogin = $("input[name=login]",form);
-				var epassword = $("input[name=password]",form);
-				var eemail = $("input[name=email]",form);
-				var swalert = $(".swalert",logincontainer).empty();
-				var data = {};
-				
-				data.task = "login";
-				
+				var data = {task: 'login'};
+
 				form.on("submit", function(e) {
 					e.preventDefault();
 					$.extend(data,ar2obj(form.serializeArray()));
@@ -280,17 +265,13 @@ jQuery(function($) {
 						
 						if (d.success) {
 							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
-							swalert.empty();
 							elogin.swvalid(true);
 							epassword.swvalid(true);
 							eemail.swvalid(true);
 							setTimeout(function() {gototarget("/intern/")}
 							,1000);
 						} else {
-							e.dialog.enableButtons(true);
-							e.dialog.getButton('submit').stopSpin();
-							e.dialog.setType(BootstrapDialog.TYPE_DANGER);
-
+							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
 							$.each([
 								{el: elogin, status: d.login, msg: 'Login "'+elogin.val()+'" ungültig!'},
 								{el: epassword, status: d.password, msg: 'Passwort ungültig!'},
@@ -312,7 +293,8 @@ jQuery(function($) {
 					title: "Bitte Einloggen!",
 					message: logincontainer,
 					spinicon: 'glyphicon glyphicon-refresh',
-					buttons : [{
+					buttons : [
+					{
 						id: 'submit',
 						label: "Login",
 						cssClass: 'btn-primary',
@@ -321,11 +303,9 @@ jQuery(function($) {
 							dialog.enableButtons(false).setClosable(false);
 							form.trigger({type:'submit',dialog:dialog});
 						}
-					},{
-						label: 'Schließen!',
-						cssClass: 'btn-default',
-						action: function(dialog) {dialog.close();gototarget();}
-					}]
+					},
+					{label: 'Schließen!', cssClass: 'btn-default', action: function(dialog) {dialog.close();gototarget();}}
+					]
 				});
 				
 				// Dialog schließen bei Back button
@@ -342,7 +322,6 @@ jQuery(function($) {
 		$(window).on("hashchange", function (e, data) {
 			render();
 		});
-		
 		
 		$(window).on("popstate", function (e, data) {
 			if (!ismodern) return false;
@@ -374,7 +353,7 @@ jQuery(function($) {
 				$.ajax({
 					url: 'https://maps.google.com/maps/api/js?sensor=false&language=de&callback=gmapsapi',
 					dataType: "script",
-					cache:true
+					cache: true
 				});
 			});
 		}
@@ -532,14 +511,6 @@ jQuery(function($) {
 		
 		var bottomcontainer = $("<div class='col-md-12'>").appendTo(row);
 		
-		var rendershift = function (name,timestart,timeend) {
-			var html = name+" (";
-			if (timestart === timeend) html += moment.unix(timestart).format("dddd, D. MMMM")+" ab "+moment.unix(timestart).format("HH:mm")+" Uhr";
-			if (timestart !== timeend) html += moment.unix(timestart).format("dddd, D. MMMM")+" von "+moment.unix(timestart).format("HH:mm")+" bis "+moment.unix(timeend).format("HH:mm")+" Uhr";
-			html += ")";
-			return html;
-		}
-		
 		$.getJSON("/intern/helferliste",function(d) {
 			var auth = d.auth;
 			var email = d.email;
@@ -589,62 +560,69 @@ jQuery(function($) {
 				$("<a type='button' class='btn btn-default'>Helferbelegung</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lazyasses");});
 			}
 			
-			$.fn.shiftinsert = function(ins) {
-				if (this.length === 0) return;
-				var shiftcontainer =$(this);
+			var rendershift2 = function (shiftid,options) {
+				//currentshift
+				var cs;
+				if (typeof shiftid === 'object' && shiftid.shiftid) {
+					cs = shiftid;
+				} else {
+					shiftid = parseInt(shiftid);
+					cs = (shifts.filter(function(k){return k.shiftid === shiftid}))[0];
+				}
+				options = options || {};
 				
-				var data = {};
-				data.task = "shiftinsert";
+				if (cs.name) {
+					var html = cs.name+" (";
+					if (options.shrt) {
+						html += moment.unix(cs.timestart).format("dddd, D.")
+					} else {
+						if (cs.timestart === cs.timeend) html += moment.unix(cs.timestart).format("dddd, D. MMMM")+" ab "+moment.unix(cs.timestart).format("HH:mm")+" Uhr";
+						if (cs.timestart !== cs.timeend) html += moment.unix(cs.timestart).format("dddd, D. MMMM")+" von "+moment.unix(cs.timestart).format("HH:mm")+" bis "+moment.unix(cs.timeend).format("HH:mm")+" Uhr";
+					}
+					html += ")";
+					return html;
+				} else {
+					return "Shift not found";
+				}
+			}
+			
+			var swdeleteany = function (options) {
+				BootstrapDialog.show({
+					title: options.title,
+					message: options.msg,
+					spinicon: 'glyphicon glyphicon-refresh',
+					buttons : [
+					{
+						label: options.btnmsg,
+						cssClass: 'btn-danger',
+						autospin: true,
+						action: function(dialog) {
+							dialog.enableButtons(false).setClosable(false);
+							
+							$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(options.data), contentType: 'application/json'}).success(function() {
+								dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
+									dialog.close(); 
+									if ( typeof(options.view) === 'function' ) {
+										options.view.call();
+									} else {
+										parentcontainer.helferliste(options.view);
+									}
+								}}]).updateButtons().setMessage(options.successmsg);
+								if (options.el) options.el.slideUp("slow",function(){$(this).remove()});
+							});
+						}
+					},
+					{label: 'Schließen!', cssClass: 'btn-default', action: function(dialog) {dialog.close()}}
+					]
+				});
+			}
+			
+			var shiftinsert = function(ins) {
+				var shiftcontainer = $("<div>");
+				var swalert = $('<div class="swalert">').appendTo(shiftcontainer);
+				var form = $('<form class="swform">').appendTo(shiftcontainer);
+				var data = {task:"shiftinsert"};
 				
-				shiftcontainer.append($.parseHTML(
-				'<div class="swalert"></div>\
-				<div class="swform">\
-					<form>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Schichtbezeichnung</span>\
-							<input type="text" class="form-control" name="name" placeholder="Kloputzen">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Von</span>\
-							<input type="text" class="form-control" name="timestart" placeholder="Von" autocomplete="off">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Bis</span>\
-							<input type="text" class="form-control" name="timeend" placeholder="Bis" autocomplete="off">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							<span class="input-group-addon">\
-							<label><input type="checkbox" name="noend" value=1><span>Offenes Ende</span></label>\
-							</span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Bemerkung</span>\
-							<input type="text" class="form-control" name="description" placeholder="">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Anzahl Personen</span>\
-							<input type="number" class="form-control" name="number">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<input type="hidden" name="shiftid">\
-					</form>\
-				</div>\
-				<div class="swcontent"></div>'));
-				
-				var form = $("form",shiftcontainer);
-				var swalert = $(".swalert",shiftcontainer);
 				var llll = "ddd D. MMM YYYY HH:mm";
 				var defaults = {
 					stepping: 5,
@@ -653,13 +631,15 @@ jQuery(function($) {
 					format: llll,
 					sideBySide: false
 				};
-				var shifttitle = $("input[name='name']",form);
-				var elstart = $("input[name='timestart']",form).datetimepicker(defaults);
-				var elend   = $("input[name='timeend']",form).datetimepicker(defaults);
-				var elnumber = $("input[name='number']",form);
-				var eldescription = $("input[name='description']",form);
-				var elnoend = $("input[name='noend']",form);
-				var elshiftid = $("input[name='shiftid']",form).attr("disabled","disabled");
+				
+				var shifttitle = swformfield({container:form, el:'input', text: 'Schichtbezeichnung', type: 'text', name: 'name', placeh: 'Kloputzen'});
+				var elstart = swformfield({container:form, el:'input', text: 'Von', type: 'text', name: 'timestart', autocompl: 'off'}).datetimepicker(defaults);
+				var extra = $('<span class="input-group-addon"><label><input type="checkbox" name="noend" value=1><span>Offenes Ende</span></label></span>');
+				var elnoend = extra.find("input");
+				var elend = swformfield({container:form, el:'input', text: 'Bis', type: 'text', name: 'timeend', autocompl: 'off', extra: extra }).datetimepicker(defaults);
+				var eldescription = swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
+				var elnumber = swformfield({container:form, el:'input', text: 'Anzahl Personen', type: 'number', name: 'number'});
+				var elshiftid = swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'}).attr("disabled","disabled");
 				
 				elnoend.on("change", function (e) {
 					if ($(this).is(":checked")) {
@@ -693,15 +673,12 @@ jQuery(function($) {
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
-							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
-							e.dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
+							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
 								parentcontainer.helferliste();
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
-							e.dialog.enableButtons(true);
-							e.dialog.getButton('submit').stopSpin();
-							e.dialog.setType(BootstrapDialog.TYPE_DANGER);
+							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
 							$.each([
 								{el: shifttitle, status: d.name, msg: 'Schichtname "'+shifttitle.val()+'" ungültig!'},
 								{el: elstart, status: d.timestart, msg: 'Startzeit ungültig!'},
@@ -733,107 +710,53 @@ jQuery(function($) {
 						}
 					}]
 				});
-				
-				return this;
 			};
 			
-			$.fn.helperinsert = function(ins) {
-				if (this.length === 0) return;
-				var helpercontainer =$(this);
-
-				var data = {};
-				data.task = "helperpropose";
-
-				if (auth === 4) data.task = "helperinsert";
-
-				helpercontainer.append($.parseHTML(
-					'<div class="swalert"></div>\
-					<div class="swform">\
-						<form>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Helfername</span>\
-							<input type="text" class="form-control" name="name" placeholder="Max Mustermann">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Email</span>\
-							<input type="text" class="form-control" name="email">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Schicht</span>\
-							<input type="text" class="form-control" name="dummy">\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Bemerkung</span>\
-							<input type="text" class="form-control" name="description" placeholder="">\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<label><input type="checkbox" name="sendmail" value=1><span>Email Senden?</span></label>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Mailtext</span>\
-							<textarea name="sendmailtext" class="form-control" style="width:100%;resize:vertical;" rows="9"></textarea>\
-							</div>\
-						</div>\
-						<input type="hidden" name="helid">\
-						<input type="hidden" name="inqid">\
-						<input type="hidden" name="shiftid">\
-						</form>\
-					</div>'
-				));
-				var form = $("form",helpercontainer);
-				var swalert = $(".swalert",helpercontainer);
-				var helpername = $("input[name='name']",form);
-				var elemail = $("input[name='email']",form);
-				var eldescription = $("input[name='description']",form);
-				var elshiftid = $("input[name='shiftid']",form);
-
-				if(ins.shiftid) {
-					var currentshift = (shifts.filter(function(k){return k.shiftid === ins.shiftid}))[0];
-					$("input[name='dummy']",form).val(rendershift(currentshift.name,currentshift.timestart,currentshift.timeend)).attr("disabled","disabled");
-				}
-				var elhelid = $("input[name='helid']",form).attr("disabled","disabled");
-				var elinqid = $("input[name='inqid']",form).attr("disabled","disabled");
-				var elsendmail = $("input[name='sendmail']",form).attr("disabled","disabled").on("change",function(){
+			var helperinsert = function(ins) {
+				var helpercontainer = $("<div>");
+				var swalert = $('<div class="swalert">').appendTo(helpercontainer);
+				var form = $('<form class="swform">').appendTo(helpercontainer);
+				var data = {task:"helperpropose"};
+				
+				var helpername = swformfield({container:form, el:'input', text: 'Helfername', type: 'text', name: 'name', placeh: 'Vorname Nachname'});
+				var elemail = swformfield({container:form, el:'input', text: 'Email', type: 'email', name: 'email'});
+				var eldummyshift = swformfield({container:form, el:'input', text: 'Schicht', type: 'text', name: 'dummy'}).attr("disabled","disabled");
+				var eldescription = swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
+				var elsendmail = swformfield({container:form, el:'input', text: 'Email Senden?', type: 'checkbox', name: 'sendmail'});
+				var elsendmailtext = swformfield({container:form, el:'textarea', text: 'Mailtext', name: 'sendmailtext', style: 'width:100%;resize:vertical;', rows: 9});
+				var elshiftid = swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'});
+				var elhelid = swformfield({container:form, el:'input', type: 'hidden', name: 'helid'}).attr("disabled","disabled");
+				var elinqid = swformfield({container:form, el:'input', type: 'hidden', name: 'inqid'}).attr("disabled","disabled");
+				
+				elsendmail.on("change",function(){
 					if ($(this).prop("checked")) {
 						elsendmailtext.removeAttr("disabled").closest("div.form-group").show();
-						var tmp = (typeof ins.data === 'undefined' || typeof ins.data.name === 'undefined') ? helpername.val() :ins.data.name;
-						elsendmailtext.text("Hallo "+tmp+",\n\ndu wurdest beim Radegundisfest für folgende Schicht eingeteilt:\n\n"+($("input[name='dummy']",form).val() || $("select[name='shiftid'] option:selected",form).text())+"\n\nEs grüßt das Organisationsteam!");
+						elsendmailtext.text("Hallo "+helpername.val()+",\n\ndu wurdest beim Radegundisfest für folgende Schicht eingeteilt:\n\n"+(eldummyshift.val() || $("option:selected",elshiftid).text())+"\n\nEs grüßt das Organisationsteam!");
 					} else {
 						elsendmailtext.attr("disabled","disabled").closest("div.form-group").hide();
 					};
-				});
-				elsendmail.closest("div.form-group").hide();
-				
-				var elsendmailtext = $("textarea[name='sendmailtext']",form);
-				
-				elsendmail.trigger("change");
-				
-				if ( auth === 4 ) elsendmail.removeAttr("disabled").closest("div.form-group").show();
+				}).trigger("change");
 
-				if (ins.shiftid) elshiftid.val(ins.shiftid);
-				
+				if(ins.shiftid) {
+					eldummyshift.val(rendershift2(ins.shiftid));
+					elshiftid.val(ins.shiftid);
+				}
+
+				elsendmail.closest("div.form-group").hide();
+
+				if ( auth === 4 ) {
+					data.task = "helperinsert";
+					elsendmail.removeAttr("disabled").closest("div.form-group").show();
+				}
+
 				if (email) elemail.val(email);
-				
+
 				if (ins.data) {
 					helpername.val(ins.data.name);
 					elemail.val(ins.data.email);
 					eldescription.val(ins.data.description);
 					elshiftid.val(ins.data.shiftid);
-					var currentshift = (shifts.filter(function(k){return k.shiftid === ins.data.shiftid}))[0];
-					$("input[name='dummy']",form).val(rendershift(currentshift.name,currentshift.timestart,currentshift.timeend)).attr("disabled","disabled");
+					eldummyshift.val(rendershift2(ins.data.shiftid));
 					if (ins.data.helid) {
 						elhelid.removeAttr("disabled").val(ins.data.helid);
 						data.task = "helperedit";
@@ -844,9 +767,10 @@ jQuery(function($) {
 							elshiftid.remove();
 							var shiftselect = $("<select name='shiftid' class='form-control'>");
 							$.each(shiftsavailable, function(i,s) {
-								$("<option value="+s.shiftid+">"+rendershift(s.name,s.timestart,s.timeend)+"</option>").appendTo(shiftselect);
+								$("<option>").val(s.shiftid).text(rendershift2(s)).appendTo(shiftselect);
 							});
-							$("input[name='dummy']",form).replaceWith(shiftselect);
+							eldummyshift.replaceWith(shiftselect);
+							eldummyshift = shiftselect;
 						}
 					}
 				}
@@ -857,15 +781,12 @@ jQuery(function($) {
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
-							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
-							e.dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
+							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
 								parentcontainer.helferliste();
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
-							e.dialog.enableButtons(true);
-							e.dialog.getButton('submit').stopSpin();
-							e.dialog.setType(BootstrapDialog.TYPE_DANGER);
+							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
 							$.each([
 								{el: helpername, status: d.name, msg: 'Name "'+helpername.val()+'" ungültig!'},
 								{el: elemail, status: d.email, msg: 'Emailadresse "'+elemail.val()+'" ungültig!!'}] ,function (i, obj) {
@@ -895,42 +816,16 @@ jQuery(function($) {
 						}
 					}]
 				});
-
-				return this;
 			};
 			
-			$.fn.peopleadd = function(ins) {
-				if (this.length === 0) return;
-				var container =$(this);
+			var peopleinsert = function(ins) {
+				var container = $("<div>");
+				var data = {task:"peopleinsert"};
+				var swalert = $('<div class="swalert">').appendTo(container);
+				var form = $('<form class="swform">').appendTo(container);
 				
-				var data = {};
-				data.task = "peopleadd";
-				
-				container.append($.parseHTML(
-					'<div class="swalert"></div>\
-					<div class="swform">\
-						<form>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Nachname</span>\
-							<input type="text" class="form-control" name="name" placeholder="Nachname, zB. Mustermann">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						<div class="form-group">\
-							<div class="input-group">\
-							<span class="input-group-addon">Vorname</span>\
-							<input type="text" class="form-control" name="vorname" placeholder="Vorname, zB. Max">\
-							<span class="glyphicon form-control-feedback" aria-hidden="true"></span>\
-							</div>\
-						</div>\
-						</form>\
-					'));
-				
-				var form = $("form",container);
-				var swalert = $(".swalert",container);
-				var elname = $("input[name='name']",form);
-				var elvorname = $("input[name='vorname']",form);
+				var elname = swformfield({container:form, el:'input', text: 'Nachname', type: 'text', name: 'name', placeh: 'Mustermann'});
+				var elvorname = swformfield({container:form, el:'input', text: 'Vorname', type: 'text', name: 'vorname', placeh: 'Mustermann'});
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
@@ -938,15 +833,12 @@ jQuery(function($) {
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
-							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
-							e.dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
+							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
 								parentcontainer.helferliste("lazyasses");
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
-							e.dialog.enableButtons(true);
-							e.dialog.getButton('submit').stopSpin();
-							e.dialog.setType(BootstrapDialog.TYPE_DANGER);
+							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
 							$.each([
 								{el: elname, status: d.name, msg: 'Nachname "'+elname.val()+'" ungültig!'},
 								{el: elvorname, status: d.vorname, msg: 'Vorname "'+elvorname.val()+'" ungültig!'}
@@ -977,8 +869,6 @@ jQuery(function($) {
 						}
 					}]
 				});
-				
-				return this;
 			};
 			
 			var renderinquiries = function (el,shiftinquiries,shiftselectable) {
@@ -986,58 +876,15 @@ jQuery(function($) {
 					var inq = $("<li><a style='cursor:pointer'>"+mtem.name+" ("+moment.unix(mtem.timestamp).format("D.MMM HH:mm")+") </a></li>").appendTo($(el));
 
 					inq.on("click", function() {
-						$("<div>").helperinsert({data:mtem, shiftselectable: ( shiftselectable || false ), title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
+						helperinsert({data:mtem, shiftselectable: ( shiftselectable || false ), title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
 					});
 
 					$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(inq.find("a")).on("click", function(event) {
 						event.stopPropagation();
-						BootstrapDialog.show({
-							title: 'Bestätigung',
-							message: 'Helfervorschlag wirklich löschen?',
-							spinicon: 'glyphicon glyphicon-refresh',
-							buttons : [{
-								label: 'Vorschlag löschen!',
-								cssClass: 'btn-danger',
-								autospin: true,
-								action: function(dialog) {
-									dialog.enableButtons(false).setClosable(false);
-									var data = {task:"helperinqdelete",inqid:mtem.inqid};
-									$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json'}).success(function() {
-										dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {dialog.close();parentcontainer.helferliste();}}]).updateButtons().setMessage("Vorschlag gelöscht!");
-										inq.slideUp("slow",function(){$(this).remove()});
-									});
-								}
-							},{
-								label: 'Schließen!',
-								cssClass: 'btn-default',
-								action: function(dialog) {dialog.close()}
-							}]
-						});
+						var data = {task:"helperinqdelete",inqid:mtem.inqid};
+						swdeleteany({data: data,title:'Bestätigung',msg:'Helfervorschlag wirklich löschen?',btnmsg:'Vorschlag löschen!', successmsg: "Vorschlag gelöscht!",el: inq, view: ""});
 					});
 				});
-			}
-			
-			var rendershift2 = function (shiftid,options) {
-				//currentshift
-				shiftid = parseInt(shiftid);
-				var cs = (shifts.filter(function(k){return k.shiftid === shiftid}));
-				
-				options = options || {};
-				
-				if (cs.length > 0) {
-					cs = cs[0];
-					var html = cs.name+" (";
-					if (options.shrt) {
-						html += moment.unix(cs.timestart).format("dddd, D.")
-					} else {
-						if (cs.timestart === cs.timeend) html += moment.unix(cs.timestart).format("dddd, D. MMMM")+" ab "+moment.unix(cs.timestart).format("HH:mm")+" Uhr";
-						if (cs.timestart !== cs.timeend) html += moment.unix(cs.timestart).format("dddd, D. MMMM")+" von "+moment.unix(cs.timestart).format("HH:mm")+" bis "+moment.unix(cs.timeend).format("HH:mm")+" Uhr";
-					}
-					html += ")";
-					return html;
-				} else {
-					return "Shift not found";
-				}
 			}
 			
 			////MAIN
@@ -1047,7 +894,7 @@ jQuery(function($) {
 				//Render List
 				$.each(shifts, function (i,item) {
 					var panel = $('<div class="panel panel-default">');
-					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift(item.name, item.timestart, item.timeend)+"</h4");
+					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
 					if (item.description) {
 						$("<span class='label label-default'>Bemerkung: "+item.description+"</span>").appendTo(panel_h);
 					}
@@ -1066,31 +913,11 @@ jQuery(function($) {
 						if (auth === 4) {
 							var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(td);
 							$("<button class='btn btn-xs btn-warning'><i class='glyphicon glyphicon-pencil'></i></button>").appendTo(buttongroup).on("click", function() {
-								$("<div>").helperinsert({data:jtem, title: 'Helfer bearbeiten', label: 'Helfer bearbeiten!', success: 'Helfer erfolgreich bearbeiten!'});
+								helperinsert({data:jtem, title: 'Helfer bearbeiten', label: 'Helfer bearbeiten!', success: 'Helfer erfolgreich bearbeiten!'});
 							});
 							$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(buttongroup).on("click", function() {
-								BootstrapDialog.show({
-									title: 'Bestätigung',
-									message: 'Helfer wirklich löschen?',
-									spinicon: 'glyphicon glyphicon-refresh',
-									buttons : [{
-										label: 'Helfer löschen!',
-										cssClass: 'btn-danger',
-										autospin: true,
-										action: function(dialog) {
-											dialog.enableButtons(false).setClosable(false);
-											var data = {task:"helperdelete",helid:jtem.helid};
-											$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json'}).success(function() {
-												dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {dialog.close();parentcontainer.helferliste();}}]).updateButtons().setMessage("Helfer gelöscht!");
-												tr.slideUp("slow",function(){$(this).remove()});
-											});
-										}
-									},{
-										label: 'Schließen!',
-										cssClass: 'btn-default',
-										action: function(dialog) {dialog.close()}
-									}]
-								});
+								var data = {task:"helperdelete",helid:jtem.helid};
+								swdeleteany({data: data,title:'Bestätigung',msg:'Helfer wirklich löschen?',btnmsg:'Helfer löschen!', successmsg: "Helfer gelöscht!",el: tr, view: ""});
 							});
 						}
 					});
@@ -1106,7 +933,7 @@ jQuery(function($) {
 							if (auth === 4) {
 								var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(td);
 								$("<button class='btn btn-xs btn-success'><i class='glyphicon glyphicon-plus'></i></button>").appendTo(buttongroup).on("click", function() {
-									$("<div>").helperinsert({shiftid:item.shiftid,title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
+									helperinsert({shiftid:item.shiftid,title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
 								});
 	
 								if (shiftinquiries.length > 0) {
@@ -1119,7 +946,7 @@ jQuery(function($) {
 									$("<span class='label label-danger pull-right'>Nur eine Anfrage pro Schicht!</span>").appendTo(td)
 								} else {
 									$("<button class='btn btn-xs btn-success pull-right'><i class='glyphicon glyphicon-plus'></i> Anfragen!</button>").appendTo(td).on("click", function() {
-										$("<div>").helperinsert({shiftid:item.shiftid, title: 'Mich als Helfer vorschlagen', label: 'Mich vorschlagen!', success: 'Vorschlag erfolgreich übermittelt!'});
+										helperinsert({shiftid:item.shiftid, title: 'Mich als Helfer vorschlagen', label: 'Mich vorschlagen!', success: 'Vorschlag erfolgreich übermittelt!'});
 									});
 								}
 							};
@@ -1138,32 +965,12 @@ jQuery(function($) {
 						var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(panel_h.find("h4"));
 						// Change-button
 						$("<button class='btn btn-xs btn-warning'><i class='glyphicon glyphicon-pencil'></i></button>").appendTo(buttongroup).on("click", function() {
-							$("<div>").shiftinsert({data:item, title: 'Schicht bearbeiten', label: 'Schicht bearbeiten!', success: 'Schicht erfolgreich bearbeitet!'});
+							shiftinsert({data:item, title: 'Schicht bearbeiten', label: 'Schicht bearbeiten!', success: 'Schicht erfolgreich bearbeitet!'});
 						});
 						//Delete-button
 						$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(buttongroup).on('click', function() {
-							BootstrapDialog.show({
-								title: 'Bestätigung',
-								message: 'Schicht (und alle Helfer dieser Schicht) wirklich löschen?',
-								spinicon: 'glyphicon glyphicon-refresh',
-								buttons : [{
-									label: 'Schicht löschen!',
-									cssClass: 'btn-danger',
-									autospin: true,
-									action: function(dialog) {
-										dialog.enableButtons(false).setClosable(false);
-										var data = {task:"shiftdelete",shiftid:item.shiftid};
-										$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json'}).success(function() {
-											dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {dialog.close();parentcontainer.helferliste();}}]).updateButtons().setMessage("Schicht gelöscht!");
-											panel.slideUp("slow",function(){$(this).remove()});
-										});
-									}
-								},{
-									label: 'Schließen!',
-									cssClass: 'btn-default',
-									action: function(dialog) {dialog.close()}
-								}]
-							});
+							var data = {task:"shiftdelete",shiftid:item.shiftid};
+							swdeleteany({data: data,title:'Bestätigung',msg:'Schicht (und alle Helfer dieser Schicht) wirklich löschen?',btnmsg:'Schicht löschen!', successmsg: 'Schicht gelöscht!',el: panel, view: ""});
 						});
 					}
 					panel.appendTo(listcontainer);
@@ -1171,33 +978,14 @@ jQuery(function($) {
 				
 				if (auth === 4) {
 					$('<button class="btn btn-primary">Neue Schicht</button>').appendTo(topcontainer).on("click",function() {
-						$("<div>").shiftinsert({title: 'Schicht hinzufügen', label: 'Schicht hinzufügen!', success: 'Neue Schicht erfolgreich hinzugefügt!'});
+						shiftinsert({title: 'Schicht hinzufügen', label: 'Schicht hinzufügen!', success: 'Neue Schicht erfolgreich hinzugefügt!'});
 					});
 				}
 				
 				$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
 				$('<p><button class="btn btn-danger btn-xs">Ausloggen</button></p>').appendTo(bottomcontainer).find("button").on("click",function() {
-					BootstrapDialog.show({
-						title: 'Bestätigung',
-						message: 'Wirklich ausloggen?',
-						spinicon: 'glyphicon glyphicon-refresh',
-						buttons : [{
-							label: 'Ausloggen!',
-							cssClass: 'btn-danger',
-							autospin: true,
-							action: function(dialog) {
-								dialog.enableButtons(false).setClosable(false);
-								var data = {task:"logout"};
-								$.ajax({type: 'POST', url: '/intern/auth', data: JSON.stringify(data), contentType: 'application/json'}).success(function() {
-									dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {dialog.close();gototarget("/login.html");}}]).updateButtons().setMessage("Erfolgreich ausgeloggt!");
-								});
-							}
-						},{
-							label: 'Schließen!',
-							cssClass: 'btn-default',
-							action: function(dialog) {dialog.close()}
-						}]
-					});
+					var data = {task:"logout"};
+					swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html")}});
 				});
 	
 				//Alte Position nach neu Redern wiederherstellen
@@ -1221,41 +1009,15 @@ jQuery(function($) {
 				var thead = $("<thead>").appendTo(table);
 				var tbody = $("<tbody>").appendTo(table);
 				var tr_head = $("<tr>").appendTo(thead);
-					$("<td><b>Name</b></td>").appendTo(tr_head);
-					$("<td><b>Samstag</b></td>").appendTo(tr_head);
-					$("<td><b>Sonntag</b></td>").appendTo(tr_head);
-					$("<td><b>Montag</b></td>").appendTo(tr_head);
-					$("<td><b>Delete</b></td>").appendTo(tr_head);
+				$.each(['Name','Samstag','Sonntag','Montag','Löschen'], function (i,la) { $("<td><b>"+la+"</b></td>").appendTo(tr_head)});
 				$.each(d.lazyasses, function(i,la) {
 					var tr = $("<tr>").appendTo(tbody);
 					$("<td><b>"+la.name+"</b></td>").appendTo(tr);
-					$("<td>").append(rendershiftslist(la.sat_shiftids)).appendTo(tr);
-					$("<td>").append(rendershiftslist(la.sun_shiftids)).appendTo(tr);
-					$("<td>").append(rendershiftslist(la.mon_shiftids)).appendTo(tr);
+					$.each([la.sat_shiftids,la.sun_shiftids,la.mon_shiftids],function(i,laa) {$("<td>").append(rendershiftslist(laa)).appendTo(tr)});
 					var td = $("<td>").appendTo(tr);
 					$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(td).on('click', function() {
-						BootstrapDialog.show({
-							title: 'Person löschen',
-							message: 'Person aus der Verzeichnisliste wirklich löschen?',
-							spinicon: 'glyphicon glyphicon-refresh',
-							buttons : [{
-								label: 'Person löschen!',
-								cssClass: 'btn-danger',
-								autospin: true,
-								action: function(dialog) {
-									dialog.enableButtons(false).setClosable(false);
-									var data = {task:"peopledel",peopleid:la.id};
-									$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json'}).success(function() {
-										dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {dialog.close();parentcontainer.helferliste("lazyasses");}}]).updateButtons().setMessage("Person gelöscht!");
-										panel.slideUp("slow",function(){$(this).remove()});
-									});
-								}
-							},{
-								label: 'Schließen!',
-								cssClass: 'btn-default',
-								action: function(dialog) {dialog.close()}
-							}]
-						});
+						var data = {task:"peopledel",peopleid:la.id};
+						swdeleteany({data: data,title:'Person löschen',msg:'Person aus der Verzeichnisliste wirklich löschen?',btnmsg:'Person löschen!', successmsg: "Person gelöscht!",el: tr, view: "lazyasses"});
 					});
 				});
 				
@@ -1274,10 +1036,9 @@ jQuery(function($) {
 				});
 				
 				//Leute hinzufügen
-				var useraddbtn = $("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
-					$("<div>").peopleadd({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!'});
+				$("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
+					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!'});
 				});
-				//var form = 
 			}
 		});
 		return this;
@@ -1302,11 +1063,9 @@ jQuery(function($) {
         th = threshold || 0,
         retina = window.devicePixelRatio > 1,
         attrib = retina? "data-src-retina" : "data-src",
-        images = this,
-        loaded;
+        images = this;
 
     images.one("unveil", function() {
-        //console.log("unveil");
         var source = this.getAttribute(attrib);
         source = source || this.getAttribute("data-src");
         if (source) {
@@ -1319,12 +1078,10 @@ jQuery(function($) {
 	
 	// "unveil" events der Bilder bei Seitenwechsel wieder entfernen
 	$w.one("hashchange", function() {
-		//console.log("unveiloff:"+images.length);
 		images.off("unveil")
 	});
 
     function unveil() {
-      
       var inview = images.filter(function() {
         var $e = $(this),
             wt = $w.scrollTop(),
@@ -1340,11 +1097,8 @@ jQuery(function($) {
 	// alte Window "unveil" events löschen und neue Events aktivieren
 	var uevents = "scroll.unveil resize.unveil lookup.unveil"
 	$w.off(uevents).on(uevents, unveil);
-
     unveil();
-
     return this;
-
   };
 
 })(window.jQuery);
