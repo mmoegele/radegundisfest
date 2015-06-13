@@ -239,3 +239,11 @@ body {
 	height: 37px;
 }
 
+@media print {
+	div.helferliste table {margin-bottom:0px}
+	div.helferliste table td{padding:1px}
+	div.helferliste div.panel-heading {padding:2px}
+	div.helferliste div.panel-heading h4 {margin:2px 0}
+	div.helferliste div.panel-body {padding:2px}
+	div.helferliste div.panel {margin-bottom:2px}
+}
