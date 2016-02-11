@@ -514,11 +514,15 @@ jQuery(function($) {
 		$.getJSON("/intern/helferliste",function(d) {
 			var auth = d.auth;
 			var email = d.email;
-			var shifts = d.shifts;
 			var authname = d.authname;
+			var shifts = d.shifts;
 				if ($.isEmptyObject( shifts ) ) shifts = []; //TMPFIX for lua cjson bug
+			var shifts_prev = d.shifts_prev;
+				if ($.isEmptyObject( shifts_prev ) ) shifts_prev = []; //TMPFIX for lua cjson bug
 			var helpers = d.helpers;
 				if ($.isEmptyObject( helpers ) ) helpers = []; //TMPFIX for lua cjson bug
+			var helpers_prev = d.helpers_prev;
+				if ($.isEmptyObject( helpers_prev ) ) helpers_prev = []; //TMPFIX for lua cjson bug
 			var inquiries = d.inquiries;
 				if ($.isEmptyObject( inquiries ) ) inquiries = []; //TMPFIX for lua cjson bug
 				
@@ -558,6 +562,7 @@ jQuery(function($) {
 				
 				$("<a type='button' class='btn btn-default'>Helferliste</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste();});
 				$("<a type='button' class='btn btn-default'>Helferbelegung</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lazyasses");});
+				$("<a type='button' class='btn btn-default'>Helferliste 2015</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("2015");});
 			}
 			
 			var rendershift2 = function (shiftid,options) {
@@ -1033,6 +1038,29 @@ jQuery(function($) {
 				$("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
 					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!'});
 				});
+			} else if (view === '2015') {
+				$.each(shifts_prev, function (i,item) {
+					var panel = $('<div class="panel panel-default">');
+					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
+					if (item.description) {
+						$("<span class='label label-default'>Bemerkung: "+item.description+"</span>").appendTo(panel_h);
+					}
+					var panel_b = $('<div class="panel-body">').appendTo(panel);
+					var table = $("<table class='table table-striped'>").appendTo(panel_b);
+	
+					var shifthelpers = helpers_prev.filter(function(k){return k.shiftid === item.shiftid});
+	
+					$.each(shifthelpers, function(j,jtem) {
+						var tr = $("<tr>").appendTo(table);
+						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
+						$("<td>"+jtem.name+"</td>").appendTo(tr);
+						$("<td>"+jtem.description+"</td>").appendTo(tr);
+						var td = $("<td>").appendTo(tr);
+					});
+					
+					panel.appendTo(listcontainer);
+				});
+				
 			}
 			
 			$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
