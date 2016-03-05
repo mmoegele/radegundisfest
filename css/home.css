@@ -427,17 +427,8 @@ body {
 
     div.helferliste div.panel {
         margin-bottom: 2px;
-        width: 49%;
         border-radius: 0;
         border-color: #000;
-    }
-
-    div.helferliste div.panel:nth-child(even) {
-        float: right;
-    }
-    div.helferliste div.panel:nth-child(odd) {
-        float: left;
-        margin-right:1%;
     }
 
     .panel-default > .panel-heading {
