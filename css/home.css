@@ -404,6 +404,16 @@ body {
         background:transparent;
         color:#000;
         border:0;
+        white-space: normal;
+    }
+
+    div.helferliste .panel-container {
+        column-count:2;
+        -moz-column-count:2;
+        -webkit-column-count:2;
+        column-gap: 10px;
+        -moz-column-gap: 10px;
+        -webkit-column-gap: 10px;
     }
 
     div.helferliste div.panel-heading h4 {
@@ -417,16 +427,17 @@ body {
 
     div.helferliste div.panel {
         margin-bottom: 2px;
-        width: 50%;
+        width: 49%;
         border-radius: 0;
         border-color: #000;
     }
 
-    div.helferliste div.panel:nth-child(odd) {
+    div.helferliste div.panel:nth-child(even) {
         float: right;
     }
-    div.helferliste div.panel:nth-child(even) {
+    div.helferliste div.panel:nth-child(odd) {
         float: left;
+        margin-right:1%;
     }
 
     .panel-default > .panel-heading {

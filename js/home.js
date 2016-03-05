@@ -507,7 +507,7 @@ jQuery(function($) {
 		
 		var topcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row).css("margin-bottom", "20px");
 		
-		var listcontainer = $("<div class='col-md-12'>").appendTo(row).css("margin-bottom","20px");
+		var listcontainer = $("<div class='col-md-12 panel-container'>").appendTo(row).css("margin-bottom","20px");
 		
 		var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
 		
