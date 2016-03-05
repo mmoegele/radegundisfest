@@ -389,15 +389,24 @@ body {
     }
 
     div.helferliste table td {
-        padding: 1px;
+        padding: 0px;
+        font-size:10px;
     }
 
     div.helferliste div.panel-heading {
         padding: 2px;
     }
 
+    div.helferliste div.panel-heading span.label {
+        padding:0;
+        background:transparent;
+        color:#000;
+        border:0;
+    }
+
     div.helferliste div.panel-heading h4 {
         margin: 2px 0;
+        font-size: 12px;
     }
 
     div.helferliste div.panel-body {

@@ -509,7 +509,7 @@ jQuery(function($) {
 		
 		var listcontainer = $("<div class='col-md-12'>").appendTo(row).css("margin-bottom","20px");
 		
-		var bottomcontainer = $("<div class='col-md-12'>").appendTo(row);
+		var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
 		
 		$.getJSON("/intern/helferliste",function(d) {
 			var auth = d.auth;
