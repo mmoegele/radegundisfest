@@ -913,7 +913,7 @@ jQuery(function($) {
 						var tr = $("<tr>").appendTo(table);
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
 						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'>"+jtem.description+"</span>";
-						$("<td>"+jtem.name+desc"</td>").appendTo(tr);
+						$("<td>"+jtem.name+desc+"</td>").appendTo(tr);
 						//$("<td>"+jtem.description+"</td>").appendTo(tr);
 						var td = $("<td>").appendTo(tr);
 						if (auth === 4) {
