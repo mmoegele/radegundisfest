@@ -383,7 +383,8 @@ body {
 }
 
 @media print {
-
+	body {padding-top:0}
+	
     div.helferliste table {
         margin-bottom: 0px;
     }
@@ -395,6 +396,7 @@ body {
 
     div.helferliste div.panel-heading {
         padding: 2px;
+		border-color:#000;
     }
 
     div.helferliste div.panel-heading span.label {
@@ -415,6 +417,16 @@ body {
 
     div.helferliste div.panel {
         margin-bottom: 2px;
+        width: 50%;
+        border-radius: 0;
+        border-color: #000;
+    }
+
+    div.helferliste div.panel:nth-child(odd) {
+        float: right;
+    }
+    div.helferliste div.panel:nth-child(even) {
+        float: left;
     }
 
     .panel-default > .panel-heading {
