@@ -912,8 +912,9 @@ jQuery(function($) {
 					$.each(shifthelpers, function(j,jtem) {
 						var tr = $("<tr>").appendTo(table);
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
-						$("<td>"+jtem.name+"</td>").appendTo(tr);
-						$("<td>"+jtem.description+"</td>").appendTo(tr);
+						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'>"+jtem.description+"</span>";
+						$("<td>"+jtem.name+desc"</td>").appendTo(tr);
+						//$("<td>"+jtem.description+"</td>").appendTo(tr);
 						var td = $("<td>").appendTo(tr);
 						if (auth === 4) {
 							var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(td);
@@ -932,7 +933,7 @@ jQuery(function($) {
 							var tr = $("<tr>").appendTo(table);
 							$("<td><b>"+(k+1)+".</b></td>").appendTo(tr);
 							$("<td><span class='hidden-print'>" + "UNBESETZT" + "</span></td>").appendTo(tr);
-							$("<td>"+""+"</td>").appendTo(tr);
+							//$("<td>"+""+"</td>").appendTo(tr);
 							var td = $("<td>").appendTo(tr);
 							
 							if (auth === 4) {
