@@ -912,7 +912,7 @@ jQuery(function($) {
 					$.each(shifthelpers, function(j,jtem) {
 						var tr = $("<tr>").appendTo(table);
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
-						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'>"+jtem.description+"</span>";
+						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'>Bemerkung: "+jtem.description+"</span>";
 						$("<td>"+jtem.name+desc+"</td>").appendTo(tr);
 						//$("<td>"+jtem.description+"</td>").appendTo(tr);
 						var td = $("<td>").appendTo(tr);
