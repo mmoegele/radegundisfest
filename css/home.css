@@ -383,6 +383,7 @@ body {
 }
 
 @media print {
+
     div.helferliste table {
         margin-bottom: 0px;
     }
@@ -423,16 +424,18 @@ body {
     }
 }
 
-.black{
+.black {
     background:#000;
     color:#fff;
 }
+
 .page-header {
     background:#000;
     color:#fff;
     margin: 0;
     padding-bottom: 9px;
 }
+
 h1 small
 {
     color:#fff;
