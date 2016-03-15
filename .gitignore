@@ -15,6 +15,10 @@ intern/intern.min.html
 *.userosscache
 *.sln.docstates
 web.config
+*.xcf
+/HtmlPage.html
+/landing.html
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -203,3 +207,4 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
