@@ -223,6 +223,9 @@ jQuery(function($) {
 			// Remove Button
 			$(event.target).remove();
 		});
+        
+        // Carousel
+        $('#swcarousel').swcarousel();
 		
 		// Helferliste
 		$("div.helferliste").helferliste();
@@ -1072,6 +1075,12 @@ jQuery(function($) {
 		});
 		return this;
 	};
+    
+	$.fn.swcarousel = function () {
+		var carousel = $(this);
+		carousel.carousel();
+		//carousel.carousel('pause');
+	}
 });
 
 /**
@@ -1129,5 +1138,4 @@ jQuery(function($) {
     unveil();
     return this;
   };
-
 })(window.jQuery);

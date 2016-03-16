@@ -475,3 +475,42 @@ h1 small
 {
     color:#fff;
 }
+
+#swcarousel {
+	max-width:1080px;
+	margin: 0 auto 20px;
+}
+
+.radeimg1 {
+	background: url("/img/flyer/landing1_1080_420.jpg") no-repeat center top;
+}
+.radeimg2 {
+	background: url("/img/flyer/landing2_1080_420.jpg") no-repeat center top;
+}
+.radeimg3 {
+	background: url("/img/flyer/landing3_1080_420.jpg") no-repeat center top;
+}
+
+.carousel-indicators {
+	bottom: 0;
+}
+.carousel-control.right,
+.carousel-control.left {
+	background-image: none;
+}
+
+.carousel-inner {
+	border-radius: 0 0 5px 5px;
+	box-shadow:3px 3px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media(max-width:767px){
+	.carousel-inner {
+		border-radius: 0px;
+	}
+}
+
+.carousel .item {
+	min-height: 420px;
+	width:100%;
+}

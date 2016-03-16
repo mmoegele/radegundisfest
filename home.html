@@ -62,10 +62,39 @@
         </div>
     </header>
     <!--Landing Content-->
-    <article class="container">
-        <img src="./img/slide-4.jpg" class="img-responsive" alt="Cinque Terre">
-    </article>
     <article class="container" data-content="landing" data-doctitle="Radegundisfest 2016 11.-13. Juni  in Waldberg">
+        <div class="row">
+            <div id="swcarousel" class="carousel slide">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#swcarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#swcarousel" data-slide-to="1"></li>
+                    <li data-target="#swcarousel" data-slide-to="2"></li>
+                </ol>
+                
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                
+                    <!-- First slide -->
+                    <div class="item active radeimg1"></div> <!-- /.item -->
+                    <!-- Second slide -->
+                    <div class="item radeimg2"></div><!-- /.item -->
+                    <!-- Third slide -->
+                    <div class="item radeimg3"></div><!-- /.item -->
+                
+                </div><!-- /.carousel-inner -->
+                
+                <!-- Controls -->
+                <a class="left carousel-control" data-target="#swcarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" data-target="#swcarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div><!-- /.carousel -->
+        </div>
         <!-- Example row of columns -->
         <div class="row">
             <div class="col-lg-4  col-md-4 col-sm-6 col-xs-12 text-center">
