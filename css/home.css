@@ -284,7 +284,7 @@ body {
 }
 
 .duck {
-    background-position: -49px 0;
+    background: url("../img/duck2.png");
     width: 36px;
     height: 36px;
 }
@@ -299,6 +299,12 @@ body {
     background-position: -150px -1px;
     width: 36px;
     height: 36px;
+}
+
+.chainsaw {
+	background: url("../img/chainsaw.png");
+	width:36px;
+	height:36px;
 }
 
 .musikicon {
@@ -371,6 +377,14 @@ body {
     background-position: -272px -87px;
     width: 86px;
     height: 42px;
+}
+
+.lke_klein {
+	display:block;
+    background: url("../img/sp/LKE_klein.jpg");
+    width: 100px;
+    height: 59px;
+	background-size: 100px 59px;
 }
 
 .raiba_klein {
