@@ -497,13 +497,16 @@ h1 small
 }
 
 .radeimg1 {
-	background: url("/img/flyer/landing1_1080_420.jpg") no-repeat center top;
+	background: url("/img/flyer/landing4_1080_420.jpg") no-repeat center top;
 }
 .radeimg2 {
 	background: url("/img/flyer/landing2_1080_420.jpg") no-repeat center top;
 }
 .radeimg3 {
 	background: url("/img/flyer/landing3_1080_420.jpg") no-repeat center top;
+}
+.radeimg4 {
+	background: url("/img/flyer/landing1_1080_420.jpg") no-repeat center top;
 }
 
 .carousel-indicators {
