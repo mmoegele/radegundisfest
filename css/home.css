@@ -148,7 +148,7 @@ h3 {
 }
 
 h4 {
-    color: #3b3b3b;
+    color: #7d8a23;
     font-size: 17px;
     font-weight: bold;
     margin-bottom: 0.8em;
@@ -156,17 +156,18 @@ h4 {
 
 .btn-outline:hover
 {
-    background-color: #eee;
+    background-color: #fcebcc;
 }
 
 .btn-outline
 {
-    border-color: #ddd;
+    border-color: #30110a;
     color: #333;
 }
 
 .sponsoren {
     line-height: 5;
+    background:#fff;
 }
 
 .abstand-rechts {
@@ -199,6 +200,20 @@ ul.nav a, a.navbar-brand {
 
 body {
     padding-top: 50px;
+    color:#30110a;
+    background: #fcebcc;
+}
+
+.metro-cell
+{
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.metro {
+    background: #d7ccb8;
+    height: 15em;
+    padding: 1em;
+    margin:0.3em;
 }
 
 .swform input[type=checkbox], .swform input[type="radio"] {
