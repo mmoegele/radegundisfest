@@ -317,7 +317,15 @@ jQuery(function($) {
 				});
 			});
 		});
-
+		
+		$("article[data-exec=shuffle]").on("shuffle", function() {
+			var par = $(this).find("div.shuffle");
+			var divs = par.children();
+			while (divs.length) {
+				par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+			}
+		});
+		
 		// Routing beim Laden der Seite
 		render();
 
