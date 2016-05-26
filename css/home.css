@@ -166,8 +166,12 @@ h4 {
 }
 
 .sponsoren {
-    line-height: 5;
     background:#fff;
+}
+
+.sponsoren > a,.sponsoren > span {
+	display:inline-block;
+	padding:5px;
 }
 
 .abstand-rechts {
@@ -270,145 +274,50 @@ body {
     font-size: 16px;
 }
 
-/* sprites */
-
-.clown, .duck, .email, .geschichte, .musikicon, .oldtimer, .plusicon, .speisekarte, .sponsor, .text, .aschmid_klein, .asw_logo_klein, .buchler_klein, .franke_klein, .goeppel_klein, .hschmidt_klein, .raiba_klein, .riedelheimer_klein, .schreinertom_klein, .schwarzbraeu_klein {
-    background: url(../img/sprites.png) no-repeat;
+.clown, .duck, .email, .geschichte, .musikicon, .chainsaw, .plusicon, .speisekarte, .sponsor, .text {
     display: block;
+    width: 36px;
+    height: 36px;
 }
 
 .clown {
-    background-position: 0 0;
-    width: 36px;
-    height: 36px;
+    background: url("../img/clown.png");
 }
 
 .duck {
     background: url("../img/duck2.png");
-    width: 36px;
-    height: 36px;
 }
 
 .email {
-    background-position: -100px -1px;
-    width: 36px;
-    height: 36px;
+    background: url("../img/email.png");
 }
 
 .geschichte {
-    background-position: -150px -1px;
-    width: 36px;
-    height: 36px;
+    background: url("../img/geschichte.png");
 }
 
 .chainsaw {
 	background: url("../img/chainsaw.png");
-	width:36px;
-	height:36px;
 }
 
 .musikicon {
-    background-position: -201px -2px;
-    width: 34px;
-    height: 34px;
-}
-
-.oldtimer {
-    background-position: -248px 0;
-    width: 36px;
-    height: 38px;
+    background: url("../img/musicicon.png");
 }
 
 .plusicon {
-    background-position: -300px -2px;
-    width: 34px;
-    height: 34px;
+    background: url("../img/plusicon.png");
 }
 
 .speisekarte {
-    background-position: -350px -2px;
-    width: 36px;
-    height: 36px;
+    background: url("../img/speisekarte.png");
 }
 
 .sponsor {
-    background-position: -398px -2px;
-    width: 36px;
-    height: 36px;
+    background: url("../img/sponsor.png");
 }
 
 .text {
-    background-position: -449px -1px;
-    width: 36px;
-    height: 36px;
-}
-
-.aschmid_klein {
-    background-position: -22px -43px;
-    width: 51px;
-    height: 56px;
-}
-
-.asw_logo_klein {
-    background-position: -96px -47px;
-    width: 322px;
-    height: 36px;
-}
-
-.buchler_klein {
-    background-position: -14px -104px;
-    width: 67px;
-    height: 39px;
-}
-
-.franke_klein {
-    background-position: -105px -94px;
-    width: 80px;
-    height: 32px;
-}
-
-.goeppel_klein {
-    background-position: -191px -90px;
-    width: 72px;
-    height: 36px;
-}
-
-.hschmidt_klein {
-    background-position: -272px -87px;
-    width: 86px;
-    height: 42px;
-}
-
-.lke_klein {
-	display:block;
-    background: url("../img/sp/LKE_klein.jpg");
-    width: 100px;
-    height: 59px;
-	background-size: 100px 59px;
-}
-
-.raiba_klein {
-    background-position: -310px -136px;
-    width: 169px;
-    height: 23px;
-}
-
-.riedelheimer_klein {
-    background-position: -19px -146px;
-    width: 145px;
-    height: 25px;
-}
-
-.schreinertom_klein {
-    background-position: -180px -132px;
-    width: 126px;
-    height: 37px;
-}
-
-.schwarzbraeu_klein {
-    background-position: -365px -91px;
-    width: 58px;
-    height: 37px;
+    background: url("../img/text.png");
 }
 
 @media print {

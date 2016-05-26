@@ -326,6 +326,12 @@ jQuery(function($) {
 			}
 		});
 		
+		var par = $("footer div.sponsoren");
+		var divs = par.children();
+		while (divs.length) {
+			par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+		}
+		
 		// Routing beim Laden der Seite
 		render();
 
