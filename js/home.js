@@ -574,10 +574,12 @@ jQuery(function($) {
 
 			var progressbar = $("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width: 0%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
 			
+
+			var menubuttongroup = $("<div class='btn-group btn-group-justified'>").appendTo(topcontainer).css("margin-bottom","20px");
+			$("<a type='button' class='btn btn-default'>Helferliste Festbetrieb</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste();});
+			$("<a type='button' class='btn btn-default'>Helferliste Auf/Abbau</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("aufabbau");});
+
 			if (auth === 4) {
-				var menubuttongroup = $("<div class='btn-group btn-group-justified'>").appendTo(topcontainer).css("margin-bottom","20px");
-				
-				$("<a type='button' class='btn btn-default'>Helferliste</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste();});
 				$("<a type='button' class='btn btn-default'>Helferbelegung</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lazyasses");});
 				$("<a type='button' class='btn btn-default'>Helferliste 2015</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("2015");});
 			}
@@ -911,10 +913,18 @@ jQuery(function($) {
 			
 			////MAIN
 			
-			if (view === 'default') {
+			if (view === 'default' || view === 'aufabbau') {
 			
 				//Render List
 				$.each(shifts, function (i,item) {
+                    if ( view === 'default' && /^_/.test(item.name)) {
+                        return;
+                    }
+
+                    if ( view === 'aufabbaut' && ! /^_/.test(item.name)) {
+                        return;
+                    }
+
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
 					if (item.description) {
