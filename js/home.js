@@ -921,7 +921,7 @@ jQuery(function($) {
                         return;
                     }
 
-                    if ( view === 'aufabbaut' && ! /^_/.test(item.name)) {
+                    if ( view === 'aufabbau' && ! /^_/.test(item.name)) {
                         return;
                     }
 
