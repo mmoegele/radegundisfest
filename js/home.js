@@ -542,38 +542,35 @@ jQuery(function($) {
 				if ($.isEmptyObject( helpers_prev ) ) helpers_prev = []; //TMPFIX for lua cjson bug
 			var inquiries = d.inquiries;
 				if ($.isEmptyObject( inquiries ) ) inquiries = []; //TMPFIX for lua cjson bug
-				
+
 			var shiftsavailable = shifts.filter(function(k){
 				var sh = helpers.filter(function(j){return j.shiftid === k.shiftid});
 				return k.number > sh.length
 			});
-			
-			var neededhelpers = 0;
-			
-			$.each(shifts,function(i,s) {
-				neededhelpers += s.number;
-			});
-			
-			var aquiredhelpers = helpers.length;
-			
-			var progresscontainer = $("<div class='progress'>").appendTo(topcontainer);
-			
-			var progresspercentage = aquiredhelpers / neededhelpers * 100;
-			
-			var progressclass = function (v) {
-				if (v === 100) {
-					return "progress-bar-success";
-				} else if (v > 90) {
-					return "progress-bar-info";
-				} else if (v > 70) {
-					return "progress-bar-warning";
-				} else {
-					return "progress-bar-danger";
-				}
-			}
 
-			var progressbar = $("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width: 0%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
-			
+			var renderprogressbar = function (shiftspro) {
+				var neededhelpers = shiftspro.map(function(i) {return i.number}).reduce(function (a,b) {return a + b}, 0);
+				var shiftsproids = shiftspro.map(function(i) {return i.shiftid});
+				var aquiredhelpers = helpers.filter(function(i) {return shiftsproids.indexOf(i.shiftid) !== -1}).length;
+
+				var progresscontainer = $("<div class='progress'>").appendTo(topcontainer);
+
+				var progresspercentage = aquiredhelpers / neededhelpers * 100;
+
+				var progressclass = function (v) {
+					if (v === 100) {
+						return "progress-bar-success";
+					} else if (v > 90) {
+						return "progress-bar-info";
+					} else if (v > 70) {
+						return "progress-bar-warning";
+					} else {
+						return "progress-bar-danger";
+					}
+				}
+
+				var progressbar = $("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width:0%;min-width:15%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
+			}
 
 			var menubuttongroup = $("<div class='btn-group btn-group-justified'>").appendTo(topcontainer).css("margin-bottom","20px");
 			$("<a type='button' class='btn btn-default'>Helferliste Festbetrieb</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste();});
@@ -596,7 +593,8 @@ jQuery(function($) {
 				options = options || {};
 				
 				if (cs.name) {
-					var html = cs.name+" (";
+					var name = cs.name.replace(/^_/,"");
+					var html = name+" (";
 					if (options.shrt) {
 						html += moment.unix(cs.timestart).format("dddd, D.")
 					} else {
@@ -699,7 +697,7 @@ jQuery(function($) {
 						if (d.success) {
 							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
-								parentcontainer.helferliste();
+								parentcontainer.helferliste(ins.view);
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
 							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
@@ -807,7 +805,7 @@ jQuery(function($) {
 						if (d.success) {
 							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
-								parentcontainer.helferliste();
+								parentcontainer.helferliste(ins.view);
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
 							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
@@ -859,7 +857,7 @@ jQuery(function($) {
 						if (d.success) {
 							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS).enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 								dialog.close();
-								parentcontainer.helferliste("lazyasses");
+								parentcontainer.helferliste(ins.view);
 							}}]).updateButtons().setMessage(ins.success);
 						} else {
 							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
@@ -895,18 +893,18 @@ jQuery(function($) {
 				});
 			};
 			
-			var renderinquiries = function (el,shiftinquiries,shiftselectable) {
-				$.each(shiftinquiries, function(m, mtem) {
-					var inq = $("<li><a style='cursor:pointer'>"+mtem.name+" ("+moment.unix(mtem.timestamp).format("D.MMM HH:mm")+") </a></li>").appendTo($(el));
+			var renderinquiries = function (options) {
+				$.each(options.shiftinquiries, function(m, mtem) {
+					var inq = $("<li><a style='cursor:pointer'>"+mtem.name+" ("+moment.unix(mtem.timestamp).format("D.MMM HH:mm")+") </a></li>").appendTo($(options.el));
 
 					inq.on("click", function() {
-						helperinsert({data:mtem, shiftselectable: ( shiftselectable || false ), title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
+						helperinsert({data:mtem, shiftselectable: ( options.shiftselectable || false ), title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!', view: options.view});
 					});
 
 					$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(inq.find("a")).on("click", function(event) {
 						event.stopPropagation();
 						var data = {task:"helperinqdelete",inqid:mtem.inqid};
-						swdeleteany({data: data,title:'Bestätigung',msg:'Helfervorschlag wirklich löschen?',btnmsg:'Vorschlag löschen!', successmsg: "Vorschlag gelöscht!",el: inq, view: ""});
+						swdeleteany({data: data,title:'Bestätigung',msg:'Helfervorschlag wirklich löschen?',btnmsg:'Vorschlag löschen!', successmsg: "Vorschlag gelöscht!",el: inq, view: options.view});
 					});
 				});
 			}
@@ -914,16 +912,18 @@ jQuery(function($) {
 			////MAIN
 			
 			if (view === 'default' || view === 'aufabbau') {
-			
-				//Render List
-				$.each(shifts, function (i,item) {
-                    if ( view === 'default' && /^_/.test(item.name)) {
-                        return;
-                    }
+				var viewshifts;
 
-                    if ( view === 'aufabbau' && ! /^_/.test(item.name)) {
-                        return;
-                    }
+				if ( view === 'default' ) {
+					viewshifts = shifts.filter(function(i) { return ! /^_/.test(i.name) });
+				} else {
+					viewshifts = shifts.filter(function(i) { return /^_/.test(i.name) });
+				}
+
+				renderprogressbar(viewshifts);
+
+				//Render List
+				$.each(viewshifts, function (i,item) {
 
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
@@ -932,10 +932,10 @@ jQuery(function($) {
 					}
 					var panel_b = $('<div class="panel-body">').appendTo(panel);
 					var table = $("<table class='table table-striped'>").appendTo(panel_b);
-	
+
 					var shifthelpers = helpers.filter(function(k){return k.shiftid === item.shiftid});
 					var shiftinquiries = inquiries.filter(function(k){return k.shiftid === item.shiftid});
-	
+
 					$.each(shifthelpers, function(j,jtem) {
 						var tr = $("<tr>").appendTo(table);
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
@@ -946,11 +946,11 @@ jQuery(function($) {
 						if (auth === 4) {
 							var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(td);
 							$("<button class='btn btn-xs btn-warning'><i class='glyphicon glyphicon-pencil'></i></button>").appendTo(buttongroup).on("click", function() {
-								helperinsert({data:jtem, title: 'Helfer bearbeiten', label: 'Helfer bearbeiten!', success: 'Helfer erfolgreich bearbeiten!'});
+								helperinsert({data:jtem, title: 'Helfer bearbeiten', label: 'Helfer bearbeiten!', success: 'Helfer erfolgreich bearbeiten!', view: view});
 							});
 							$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(buttongroup).on("click", function() {
 								var data = {task:"helperdelete",helid:jtem.helid};
-								swdeleteany({data: data,title:'Bestätigung',msg:'Helfer wirklich löschen?',btnmsg:'Helfer löschen!', successmsg: "Helfer gelöscht!",el: tr, view: ""});
+								swdeleteany({data: data,title:'Bestätigung',msg:'Helfer wirklich löschen?',btnmsg:'Helfer löschen!', successmsg: "Helfer gelöscht!",el: tr, view: view});
 							});
 						}
 					});
@@ -966,20 +966,20 @@ jQuery(function($) {
 							if (auth === 4) {
 								var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(td);
 								$("<button class='btn btn-xs btn-success'><i class='glyphicon glyphicon-plus'></i></button>").appendTo(buttongroup).on("click", function() {
-									helperinsert({shiftid:item.shiftid,title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!'});
+									helperinsert({shiftid:item.shiftid,title: 'Helfer hinzufügen', label: 'Helfer hinzufügen!', success: 'Neuer Helfer erfolgreich hinzugefügt!', view: view});
 								});
 	
 								if (shiftinquiries.length > 0) {
 									$("<button type='button' class='btn btn-xs btn-success dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-exclamation-sign'></i> ("+shiftinquiries.length+") Anfragen</button>").appendTo(buttongroup);
 									var dropdown = $("<ul class='dropdown-menu'></ul>").appendTo(buttongroup);
-									renderinquiries(dropdown,shiftinquiries);
+									renderinquiries({el: dropdown,shiftinquiries: shiftinquiries, view: view});
 								}
 							} else if (auth === 1) {
 								if (shiftinquiries.length > 0) {
 									$("<span class='label label-danger pull-right'>Nur eine Anfrage pro Schicht!</span>").appendTo(td)
 								} else {
 									$("<button class='btn btn-xs btn-success pull-right'><i class='glyphicon glyphicon-plus'></i> Anfragen!</button>").appendTo(td).on("click", function() {
-										helperinsert({shiftid:item.shiftid, title: 'Mich als Helfer vorschlagen', label: 'Mich vorschlagen!', success: 'Vorschlag erfolgreich übermittelt!'});
+										helperinsert({shiftid:item.shiftid, title: 'Mich als Helfer vorschlagen', label: 'Mich vorschlagen!', success: 'Vorschlag erfolgreich übermittelt!', view: view});
 									});
 								}
 							};
@@ -992,18 +992,18 @@ jQuery(function($) {
 							var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(panel_b);
 							$("<button type='button' class='btn btn-xs btn-success dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-exclamation-sign'></i> ("+shiftinquiries.length+") Anfragen</button>").appendTo(buttongroup);
 							var dropdown = $("<ul class='dropdown-menu'></ul>").appendTo(buttongroup);
-							renderinquiries(dropdown,shiftinquiries,true);
+							renderinquiries({el: dropdown,shiftinquiries: shiftinquiries, shiftselectable:true, view: view});
 						}
 						
 						var buttongroup = $("<div class='btn-group pull-right' role='group'>").appendTo(panel_h.find("h4"));
 						// Change-button
 						$("<button class='btn btn-xs btn-warning'><i class='glyphicon glyphicon-pencil'></i></button>").appendTo(buttongroup).on("click", function() {
-							shiftinsert({data:item, title: 'Schicht bearbeiten', label: 'Schicht bearbeiten!', success: 'Schicht erfolgreich bearbeitet!'});
+							shiftinsert({data:item, title: 'Schicht bearbeiten', label: 'Schicht bearbeiten!', success: 'Schicht erfolgreich bearbeitet!', view: view});
 						});
 						//Delete-button
 						$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(buttongroup).on('click', function() {
 							var data = {task:"shiftdelete",shiftid:item.shiftid};
-							swdeleteany({data: data,title:'Bestätigung',msg:'Schicht (und alle Helfer dieser Schicht) wirklich löschen?',btnmsg:'Schicht löschen!', successmsg: 'Schicht gelöscht!',el: panel, view: ""});
+							swdeleteany({data: data,title:'Bestätigung',msg:'Schicht (und alle Helfer dieser Schicht) wirklich löschen?',btnmsg:'Schicht löschen!', successmsg: 'Schicht gelöscht!',el: panel, view: view});
 						});
 					}
 					panel.appendTo(listcontainer);
@@ -1011,7 +1011,7 @@ jQuery(function($) {
 				
 				if (auth === 4) {
 					$('<button class="btn btn-primary">Neue Schicht</button>').appendTo(topcontainer).on("click",function() {
-						shiftinsert({title: 'Schicht hinzufügen', label: 'Schicht hinzufügen!', success: 'Neue Schicht erfolgreich hinzugefügt!'});
+						shiftinsert({title: 'Schicht hinzufügen', label: 'Schicht hinzufügen!', success: 'Neue Schicht erfolgreich hinzugefügt!', view: view});
 					});
 				}
 				
@@ -1044,7 +1044,7 @@ jQuery(function($) {
 					var td = $("<td>").appendTo(tr);
 					$("<button class='btn btn-xs btn-danger'><i class='glyphicon glyphicon-remove'></i></button>").appendTo(td).on('click', function() {
 						var data = {task:"peopledel",peopleid:la.id};
-						swdeleteany({data: data,title:'Person löschen',msg:'Person aus der Verzeichnisliste wirklich löschen?',btnmsg:'Person löschen!', successmsg: "Person gelöscht!",el: tr, view: "lazyasses"});
+						swdeleteany({data: data,title:'Person löschen',msg:'Person aus der Verzeichnisliste wirklich löschen?',btnmsg:'Person löschen!', successmsg: "Person gelöscht!",el: tr, view: view});
 					});
 				});
 				
@@ -1064,7 +1064,7 @@ jQuery(function($) {
 				
 				//Leute hinzufügen
 				$("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
-					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!'});
+					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!', view: view});
 				});
 			} else if (view === '2015') {
 				$.each(shifts_prev, function (i,item) {
