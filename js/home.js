@@ -928,7 +928,7 @@ jQuery(function($) {
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
 					if (item.description) {
-						$("<span class='label label-default'>Bemerkung: "+item.description+"</span>").appendTo(panel_h);
+						$("<span class='label label-default'><i class='glyphicon glyphicon-info-sign'></i> "+item.description+"</span>").appendTo(panel_h);
 					}
 					var panel_b = $('<div class="panel-body">').appendTo(panel);
 					var table = $("<table class='table table-striped'>").appendTo(panel_b);
@@ -939,7 +939,7 @@ jQuery(function($) {
 					$.each(shifthelpers, function(j,jtem) {
 						var tr = $("<tr>").appendTo(table);
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
-						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'>Bemerkung: "+jtem.description+"</span>";
+						var desc = jtem.description === "" ? "" : "<br /><span class='label label-default'><i class='glyphicon glyphicon-info-sign'></i> "+jtem.description+"</span>";
 						$("<td>"+jtem.name+desc+"</td>").appendTo(tr);
 						//$("<td>"+jtem.description+"</td>").appendTo(tr);
 						var td = $("<td>").appendTo(tr);
@@ -1071,7 +1071,7 @@ jQuery(function($) {
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
 					if (item.description) {
-						$("<span class='label label-default'>Bemerkung: "+item.description+"</span>").appendTo(panel_h);
+						$("<span class='label label-default'><i class='glyphicon glyphicon-info-sign'></i> "+item.description+"</span>").appendTo(panel_h);
 					}
 					var panel_b = $('<div class="panel-body">').appendTo(panel);
 					var table = $("<table class='table table-striped'>").appendTo(panel_b);
