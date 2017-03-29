@@ -119,7 +119,7 @@ jQuery(function($) {
 			if (!Cookies.get('rade-consent')) {
 				if ($("#cookiewarning").length === 0) {
 					var cookiecontainer = $('<div id="cookiewarning" style="padding-top:5px; border-bottom:3px solid #f1ce00;padding-bottom: 5px" class="container-fluid">');
-					var cookietext = $('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der <a href="/cookies.html">Nutzung von Cookies</a> zu. ').css('color','#fff').appendTo(cookiecontainer);
+					$('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der <a href="/cookies.html">Nutzung von Cookies</a> zu. ').css('color','#fff').appendTo(cookiecontainer);
 					var cookiebutton =$('<a class="btn btn-success btn-xs">').html('<i class="glyphicon glyphicon-ok"></i> <strong>Ich stimme zu.</strong>').appendTo(cookiecontainer);
 					
 					cookiecontainer.hide().prependTo($("nav.navbar")).slideDown();
@@ -211,7 +211,7 @@ jQuery(function($) {
 		$("button.mapbtn").one("click", function(event) {
 			var maps = $("div.maps").removeClass("hidden");
 			var mform = $("div.mform").removeClass("hidden");
-			var mdirections = $("div.mdirections").removeClass("hidden");
+			$("div.mdirections").removeClass("hidden");
 			var location = swformfield({container:mform, el:'input', text: '<span class="glyphicon glyphicon-map-marker"></span>', type: 'text', autocor: 'off', placeh: "Startpunkt hier eingeben und auf <Route suchen> drücken"});
 			var search = $('<a class="btn btn-success" type="button" name="search" role="button">').html('Route suchen!').on("click", function() {maps.swgetroute(location.val())});
 			var reset = $('<a class="btn btn-warning" type="button" name="reset" role="button">').html('Route zurücksetzen!').on("click", function() {maps.swmaps()});
@@ -569,7 +569,7 @@ jQuery(function($) {
 					}
 				}
 
-				var progressbar = $("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width:0%;min-width:15%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
+				$("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width:0%;min-width:15%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
 			}
 
 			var menubuttongroup = $("<div class='btn-group btn-group-justified'>").appendTo(topcontainer).css("margin-bottom","20px");
@@ -1083,7 +1083,7 @@ jQuery(function($) {
 						$("<td><b>"+(j+1)+".</b></td>").appendTo(tr);
 						$("<td>"+jtem.name+"</td>").appendTo(tr);
 						$("<td>"+jtem.description+"</td>").appendTo(tr);
-						var td = $("<td>").appendTo(tr);
+						$("<td>").appendTo(tr);
 					});
 					
 					panel.appendTo(listcontainer);
