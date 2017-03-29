@@ -578,7 +578,7 @@ jQuery(function($) {
 
 			if (auth === 4) {
 				$("<a type='button' class='btn btn-default'>Helferbelegung</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lazyasses");});
-				$("<a type='button' class='btn btn-default'>Helferliste 2015</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("2015");});
+				$("<a type='button' class='btn btn-default'>Helferliste 2016</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("2016");});
 			}
 			
 			var rendershift2 = function (shiftid,options) {
@@ -975,13 +975,13 @@ jQuery(function($) {
 									renderinquiries({el: dropdown,shiftinquiries: shiftinquiries, view: view});
 								}
 							} else if (auth === 1) {
-								if (shiftinquiries.length > 0) {
-									$("<span class='label label-danger pull-right'>Nur eine Anfrage pro Schicht!</span>").appendTo(td)
-								} else {
+								//if (shiftinquiries.length > 0) {
+								//	$("<span class='label label-danger pull-right'>Nur eine Anfrage pro Schicht!</span>").appendTo(td)
+								//} else {
 									$("<button class='btn btn-xs btn-success pull-right'><i class='glyphicon glyphicon-plus'></i> Anfragen!</button>").appendTo(td).on("click", function() {
 										helperinsert({shiftid:item.shiftid, title: 'Mich als Helfer vorschlagen', label: 'Mich vorschlagen!', success: 'Vorschlag erfolgreich übermittelt!', view: view});
 									});
-								}
+								//}
 							};
 						})();
 					};
@@ -1066,7 +1066,7 @@ jQuery(function($) {
 				$("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
 					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!', view: view});
 				});
-			} else if (view === '2015') {
+			} else if (view === '2016') {
 				$.each(shifts_prev, function (i,item) {
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
