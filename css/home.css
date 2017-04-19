@@ -144,11 +144,11 @@
 }
 
 h3 {
-    color: #b8bc05;
+    color: #2ea3f2;
 }
 
 h4 {
-    color: #7d8a23;
+    color: #2ea3f2;
     font-size: 17px;
     font-weight: bold;
     margin-bottom: 0.8em;
@@ -183,8 +183,8 @@ h4 {
     text-indent: -3em;
 }
 
-.braun {
-    color: #814f38;
+.blue {
+    color: #2ea3f2;
 }
 
 .strong {
@@ -205,7 +205,7 @@ ul.nav a, a.navbar-brand {
 body {
     padding-top: 50px;
     color:#30110a;
-    background: #fcebcc;
+    background: #fff;
 }
 
 .metro-cell
@@ -214,8 +214,8 @@ body {
     padding-left: 0px;
 }
 .metro {
-    background: #d7ccb8;
-    height: 15em;
+   /* background: #d7ccb8;*/
+    height: 10em;
     padding: 1em;
     margin:0.3em;
 }
@@ -274,50 +274,59 @@ body {
     font-size: 16px;
 }
 
-.clown, .duck, .email, .geschichte, .musikicon, .chainsaw, .plusicon, .speisekarte, .sponsor, .text {
+.clown, .duck, .email, .geschichte, .musikicon, .chainsaw, .plusicon, .speisekarte, .sponsor, .text, .party, .party2, .kinder {
     display: block;
     width: 36px;
     height: 36px;
 }
 
 .clown {
-    background: url("../img/clown.png");
+    background: url("../img/clown.png") no-repeat center top;
 }
 
 .duck {
-    background: url("../img/duck2.png");
+    background: url("../img/duck.png") no-repeat center top;
 }
 
 .email {
-    background: url("../img/email.png");
+    background: url("../img/email.png") no-repeat center top;
 }
 
 .geschichte {
-    background: url("../img/geschichte.png");
+    background: url("../img/geschichte.png") no-repeat center top ;
 }
 
 .chainsaw {
-	background: url("../img/chainsaw.png");
+	background: url("../img/chainsaw.png") no-repeat center top;
 }
 
 .musikicon {
-    background: url("../img/musicicon.png");
+    background: url("../img/musicicon.png") no-repeat center top;
 }
 
 .plusicon {
-    background: url("../img/plusicon.png");
+    background: url("../img/plusicon.png") no-repeat center top;
 }
 
 .speisekarte {
-    background: url("../img/speisekarte.png");
+    background: url("../img/speisekarte.png") no-repeat center top;
 }
 
 .sponsor {
-    background: url("../img/sponsor.png");
+    background: url("../img/sponsor.png") no-repeat center top;
 }
 
 .text {
-    background: url("../img/text.png");
+    background: url("../img/text.png") no-repeat center top;
+}
+.party {
+    background: url("../img/party.png") no-repeat center top;
+}
+.party2 {
+    background: url("../img/party2.png") no-repeat center top;
+}
+.kinder {
+    background: url("../img/kinder.png") no-repeat center top;
 }
 
 @media print {
@@ -403,7 +412,7 @@ body {
 }
 
 .page-header {
-    background:#000;
+    background:#2ea3f2;
     color:#fff;
     margin: 0;
     padding-bottom: 9px;
