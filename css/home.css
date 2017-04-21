@@ -471,3 +471,7 @@ h1 small
 		background-size: auto 100%;
 	}
 }
+
+footer .sponsoren img {
+    max-width:120px;
+}
