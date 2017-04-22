@@ -165,8 +165,7 @@ jQuery(function($) {
 			// Lazy load images
 			// Damit das korrekt funktionniert, muss eine Bildhöhe definiert sein, die durch das Dummy-Bild festgelegt ist
 			// Aktiviere LazyLoad nur bei Bildern, die nicht schon geladen sind! (geladen: element hat kein data-src mehr!)
-			$("img[data-src]",targetelement).attr("src",dummy400x300).unveil();
-			$("footer .sponsoren img").unveil();
+			$("img[data-src]",targetelement).attr("src",dummy400x300).add($("footer .sponsoren img")).unveil();
 		};
 
 		var swformfield = function (options) {
