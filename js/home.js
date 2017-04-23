@@ -124,6 +124,9 @@ jQuery(function($) {
 
 			// Document Title ändern
 			document.title = doctitle;
+
+            // Meta-Description per JS setzen
+            $("meta[name=description]").attr("content",targetelement.data("desc"));
 			
 			// Cookie Richtlinien umsetzen (erster Track ohne Cookies)
 			if (!Cookies.get('rade-consent')) {
