@@ -483,3 +483,11 @@ h1 small
 footer .sponsoren img {
     max-width:120px;
 }
+
+header h1 {
+    margin-bottom: 1px;
+}
+
+nav .navbar-brand {
+    padding-top: 19px;
+}
