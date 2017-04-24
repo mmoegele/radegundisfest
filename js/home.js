@@ -129,7 +129,9 @@ jQuery(function($) {
             // Meta-Description per JS setzen
             $("meta[name=description]").attr("content",targetelement.data("desc"));
             $("meta[property=og\\:description]").attr("content",targetelement.data("desc"));
-			
+
+            $("meta[property=og\\:url]").attr("content",window.location.href);
+
 			// Cookie Richtlinien umsetzen (erster Track ohne Cookies)
 			if (!Cookies.get('rade-consent')) {
 				if ($("#cookiewarning").length === 0) {
