@@ -188,9 +188,10 @@ th {
   padding: 0;
 }
 
+/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+
 /* non-critical:start */
 
-/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
   *,
   *:before,
@@ -1345,6 +1346,9 @@ mark,
 .text-primary {
   color: #337ab7;
 }
+
+/* non-critical:start */
+
 a.text-primary:hover,
 a.text-primary:focus {
   color: #286090;
@@ -1413,6 +1417,9 @@ a.bg-danger:hover,
 a.bg-danger:focus {
   background-color: #e4b9b9;
 }
+
+/* non-critical:end */
+
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
@@ -3188,6 +3195,9 @@ fieldset[disabled] .btn-primary.focus {
   color: #337ab7;
   background-color: #fff;
 }
+
+/* non-critical:start */
+
 .btn-success {
   color: #fff;
   background-color: #5cb85c;
@@ -3482,6 +3492,9 @@ input[type="reset"].btn-block,
 input[type="button"].btn-block {
   width: 100%;
 }
+
+/* non-critical:end */
+
 .fade {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
@@ -3660,6 +3673,9 @@ tbody.collapse.in {
     left: 0;
   }
 }
+
+/* non-critical:start */
+
 .btn-group,
 .btn-group-vertical {
   position: relative;
@@ -3831,6 +3847,8 @@ tbody.collapse.in {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
+
+/* non-critical:end */
 
 /* non-critical:start */
 
@@ -4039,6 +4057,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a > img {
   max-width: none;
 }
+
+/* non-critical:start */
+
 .nav-tabs {
   border-bottom: 1px solid #ddd;
 }
@@ -4187,6 +4208,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* non-critical:end */
+
 .navbar {
   position: relative;
   min-height: 50px;
@@ -4388,6 +4412,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding-bottom: 15px;
   }
 }
+
+/* non-critical:start */
+
 .navbar-form {
   padding: 10px 15px;
   margin-top: 8px;
@@ -4469,6 +4496,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
             box-shadow: none;
   }
 }
+
+/* non-critical:end */
+
 .navbar-nav > li > .dropdown-menu {
   margin-top: 0;
   border-top-left-radius: 0;
@@ -4481,6 +4511,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+/* non-critical:start */
+
 .navbar-btn {
   margin-top: 8px;
   margin-bottom: 8px;
@@ -4612,6 +4645,9 @@ fieldset[disabled] .navbar-default .btn-link:hover,
 fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
+
+/* non-critical:end */
+
 .navbar-inverse {
   background-color: #222;
   border-color: #080808;
@@ -4714,6 +4750,9 @@ fieldset[disabled] .navbar-inverse .btn-link:hover,
 fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #444;
 }
+
+/* non-critical:start */
+
 .breadcrumb {
   padding: 8px 15px;
   margin-bottom: 20px;
@@ -4866,6 +4905,11 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   cursor: not-allowed;
   background-color: #fff;
 }
+
+/* non-critical:end */
+
+/* non-critical:start */
+
 .label {
   display: inline;
   padding: .2em .6em .3em;
@@ -5022,6 +5066,8 @@ a.badge:focus {
     font-size: 63px;
   }
 }
+
+/* non-critical:end */
 
 /* non-critical:start */
 
