@@ -187,6 +187,9 @@ td,
 th {
   padding: 0;
 }
+
+/* non-critical:start */
+
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {
   *,
@@ -1065,6 +1068,9 @@ th {
 .glyphicon-menu-up:before {
   content: "\e260";
 }
+
+/* non-critical:end */
+
 * {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -1412,6 +1418,9 @@ a.bg-danger:focus {
   margin: 40px 0 20px;
   border-bottom: 1px solid #eee;
 }
+
+/* non-critical:start */
+
 ul,
 ol {
   margin-top: 0;
@@ -1581,6 +1590,9 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+
+/* non-critical:end */
+
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -2248,6 +2260,9 @@ pre code {
     margin-left: 0;
   }
 }
+
+/* non-critical:start */
+
 table {
   background-color: transparent;
 }
@@ -3000,6 +3015,9 @@ select[multiple].input-lg {
     font-size: 12px;
   }
 }
+
+/* non-critical:end */
+
 .btn {
   display: inline-block;
   padding: 6px 12px;
@@ -3813,6 +3831,9 @@ tbody.collapse.in {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
+
+/* non-critical:start */
+
 .input-group {
   position: relative;
   display: table;
@@ -3971,6 +3992,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   z-index: 2;
   margin-left: -1px;
 }
+
+/* non-critical:end */
+
 .nav {
   padding-left: 0;
   margin-bottom: 0;
@@ -4998,6 +5022,9 @@ a.badge:focus {
     font-size: 63px;
   }
 }
+
+/* non-critical:start */
+
 .thumbnail {
   display: block;
   padding: 4px;
@@ -5838,6 +5865,9 @@ button.list-group-item-danger.active:focus {
   padding: 9px;
   border-radius: 3px;
 }
+
+/* non-critical:end */
+
 .close {
   float: right;
   font-size: 21px;
@@ -5863,6 +5893,9 @@ button.close {
   background: transparent;
   border: 0;
 }
+
+/* non-critical:start */
+
 .modal-open {
   overflow: hidden;
 }
@@ -6234,6 +6267,9 @@ button.close {
   border-right-width: 0;
   border-left-color: #fff;
 }
+
+/* non-critical:end */
+
 .carousel {
   position: relative;
 }
