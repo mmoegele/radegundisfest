@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,13 +28,12 @@
     <!-- Title Tage will be automatically inserted from article -->
     <title></title>
     <script>
-    /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-    !function(e){"use strict";var n=function(n,t,o){function i(e){if(a.body)return e();setTimeout(function(){i(e)})}function r(){l.addEventListener&&l.removeEventListener("load",r),l.media=o||"all"}var d,a=e.document,l=a.createElement("link");if(t)d=t;else{var f=(a.body||a.getElementsByTagName("head")[0]).childNodes;d=f[f.length-1]}var s=a.styleSheets;l.rel="stylesheet",l.href=n,l.media="only x",i(function(){d.parentNode.insertBefore(l,t?d:d.nextSibling)});var u=function(e){for(var n=l.href,t=s.length;t--;)if(s[t].href===n)return e();setTimeout(function(){u(e)})};return l.addEventListener&&l.addEventListener("load",r),l.onloadcssdefined=u,u(r),l};"undefined"!=typeof exports?exports.loadCSS=n:e.loadCSS=n}("undefined"!=typeof global?global:this);
-    /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-    !function(t){if(t.loadCSS){var e=loadCSS.relpreload={};if(e.support=function(){try{return t.document.createElement("link").relList.supports("preload")}catch(t){return!1}},e.poly=function(){for(var e=t.document.getElementsByTagName("link"),r=0;r<e.length;r++){var n=e[r];"preload"===n.rel&&"style"===n.getAttribute("as")&&(t.loadCSS(n.href,n,n.getAttribute("media")),n.rel=null)}},!e.support()){e.poly();var r=t.setInterval(e.poly,300);t.addEventListener&&t.addEventListener("load",function(){e.poly(),t.clearInterval(r)}),t.attachEvent&&t.attachEvent("onload",function(){t.clearInterval(r)})}}}(this);
+        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+        !function (e) { "use strict"; var n = function (n, t, o) { function i(e) { if (a.body) return e(); setTimeout(function () { i(e) }) } function r() { l.addEventListener && l.removeEventListener("load", r), l.media = o || "all" } var d, a = e.document, l = a.createElement("link"); if (t) d = t; else { var f = (a.body || a.getElementsByTagName("head")[0]).childNodes; d = f[f.length - 1] } var s = a.styleSheets; l.rel = "stylesheet", l.href = n, l.media = "only x", i(function () { d.parentNode.insertBefore(l, t ? d : d.nextSibling) }); var u = function (e) { for (var n = l.href, t = s.length; t--;) if (s[t].href === n) return e(); setTimeout(function () { u(e) }) }; return l.addEventListener && l.addEventListener("load", r), l.onloadcssdefined = u, u(r), l }; "undefined" != typeof exports ? exports.loadCSS = n : e.loadCSS = n }("undefined" != typeof global ? global : this);
+        /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+        !function (t) { if (t.loadCSS) { var e = loadCSS.relpreload = {}; if (e.support = function () { try { return t.document.createElement("link").relList.supports("preload") } catch (t) { return !1 } }, e.poly = function () { for (var e = t.document.getElementsByTagName("link"), r = 0; r < e.length; r++) { var n = e[r]; "preload" === n.rel && "style" === n.getAttribute("as") && (t.loadCSS(n.href, n, n.getAttribute("media")), n.rel = null) } }, !e.support()) { e.poly(); var r = t.setInterval(e.poly, 300); t.addEventListener && t.addEventListener("load", function () { e.poly(), t.clearInterval(r) }), t.attachEvent && t.attachEvent("onload", function () { t.clearInterval(r) }) } } }(this);
     </script>
 </head>
-
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -72,7 +71,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <header class="page-header hidden-xs">
         <div class="container">
@@ -80,7 +78,7 @@
         </div>
     </header>
     <!--Landing Content-->
-    <article class="container" data-content="landing" data-doctitle="Radegundisfest 2017 1.-3. Juli in Waldberg" data-prio="1.0" data-desc="Radegundisfest in Waldberg, dieses Jahr vom 1.-3. Juli 2017. Zünftige Blasmusik, mit Humpa Bumpa, MV Rammingen, Kinderrummelplatz, Badeentenrennen und vieles mehr!">
+    <article class="container" data-content="landing" data-doctitle="Radegundisfest 2017 1.-3. Juli in Waldberg" data-prio="1.0" data-desc="Radegundisfest in Waldberg, dieses Jahr vom 1.-3. Juli 2017. Zünftige Blasmusik, mit Humpa Bumpa, MV Rammingen, Kinder, Badeentenrennen und vieles mehr!">
         <div class="row">
             <div id="swcarousel" class="carousel slide">
                 <!-- Indicators -->
@@ -90,10 +88,8 @@
                     <li data-target="#swcarousel" data-slide-to="2"></li>
                     <li data-target="#swcarousel" data-slide-to="3"></li>
                 </ol>
-
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
-
                     <!-- First slide -->
                     <div class="item active radeimg1"></div>
                     <!-- /.item -->
@@ -151,7 +147,7 @@
                     </div>
                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                         <h4><a href='unterhaltung.html' title="Unterhaltungsprogramm beim Radegundisfest">Humpa Bumpa Revolution</a></h4>
-                        <span>Erleben Sie ein musikalisches Feuerwerk ...</span>
+                        <span>22 Musiker lassen stimmungsvoll die Tanzbeine schwingen. Musikantenherz, was willst du mehr! ...</span>
                     </div>
                 </div>
             </div>
@@ -315,7 +311,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-9">
                         <p class="absatz-festprogramm">
@@ -331,7 +326,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-9">
                         <p class="absatz-festprogramm">
@@ -354,7 +348,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-9">
                         <p class="absatz-festprogramm">
@@ -372,7 +365,7 @@
                 <div class="row">
                     <div class="col-md-9">
                         <p class="absatz-festprogramm">
-                            <span class="blue strong">18:30</span> Partymusik und Stimmungskracher mit <em><a rel="external" href="http://www.oberneufnacher-musikanten.de/" title="Humpa Bumpa Band"target="_blank">Humpa Bumpa Revolution</a></em>
+                            <span class="blue strong">18:30</span> Partymusik und Stimmungskracher mit <em><a rel="external" href="http://www.oberneufnacher-musikanten.de/" title="Humpa Bumpa Band" target="_blank">Humpa Bumpa Revolution</a></em>
                         </p>
                     </div>
                 </div>
@@ -392,6 +385,11 @@
                     <div class="col-md-9">
                         <p class="absatz-festprogramm">
                             <span class="blue strong">10:00</span> Weißwurst-Frühstück mit <em><a rel="external" href="http://www.dschwarzachtaler.de" title="Musikverein D'Schwarzachtaler" target="_blank">D' Schwarzachtalern</a></em>
+                        </p>
+                    </div>
+                    <div class="col-md-9">
+                        <p class="absatz-festprogramm">
+                            <span class="blue strong">14:00</span> Feierliche Dankandacht
                         </p>
                     </div>
                 </div>
@@ -416,10 +414,10 @@
                 <div class="row">
                     <div class="col-md-12 ">
                         <p>
-                            Erleben Sie ein musikalisches Feuerwerk mit <a rel="external" href="http://www.oberneufnacher-musikanten.de/" title="Humpa Bumpa Band" target="_blank">Humpa Bumpa Revolution</a>.
-                            Ihr zeitloses Repertoire und vor allem der energiegeladenen Spielfreude lassen den Funken zum
-                            Partyvolk überspringen. Egal ob Boarisch, Alpenrock, Schlager, Partysongs, Rock und aktuelle
-                            Hit‘s, sie haben alles dabei und das Ganze natürlich LIVE.
+                            Die Oberneufnacher Musikanten sind 22 Musiker die sich unter ihrem Dirigenten Franz Huber die „Humpa Bumpa Revolution“ auf die Fahnen geschrieben haben. <img data-src="/img/humpa-bumpa.jpg" class="img-responsive" alt="Humpa Bumpa Revolution"> Vom Lucky Chops bis Viera Blech, von ZZ Top bis Michael Buble bleibt keine Stilrichtung vor den Oberneufnachern sicher und kein Auge trocken.
+                            Wenn dann gegen Ende stimmungsvoll und laut zu der kleinen Brass Section der Oberneufnacher die Tanzbeine schwingen: Musikantenherz, was willst du mehr!
+                            Wer noch mehr wissen möchte kann gerne im Internet mal vorbeischauen: Unter <a rel="external" href="http://www.oberneufnacher-musikanten.de/" title="Humpa Bumpa Band" target="_blank"> www.oberneufnacher-musikanten.de </a> gibt es nochmal viele Bilder und Videos der Musikanten.
+
                         </p>
                     </div>
                 </div>
@@ -455,92 +453,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </article>
 
-    <!--End Detail Content Unterhaltung-->
-    <!--Start Detail Content liveschnitzen-->
-    <!--<article class="container" data-content="liveschnitzen" data-doctitle="Live Motorsägen-Schnitzen">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Live Motorsägen-Schnitzen</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                <div class="row">
-                    <div class="col-md-12 h4">
-                        <h4>Schnitzen mit der Motorsäge / Kettensäge</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 ">
-                        <p>
-                            Holzfiguren wie Adler, Eulen, Holzbänke, menschliche Gestalten, Tiere oder Abstraktes - dem Schnitzen
-                            mit der Kettensäge bzw. Motorsäge sind kaum Grenzen gesetzt.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                <div class="row">
-                    <div class="col-md-12 h4">
-                        <h4>Live Motorschnitzen von 12:00 - 16:00 Uhr</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 ">
-                        <p>
-                            Georg Rindle wird für uns LIVE zwei Holzfiguren schnitzen, die als Preise beim Badeentenrennen zu
-                            gewinnen sind.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                <div class="row">
-                    <div class="col-md-12 h4">
-                        <h4>Kontakt</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 ">
-                        Georg Rindle<br /> Gärtnerweg 5<br /> 86853 Langerringen<br />
-                        <p>
-                            Telefon: +49 (0) 8232 44 11<br /> Telefax: +49 (0) 8232 90 45 99
-                        </p>
-                        <p>E-Mail: info(at)georgrindle.de</p>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-        <div class="row">
-            <div class="col-md-12 h4">
-                <h4>Einige Photos aus der Galerie von Georg Rindle</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumb">
-                <a href="http://www.georgrindle.de/galerie/" rel="external" class="thumbnail" target="_blank">
-                    <img data-src="/img/csm_showschnitzen_c20c0814ca.jpg" class="img-responsive" alt="liveschnitzen">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumb">
-                <a href="http://www.georgrindle.de/galerie/" rel="external" class="thumbnail" target="_blank">
-                    <img data-src="/img/csm_Holzheim_082_01_36432185fa.jpg" class="img-responsive" alt="liveschnitzen">
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 thumb">
-                <a href="http://www.georgrindle.de/galerie/" rel="external" class="thumbnail" target="_blank">
-                    <img data-src="/img/csm_IMG_0330_91f5641d37.jpg" class="img-responsive" alt="liveschnitzen">
-                </a>
-            </div>
-        </div>
-
-    </article>-->
-    <!--End Detail Content liveschnitzen-->
     <!--Start Detail Content Badeentenrennen-->
     <article class="container" data-content="badeentenrennen" data-doctitle="Badeentenrennen" data-prio="0.9" data-desc="Das traditionelle Badeentenrennen am Radegundisfest findet auch heuer wieder statt!">
         <div class="row">
@@ -966,7 +882,6 @@
             </div>
         </div>
     </article>
-
     <article class="container" data-content="kontakt" data-doctitle="Kontakt" data-prio="0.9" data-desc="Kontaktinformationen rund ums Radegundisfest">
         <div class="row">
             <div class="col-md-12">
