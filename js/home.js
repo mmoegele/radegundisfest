@@ -144,9 +144,9 @@ jQuery(function($) {
 				targetelement.removeClass("hidden");
 				firstload = false;
 			} else {
-				$articles.animate({opacity: 0},100,function() {
-					$(this).addClass("hidden").removeAttr("style");
-					targetelement.css("opacity",0).removeClass("hidden").animate({opacity:1},100);
+				$articles.animateCss("zoomOut",function() {
+					$articles.addClass("hidden");
+					targetelement.removeClass("hidden").animateCss("zoomIn");
 				});
 			}
 
