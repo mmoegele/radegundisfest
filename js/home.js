@@ -42,8 +42,29 @@ SocialShareKit.init();
  */
 jQuery(function($) {
 		var ismodern = !!(window.history && history.pushState);
+		var firstload = true;
 		
 		//ismodern = false;
+		
+	$.fn.animateCss = function (animationName, opts, func) {
+		var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+		var $this = $(this);
+		if (typeof opts === 'object') {
+			if ( opts.delay ) $this.css("animation-delay",opts.delay);
+			if ( opts.duration ) $this.css("animation-duration",opts.duration);
+		} else {
+			func = opts
+		}
+		$this.addClass('animated ' + animationName).one(animationEnd, function() {
+			$this.removeClass('animated ' + animationName);
+			if (typeof opts === 'object') {
+				if ( opts.delay ) $this.css("animation-delay","");
+				if ( opts.duration ) $this.css("animation-duration","");
+				if ( $this.attr("style") === "" ) $this.removeAttr("style");
+			}
+			if (typeof func  === "function") func();
+		});
+	}
 		
 		var getpath = function (full) {
 			if (full) {
@@ -114,8 +135,20 @@ jQuery(function($) {
 			if (!doctitle) doctitle = target.charAt(0).toUpperCase() + target.slice(1); // Fallback
 			
 			// Content anzeigen
-			$("body > article[data-content]").addClass("hidden");
-			targetelement.removeClass("hidden");
+			//$("body > article[data-content]").addClass("hidden");
+			//targetelement.removeClass("hidden");
+			var $articles = $("body > article[data-content]:not(.hidden)");
+			
+			if ( firstload ) {
+				$articles.addClass("hidden");
+				targetelement.removeClass("hidden");
+				firstload = false;
+			} else {
+				$articles.animate({opacity: 0},100,function() {
+					$(this).addClass("hidden").removeAttr("style");
+					targetelement.css("opacity",0).removeClass("hidden").animate({opacity:1},100);
+				});
+			}
 
 			// Navbar Menüitem active setzen
 			var $li = $("nav.navbar li").removeClass("active");
