@@ -4062,6 +4062,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   text-decoration: none;
   background-color: #eee;
 }
+/* non-critical:start */
 .nav > li.disabled > a {
   color: #777;
 }
@@ -4072,6 +4073,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   cursor: not-allowed;
   background-color: transparent;
 }
+/* non-critical:end */
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {

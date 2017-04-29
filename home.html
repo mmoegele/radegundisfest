@@ -23,15 +23,30 @@
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <!-- Custom CSS -->
     <link href="css/home-critical.css" rel="stylesheet" />
-    <link rel="preload" href="css/home-noncritical.css" as="style" onload="this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/home-noncritical.css"></noscript>
     <!-- Title Tage will be automatically inserted from article -->
     <title></title>
     <script>
-        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-        !function (e) { "use strict"; var n = function (n, t, o) { function i(e) { if (a.body) return e(); setTimeout(function () { i(e) }) } function r() { l.addEventListener && l.removeEventListener("load", r), l.media = o || "all" } var d, a = e.document, l = a.createElement("link"); if (t) d = t; else { var f = (a.body || a.getElementsByTagName("head")[0]).childNodes; d = f[f.length - 1] } var s = a.styleSheets; l.rel = "stylesheet", l.href = n, l.media = "only x", i(function () { d.parentNode.insertBefore(l, t ? d : d.nextSibling) }); var u = function (e) { for (var n = l.href, t = s.length; t--;) if (s[t].href === n) return e(); setTimeout(function () { u(e) }) }; return l.addEventListener && l.addEventListener("load", r), l.onloadcssdefined = u, u(r), l }; "undefined" != typeof exports ? exports.loadCSS = n : e.loadCSS = n }("undefined" != typeof global ? global : this);
-        /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-        !function (t) { if (t.loadCSS) { var e = loadCSS.relpreload = {}; if (e.support = function () { try { return t.document.createElement("link").relList.supports("preload") } catch (t) { return !1 } }, e.poly = function () { for (var e = t.document.getElementsByTagName("link"), r = 0; r < e.length; r++) { var n = e[r]; "preload" === n.rel && "style" === n.getAttribute("as") && (t.loadCSS(n.href, n, n.getAttribute("media")), n.rel = null) } }, !e.support()) { e.poly(); var r = t.setInterval(e.poly, 300); t.addEventListener && t.addEventListener("load", function () { e.poly(), t.clearInterval(r) }), t.attachEvent && t.attachEvent("onload", function () { t.clearInterval(r) }) } } }(this);
+    var _paq = _paq || [];
+    _paq.push(['setRequestMethod', 'POST']);
+    _paq.push(['enableLinkTracking']);
+    _paq.push(['discardHashTag', false]);
+    _paq.push(['setTrackerUrl','/0.php']);
+    _paq.push(['setSiteId', 9]);
+
+    (function () {
+        if (!window.fetch) return;
+        /**
+        * Fetch Inject v1.6.9
+        * Copyright (c) 2017 Josh Habdas
+        * @licence ISC
+        */
+        
+        var fetchInject=function(){"use strict";var e=function e(_e,t,n,r,o,i,c){i=t.createElement(n),c=t.getElementsByTagName(n)[0],i.type=r.blob.type.split(";")[0],i.appendChild(t.createTextNode(r.text)),i.onload=o(r),c?c.parentNode.insertBefore(i,c):t.head.appendChild(i)},t=function t(_t,n){if(!_t||!Array.isArray(_t))return Promise.reject(new Error("`inputs` must be an array"));if(n&&!(n instanceof Promise))return Promise.reject(new Error("`promise` must be a promise"));var r=[],o=n?[].concat(n):[],i=[];return _t.forEach(function(e){return o.push(window.fetch(e).then(function(e){return[e.clone().text(),e.blob()]}).then(function(e){return Promise.all(e).then(function(e){r.push({text:e[0],blob:e[1]})})}))}),Promise.all(o).then(function(){return r.forEach(function(t){i.push({then:function then(n){"text/css"===t.blob.type.split(";")[0]?e(window,document,"style",t,n):e(window,document,"script",t,n)}})}),Promise.all(i)})};return t}();
+        
+        fetchInject(['/js/home.js', '/css/home-noncritical.css']).then(function () {
+            fetchInject(['/0.js']);
+        });
+    })();
     </script>
 </head>
 <body>
@@ -1023,21 +1038,17 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/home.js"></script>
     <!-- Piwik -->
     <script type="text/javascript">
-        var _paq = _paq || [];
-        _paq.push(['setRequestMethod', 'POST']);
-        _paq.push(['enableLinkTracking']);
-        _paq.push(['discardHashTag', false]);
         (function () {
-            var u = "https://www.radegundisfest.de/";
-            _paq.push(['setTrackerUrl', u + '0.php']);
-            _paq.push(['setSiteId', 9]);
-            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + '0.js'; s.parentNode.insertBefore(g, s);
+            if (window.fetch) return;
+            var d = document, s = d.getElementsByTagName('script')[0];var c = d.getElementsByTagName('style')[0];
+            var g = d.createElement('script'); g.type = 'text/javascript'; g.src = '/js/home.js'; s.parentNode.insertBefore(g, s);
+            var g = d.createElement('link'); g.type = 'text/css'; g.href = '/css/home-noncritical.css'; g.rel = 'stylesheet'; c.parentNode.insertBefore(g, c);
+            var g = d.createElement('script'); g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = '/0.js'; s.parentNode.insertBefore(g, s);
         })();
     </script>
+    <noscript><link rel="stylesheet" href="css/home-noncritical.css"></noscript>
     <!-- Piwik Zählpixel bei deaktiviertem JS -->
     <noscript><p><img src="/0.php?idsite=9" style="border:0;" alt="Pixel" /></p></noscript>
     <!-- End Piwik Code -->
