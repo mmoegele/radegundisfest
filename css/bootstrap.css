@@ -3521,8 +3521,6 @@ input[type="button"].btn-block {
   width: 100%;
 }
 
-/* non-critical:end */
-
 .fade {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
@@ -3532,6 +3530,8 @@ input[type="button"].btn-block {
 .fade.in {
   opacity: 1;
 }
+
+/* non-critical:end */
 .collapse {
   display: none;
 }
