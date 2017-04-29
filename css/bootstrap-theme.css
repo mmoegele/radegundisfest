@@ -12,7 +12,7 @@
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 700;
-  src: local('Raleway Bold'), local('Raleway-Bold'), url(../fonts/raleway-bold.woff2) format('woff2'), url(../fonts/raleway-bold.woff2) format('woff');
+  src: local('Raleway Bold'), local('Raleway-Bold'), url(../fonts/raleway-bold.woff2) format('woff2'), url(../fonts/raleway-bold.woff) format('woff');
 }
 
 body, figure {

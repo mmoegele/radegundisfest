@@ -200,7 +200,7 @@ jQuery(function($) {
 			if (exec) targetelement.trigger(exec);
 			
 			// Dummy-Image Data URI
-			var dummy400x300 = 'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" height="300" width="400" viewBox="0 0 105.83333 79.375002" preserveAspectRatio="xMidYMin slice"></svg>';
+			var dummy400x300 = 'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" height="300" width="400" viewBox="0 0 105.83333 79.375002" preserveAspectRatio="xMidYMin slice"/>';
 			
 			// Lazy load images
 			// Damit das korrekt funktionniert, muss eine Bildhöhe definiert sein, die durch das Dummy-Bild festgelegt ist
