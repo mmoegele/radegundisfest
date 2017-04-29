@@ -189,6 +189,16 @@ h1 small
 	margin: 0 auto 20px;
 }
 
+.rade-homeicon {
+    display:inline-block;
+    height:16px;
+    width:16px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1792" height="1792" viewBox="0 0 1792 1792" version="1"><path d="M1536 1022v623q0 34-21 58-21 25-50 25h-427v-498H754v498H327q-29 0-50-25-21-24-21-58v-623-3l1-4 639-615 639 615 1 7zm248-89l-69 96q-9 12-23 14h-3q-15 0-24-9L896 286l-769 748q-14 11-27 9-14-2-23-14L8 933q-9-13-8-31 1-17 12-27L812 98q35-34 84-34t84 34l272 264V109q0-18 10-29 10-12 25-12h214q15 0 25 12 10 11 10 29v530l244 236q11 10 12 27 1 18-8 31z"/></svg>');
+    background-size: 16px 16px;
+    position:relative;
+    top:1px;
+}
+
 .radeimg1 {
 	background: url("../img/flyer/landing4_1080_420.jpg") no-repeat center top;
 }

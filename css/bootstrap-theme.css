@@ -1372,7 +1372,7 @@ hr {
     border: 0;
     border-top: 1px solid #eee;
 }
-/* non-critical:start */
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -1383,6 +1383,8 @@ hr {
     clip: rect(0,0,0,0);
     border: 0;
 }
+
+/* non-critical:start */
 
 .sr-only-focusable:active, .sr-only-focusable:focus {
     position: static;
