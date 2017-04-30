@@ -40,7 +40,11 @@ SocialShareKit.init();
  * CUSTOM SCRIPTS
 
  */
-jQuery(function($) {
+
+/* golbal object for helper functions */
+rade = {};
+
+;(function($) {
 		var ismodern = !!(window.history && history.pushState);
 		var firstload = true;
 		
@@ -102,6 +106,8 @@ jQuery(function($) {
 				window.location.href = window.location.protocol + "//" + window.location.hostname + url ;
 			}
 		}
+
+		rade.gototarget = gototarget;
 		
 		var render = function() {
 			
@@ -144,10 +150,13 @@ jQuery(function($) {
 				targetelement.removeClass("hidden");
 				firstload = false;
 			} else {
-				$articles.animateCss("zoomOut",function() {
-					$articles.addClass("hidden");
-					targetelement.removeClass("hidden").animateCss("zoomIn");
-				});
+                $articles.animateCss("zoomOut",function() {
+                    $articles.addClass("hidden");
+                    if ($articles.data("emptyme")){
+                        $articles.find($articles.data("emptyme")).empty();
+                    }
+                    targetelement.removeClass("hidden").animateCss("zoomIn");
+                });
 			}
 
 			// Navbar Menüitem active setzen
@@ -198,14 +207,11 @@ jQuery(function($) {
 			// Event triggern, der per "data-exec" spezifiziert wurde
 			var exec = targetelement.data("exec");
 			if (exec) targetelement.trigger(exec);
-			
-			// Dummy-Image Data URI
-			var dummy400x300 = 'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" height="300" width="400" viewBox="0 0 105.83333 79.375002" preserveAspectRatio="xMidYMin slice"/>';
-			
+
 			// Lazy load images
 			// Damit das korrekt funktionniert, muss eine Bildhöhe definiert sein, die durch das Dummy-Bild festgelegt ist
 			// Aktiviere LazyLoad nur bei Bildern, die nicht schon geladen sind! (geladen: element hat kein data-src mehr!)
-			$("img[data-src]",targetelement).attr("src",dummy400x300).add($("footer .sponsoren img")).unveil();
+			$("img[data-src]",targetelement).add($("footer .sponsoren div[data-src]")).add($("div[data-src]",targetelement)).unveil();
 		};
 
 		var swformfield = function (options) {
@@ -242,6 +248,7 @@ jQuery(function($) {
 			
 			return formfield;
 		}
+        rade.swformfield = swformfield;
 	
 	$(document).ready(function () {
 		
@@ -291,12 +298,48 @@ jQuery(function($) {
 			});
 			return this;
 		}
-		
+
+        var checklogin = function(url) {
+            var loginpromise = $.Deferred();
+
+            $.ajax({type: 'GET', url: '/intern/auth'}).done(function(d) {
+                loginpromise.resolve(d);
+            }).fail(function(d) {
+                $("nav.navbar ul.nav li a[href='login.html']").parent().removeClass("hidden");
+            });
+
+            var jspromise = $.Deferred();
+
+            loginpromise.done(function() {
+                if (typeof $.fn.helferliste === 'function') {
+                    jspromise.resolve();
+                } else {
+                    $.ajax({
+                        url: '/intern/js/helferliste.js',
+                        dataType: "script",
+                        cache:true
+                    }).done(function() {
+                        jspromise.resolve();
+                    });
+                }
+            });
+
+            $.when(loginpromise,jspromise).done(function(e,f) {
+                if ( $("article[data-content='intern']").length === 0 ) $("article").last().after($.parseHTML(e));
+                if (url) {
+                    gototarget(url);
+                    rade.login();
+                }
+            });
+        }
+
+        checklogin();
+
 		// Exec-Events
 		$("article[data-exec=showlogin]").on("showlogin", function() {
 			
 			$.ajax({type: 'GET', url: '/intern/auth'}).done(function() {
-				gototarget("/intern/");
+				gototarget("/intern.html");
 			}).fail(function() {
 				var logincontainer = $("<div>");
 				var swalert = $('<div class="swalert">').appendTo(logincontainer);
@@ -318,7 +361,7 @@ jQuery(function($) {
 							elogin.swvalid(true);
 							epassword.swvalid(true);
 							eemail.swvalid(true);
-							setTimeout(function() {gototarget("/intern/")}
+							setTimeout(function() {e.dialog.close();checklogin("/intern.html")}
 							,1000);
 						} else {
 							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
@@ -563,7 +606,6 @@ jQuery(function($) {
 		carousel.carousel();
 		//carousel.carousel('pause');
 	}
-});
 
 /**
  * jQuery Unveil
@@ -575,34 +617,37 @@ jQuery(function($) {
  * https://github.com/luis-almeida
  */
 
-;(function($) {
-
   $.fn.unveil = function(threshold, callback) {
 
     var $w = $(window),
         th = threshold || 0,
-        retina = window.devicePixelRatio > 1,
-        attrib = retina? "data-src-retina" : "data-src",
-        images = this;
+        attrib = "data-src",
+        imgs = this;
 
-    images.one("unveil", function() {
-        var source = this.getAttribute(attrib);
-        source = source || this.getAttribute("data-src");
-        if (source) {
-          this.setAttribute("src", source);
-		  // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
-          this.removeAttribute("data-src");
-          if (typeof callback === "function") callback.call(this);
+    imgs.one("unveil", function() {
+        var $this = this;
+        var source = $this.getAttribute(attrib);
+        if (!source) return;
+
+        if ($this.tagName === "IMG") {
+            $this.setAttribute("src", source);
+            // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
+            $this.removeAttribute("data-src");
+        } else {
+            var $new = document.createElement('img');
+            $new.setAttribute("src", source);
+            $new.setAttribute("class", "img-responsive");
+            $this.parentNode.replaceChild($new,$this);
         }
     });
 	
 	// "unveil" events der Bilder bei Seitenwechsel wieder entfernen
 	$w.one("hashchange", function() {
-		images.off("unveil")
+		imgs.off("unveil")
 	});
 
     function unveil() {
-      var inview = images.filter(function() {
+      var inview = imgs.filter(function() {
         var $e = $(this),
             wt = $w.scrollTop(),
             wb = wt + $w.height(),
@@ -612,7 +657,7 @@ jQuery(function($) {
       });
 
       inview.trigger("unveil");
-      images = images.not(inview);
+      imgs = imgs.not(inview);
     }
 	// alte Window "unveil" events löschen und neue Events aktivieren
 	var uevents = "scroll.unveil resize.unveil lookup.unveil"
@@ -620,4 +665,4 @@ jQuery(function($) {
     unveil();
     return this;
   };
-})(window.jQuery);
+})(jQuery);

@@ -1,12 +1,59 @@
-jQuery(function($) {
-    $(document).ready(function () {
-        // Helferliste
-		$("div.helferliste").helferliste();
+;(function($) {
+    var momentpromise = $.Deferred();
+    var momentdepromise = $.Deferred();
+    var datepickerpromise = $.Deferred();
+
+    $.ajax({
+        url: '/intern/js/moment.min.js',
+        dataType: "script",
+        cache:true
+    }).done(function() {
+        momentpromise.resolve();
+    });
+
+    $.when(momentpromise).done(function() {
+        $.ajax({
+            url: '/intern/js/moment.de.js',
+            dataType: "script",
+            cache:true
+        }).done(function() {
+            momentdepromise.resolve();
+        });
+    });
+
+    $.when(momentdepromise).done(function() {
+        $.ajax({
+            url: '/intern/js/bootstrap-datetimepicker.min.js',
+            dataType: "script",
+            cache:true
+        }).done(function() {
+            datepickerpromise.resolve();
+        });
+    });
+
+    var login = function() {
+
+        $("nav.navbar ul.nav li a[href='login.html']").attr("href","intern.html").attr("title",$("article[data-content='intern']").data("doctitle")).html("Helferliste").parent().removeClass("hidden");
+
+        if ( $("link[href='/intern/css/bootstrap-datetimepicker.min.css']").length === 0 ) {
+            var d = document, c = d.getElementsByTagName('style')[0];
+            var h = d.createElement('link'); h.type = 'text/css'; h.href = '/intern/css/bootstrap-datetimepicker.min.css'; h.rel = 'stylesheet'; c.parentNode.insertBefore(h, c);
+        }
     }
-    
+
+    rade.login = login;
+
+    var logout = function() {
+        $("article[data-content='intern']").data("emptyme","div.helferliste");
+        rade.gototarget();
+        var $login = $("article[data-content='login']");
+        $("nav.navbar ul.nav li a[href='intern.html']").attr("href","login.html").attr("title",$login.data("doctitle")).html("Login");
+    }
+
 	$.fn.helferliste = function(view) {
 		if (this.length === 0) return;
-		
+
+        var rade = window.rade;
 		view = view || 'default';
 		// Scroll-Position speichern, um sie nach dem Rendern wiederherzustellen
 		var lastposition = $(window).scrollTop();
@@ -114,7 +161,7 @@ jQuery(function($) {
 						action: function(dialog) {
 							dialog.enableButtons(false).setClosable(false);
 							
-							$.ajax({type: 'POST', url: options.url || '/intern/helferliste', data: JSON.stringify(options.data), contentType: 'application/json'}).success(function() {
+							$.ajax({type: 'POST', url: options.url || '/intern/helferliste', data: JSON.stringify(options.data), contentType: 'application/json'}).done(function() {
 								dialog.enableButtons(true).setButtons([{label:'OK',cssClass: 'btn-success',action: function(dialog) {
 									dialog.close(); 
 									if ( typeof(options.view) === 'function' ) {
@@ -147,14 +194,14 @@ jQuery(function($) {
 					sideBySide: false
 				};
 				
-				var shifttitle = swformfield({container:form, el:'input', text: 'Schichtbezeichnung', type: 'text', name: 'name', placeh: 'Kloputzen'});
-				var elstart = swformfield({container:form, el:'input', text: 'Von', type: 'text', name: 'timestart', autocompl: 'off'}).datetimepicker(defaults);
+				var shifttitle = rade.swformfield({container:form, el:'input', text: 'Schichtbezeichnung', type: 'text', name: 'name', placeh: 'Kloputzen'});
+				var elstart = rade.swformfield({container:form, el:'input', text: 'Von', type: 'text', name: 'timestart', autocompl: 'off'}).datetimepicker(defaults);
 				var extra = $('<span class="input-group-addon"><label><input type="checkbox" name="noend" value=1><span>Offenes Ende</span></label></span>');
 				var elnoend = extra.find("input");
-				var elend = swformfield({container:form, el:'input', text: 'Bis', type: 'text', name: 'timeend', autocompl: 'off', extra: extra }).datetimepicker(defaults);
-				var eldescription = swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
-				var elnumber = swformfield({container:form, el:'input', text: 'Anzahl Personen', type: 'number', name: 'number'});
-				var elshiftid = swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'}).attr("disabled","disabled");
+				var elend = rade.swformfield({container:form, el:'input', text: 'Bis', type: 'text', name: 'timeend', autocompl: 'off', extra: extra }).datetimepicker(defaults);
+				var eldescription = rade.swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
+				var elnumber = rade.swformfield({container:form, el:'input', text: 'Anzahl Personen', type: 'number', name: 'number'});
+				var elshiftid = rade.swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'}).attr("disabled","disabled");
 				
 				elnoend.on("change", function (e) {
 					if ($(this).is(":checked")) {
@@ -233,15 +280,15 @@ jQuery(function($) {
 				var form = $('<form class="swform">').appendTo(helpercontainer);
 				var data = {task:"helperpropose"};
 				
-				var helpername = swformfield({container:form, el:'input', text: 'Helfername', type: 'text', name: 'name', placeh: 'Vorname Nachname'});
-				var elemail = swformfield({container:form, el:'input', text: 'Email', type: 'email', name: 'email'});
-				var eldummyshift = swformfield({container:form, el:'input', text: 'Schicht', type: 'text', name: 'dummy'}).attr("disabled","disabled");
-				var eldescription = swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
-				var elsendmail = swformfield({container:form, el:'input', text: 'Email Senden?', type: 'checkbox', name: 'sendmail'});
-				var elsendmailtext = swformfield({container:form, el:'textarea', text: 'Mailtext', name: 'sendmailtext', style: 'width:100%;resize:vertical;', rows: 9});
-				var elshiftid = swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'});
-				var elhelid = swformfield({container:form, el:'input', type: 'hidden', name: 'helid'}).attr("disabled","disabled");
-				var elinqid = swformfield({container:form, el:'input', type: 'hidden', name: 'inqid'}).attr("disabled","disabled");
+				var helpername = rade.swformfield({container:form, el:'input', text: 'Helfername', type: 'text', name: 'name', placeh: 'Vorname Nachname'});
+				var elemail = rade.swformfield({container:form, el:'input', text: 'Email', type: 'email', name: 'email'});
+				var eldummyshift = rade.swformfield({container:form, el:'input', text: 'Schicht', type: 'text', name: 'dummy'}).attr("disabled","disabled");
+				var eldescription = rade.swformfield({container:form, el:'input', text: 'Bemerkung', type: 'text', name: 'description'});
+				var elsendmail = rade.swformfield({container:form, el:'input', text: 'Email Senden?', type: 'checkbox', name: 'sendmail'});
+				var elsendmailtext = rade.swformfield({container:form, el:'textarea', text: 'Mailtext', name: 'sendmailtext', style: 'width:100%;resize:vertical;', rows: 9});
+				var elshiftid = rade.swformfield({container:form, el:'input', type: 'hidden', name: 'shiftid'});
+				var elhelid = rade.swformfield({container:form, el:'input', type: 'hidden', name: 'helid'}).attr("disabled","disabled");
+				var elinqid = rade.swformfield({container:form, el:'input', type: 'hidden', name: 'inqid'}).attr("disabled","disabled");
 				
 				elsendmail.on("change",function(){
 					if ($(this).prop("checked")) {
@@ -339,8 +386,8 @@ jQuery(function($) {
 				var swalert = $('<div class="swalert">').appendTo(container);
 				var form = $('<form class="swform">').appendTo(container);
 				
-				var elname = swformfield({container:form, el:'input', text: 'Nachname', type: 'text', name: 'name', placeh: 'Mustermann'});
-				var elvorname = swformfield({container:form, el:'input', text: 'Vorname', type: 'text', name: 'vorname', placeh: 'Mustermann'});
+				var elname = rade.swformfield({container:form, el:'input', text: 'Nachname', type: 'text', name: 'name', placeh: 'Mustermann'});
+				var elvorname = rade.swformfield({container:form, el:'input', text: 'Vorname', type: 'text', name: 'vorname', placeh: 'Mustermann'});
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
@@ -587,9 +634,28 @@ jQuery(function($) {
 			$("<p>Eingeloggt als: <span class='badge'>"+authname+"</span></p>").appendTo(bottomcontainer);
 			$('<p><button class="btn btn-danger btn-xs">Ausloggen</button></p>').appendTo(bottomcontainer).find("button").on("click",function() {
 				var data = {task:"logout"};
-				swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {gototarget("/login.html")}, url: "/intern/auth"});
+				swdeleteany({data: data,title:'Bestätigung',msg:'Wirklich ausloggen?',btnmsg:'Ausloggen!', successmsg: "Erfolgreich ausgeloggt!", view: function() {logout()}, url: "/intern/auth"});
 			});
-		});
-		return this;
+        });
+        return this;
 	};
-});
+
+    $(document).ready(function () {
+
+        var $intern = $("article[data-content='intern']");
+
+        login();
+
+        $intern.on("helferliste", function () {
+            console.log("triggered helferliste");
+            $.when(momentpromise, momentdepromise, datepickerpromise).done(function() {
+                console.log("triggered helferliste + promise");
+                $intern.find("div.helferliste").helferliste();
+            });
+        });
+
+        if(window.location.href.split('/').pop().split(".html")[0] === "intern") {
+            $intern.trigger("helferliste");
+        }
+    });
+})(jQuery);
