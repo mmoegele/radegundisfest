@@ -1,7 +1,7 @@
 /* CUSTOM CSS */
 
 .animated {
-  animation-duration: 0.1s;
+  animation-duration: 0.5s;
   animation-fill-mode: both;
 }
 
@@ -147,9 +147,9 @@ body {
 }
 .metro {
    /* background: #d7ccb8;*/
-    height: 10em;
-    padding: 1em;
-    margin:0.3em;
+    height: 13em;
+    /* padding: 1em;
+    margin:0.3em;*/
 }
 
 /* Fix navbar in XS view */
