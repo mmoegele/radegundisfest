@@ -258,7 +258,6 @@ rade = {};
                 script.async = false;
                 script.addEventListener('load', function() {
                     p.resolve();
-                    console.log("loaded"+src);
                 });
                 script.addEventListener('error', function () {
                     return p.reject('Error loading script.');
@@ -465,34 +464,10 @@ rade = {};
 		return obj;
 	};
 
-	//window.gmapsapi = function(){
-	//	jQuery(window).trigger('gmapsloaded');
-	//};
-
-	//var swmapswrapper = function (callback) {
-	//	if (typeof google === 'object' && typeof google.maps === 'object') {
-	//		callback();
-	//	} else {
-	//		$(window).one("gmapsloaded",callback);
-    //
-	//		$.ajax({
-	//			url: 'js/gmap3.min.js',
-	//			dataType: "script",
-	//			cache:true
-	//		}).done(function() {
-	//			$.ajax({
-	//				url: 'https://maps.google.com/maps/api/js?sensor=false&language=de&callback=gmapsapi',
-	//				dataType: "script",
-	//				cache: true
-	//			});
-	//		});
-	//	}
-	//};
-
 	$.fn.swmaps = function () {
 		if (this.length === 0) return;
 		var $that = $(this);
-		injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?sensor=false&language=de']).then(function() {
+		injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function() {
 			$("div.mdirections").empty()
 			$that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
 			$that.gmap3({
@@ -652,10 +627,9 @@ rade = {};
         var source = $this.getAttribute(attrib);
         if (!source) return;
 
+        $this.removeAttribute("data-src"); // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
         if ($this.tagName === "IMG") {
             $this.setAttribute("src", source);
-            // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
-            $this.removeAttribute("data-src");
         } else {
             var $new = document.createElement('img');
             $new.setAttribute("src", source);
@@ -663,11 +637,10 @@ rade = {};
             $this.parentNode.replaceChild($new,$this);
         }
     });
-	
-	// "unveil" events der Bilder bei Seitenwechsel wieder entfernen
-	$w.one("hashchange", function() {
-		imgs.off("unveil")
-	});
+
+    $w.one("hashchange", function() {
+        imgs.off("unveil"); // "unveil" events der Bilder bei Seitenwechsel wieder entfernen
+    });
 
     function unveil() {
       var inview = imgs.filter(function() {
@@ -680,11 +653,11 @@ rade = {};
       });
 
       inview.trigger("unveil");
-      imgs = imgs.not(inview);
+      imgs = imgs.not(inview).not("[data-src]");
     }
-	// alte Window "unveil" events löschen und neue Events aktivieren
-	var uevents = "scroll.unveil resize.unveil lookup.unveil"
-	$w.off(uevents).on(uevents, unveil);
+    // alte Window "unveil" events löschen und neue Events aktivieren
+    var uevents = "scroll.unveil resize.unveil lookup.unveil"
+    $w.off(uevents).on(uevents, unveil);
     unveil();
     return this;
   };

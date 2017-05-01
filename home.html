@@ -32,20 +32,8 @@
         _paq.push(['discardHashTag', false]);
         _paq.push(['setTrackerUrl', '/0.php']);
         _paq.push(['setSiteId', 9]);
-
         (function () {
-            if (!window.fetch) return;
-            /**
-            * Fetch Inject v1.6.9
-            * Copyright (c) 2017 Josh Habdas
-            * @licence ISC
-            */
-
-            var fetchInject = function () { "use strict"; var e = function e(_e, t, n, r, o, i, c) { i = t.createElement(n), c = t.getElementsByTagName(n)[0], i.type = r.blob.type.split(";")[0], i.appendChild(t.createTextNode(r.text)), i.onload = o(r), c ? c.parentNode.insertBefore(i, c) : t.head.appendChild(i) }, t = function t(_t, n) { if (!_t || !Array.isArray(_t)) return Promise.reject(new Error("`inputs` must be an array")); if (n && !(n instanceof Promise)) return Promise.reject(new Error("`promise` must be a promise")); var r = [], o = n ? [].concat(n) : [], i = []; return _t.forEach(function (e) { return o.push(window.fetch(e).then(function (e) { return [e.clone().text(), e.blob()] }).then(function (e) { return Promise.all(e).then(function (e) { r.push({ text: e[0], blob: e[1] }) }) })) }), Promise.all(o).then(function () { return r.forEach(function (t) { i.push({ then: function then(n) { "text/css" === t.blob.type.split(";")[0] ? e(window, document, "style", t, n) : e(window, document, "script", t, n) } }) }), Promise.all(i) }) }; return t }();
-
-            fetchInject(['/js/home.js', '/css/home-noncritical.css']).then(function () {
-                fetchInject(['/0.js']);
-            });
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = false; s.defer = false; s.src = '/js/home.js'; document.head.appendChild(s);
         })();
     </script>
 </head>
@@ -1176,11 +1164,8 @@
     <!-- Piwik -->
     <script type="text/javascript">
         (function () {
-            if (window.fetch) return;
-            var d = document, s = d.getElementsByTagName('script')[0], c = d.getElementsByTagName('style')[0];
-            var g = d.createElement('script'); g.type = 'text/javascript'; g.src = '/js/home.js'; s.parentNode.insertBefore(g, s);
-            var h = d.createElement('link'); h.type = 'text/css'; h.href = '/css/home-noncritical.css'; h.rel = 'stylesheet'; c.parentNode.insertBefore(h, c);
-            var i = d.createElement('script'); i.type = 'text/javascript'; i.async = true; i.defer = true; i.src = '/0.js'; s.parentNode.insertBefore(i, s);
+            var c = document.createElement('link'); c.type = 'text/css'; c.href = '/css/home-noncritical.css'; c.rel = 'stylesheet'; document.head.appendChild(c);
+            var p = document.createElement('script'); p.type = 'text/javascript'; p.async = true; p.defer = true; p.src = '/0.js'; document.head.appendChild(p);
         })();
     </script>
     <noscript><link rel="stylesheet" href="css/home-noncritical.css"></noscript>
