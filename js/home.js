@@ -150,12 +150,12 @@ rade = {};
 				targetelement.removeClass("hidden");
 				firstload = false;
 			} else {
-                $articles.animateCss("zoomOut",function() {
+                $articles.animateCss("fadeOutRight",function() {
                     $articles.addClass("hidden");
                     if ($articles.data("emptyme")){
                         $articles.find($articles.data("emptyme")).empty();
                     }
-                    targetelement.removeClass("hidden").animateCss("zoomIn");
+                    targetelement.removeClass("hidden").animateCss("fadeInLeft");
                 });
 			}
 
@@ -249,6 +249,29 @@ rade = {};
 			return formfield;
 		}
         rade.swformfield = swformfield;
+        
+        var injectScripts = function(scripts) {
+            var xhrs = scripts.map(function(src) {
+                var p = $.Deferred();
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = false;
+                script.addEventListener('load', function() {
+                    p.resolve();
+                    console.log("loaded"+src);
+                });
+                script.addEventListener('error', function () {
+                    return p.reject('Error loading script.');
+                });
+                script.addEventListener('abort', function () {
+                    return p.reject('Script loading aborted.');
+                });
+                document.head.appendChild(script);
+                return p;
+            });
+        
+            return $.when.apply($, xhrs);
+        }
 	
 	$(document).ready(function () {
 		
@@ -442,34 +465,34 @@ rade = {};
 		return obj;
 	};
 
-	window.gmapsapi = function(){
-		jQuery(window).trigger('gmapsloaded');
-	};
+	//window.gmapsapi = function(){
+	//	jQuery(window).trigger('gmapsloaded');
+	//};
 
-	var swmapswrapper = function (callback) {
-		if (typeof google === 'object' && typeof google.maps === 'object') {
-			callback();
-		} else {
-			$(window).one("gmapsloaded",callback);
-
-			$.ajax({
-				url: 'js/gmap3.min.js',
-				dataType: "script",
-				cache:true
-			}).done(function() {
-				$.ajax({
-					url: 'https://maps.google.com/maps/api/js?sensor=false&language=de&callback=gmapsapi',
-					dataType: "script",
-					cache: true
-				});
-			});
-		}
-	};
+	//var swmapswrapper = function (callback) {
+	//	if (typeof google === 'object' && typeof google.maps === 'object') {
+	//		callback();
+	//	} else {
+	//		$(window).one("gmapsloaded",callback);
+    //
+	//		$.ajax({
+	//			url: 'js/gmap3.min.js',
+	//			dataType: "script",
+	//			cache:true
+	//		}).done(function() {
+	//			$.ajax({
+	//				url: 'https://maps.google.com/maps/api/js?sensor=false&language=de&callback=gmapsapi',
+	//				dataType: "script",
+	//				cache: true
+	//			});
+	//		});
+	//	}
+	//};
 
 	$.fn.swmaps = function () {
 		if (this.length === 0) return;
 		var $that = $(this);
-		swmapswrapper(function() {
+		injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?sensor=false&language=de']).then(function() {
 			$("div.mdirections").empty()
 			$that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
 			$that.gmap3({
