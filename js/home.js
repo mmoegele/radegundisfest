@@ -253,19 +253,34 @@ rade = {};
     var injectScripts = function(scripts) {
         var xhrs = scripts.map(function(src) {
             var p = $.Deferred();
-            var script = document.createElement('script');
-            script.src = src;
-            script.async = false;
+            var el = 'script';
+
+            if (/css$/.test(src)) {
+                el = 'link';
+            }
+
+            var script = document.createElement(el);
+
+            if (el === 'script') {
+                script.src = src;
+                script.async = false;
+                script.type = "text/javascript";
+            } else if (el === 'link') {
+                script.href = src;
+                script.rel = 'stylesheet';
+                script.type = "text/css";
+            }
             script.addEventListener('load', function() {
                 p.resolve();
             });
             script.addEventListener('error', function () {
-                return p.reject('Error loading script.');
+                return p.reject("Error loading "+el+".");
             });
             script.addEventListener('abort', function () {
-                return p.reject('Script loading aborted.');
+                return p.reject(el+" loading aborted.");
             });
             document.head.appendChild(script);
+
             return p;
         });
 
@@ -478,6 +493,36 @@ rade = {};
         return this;
     };
 
+    var checklogin = function(url) {
+        var loginpromise = $.Deferred();
+
+        $.ajax({type: 'GET', url: '/intern/auth'}).done(function(d) {
+            loginpromise.resolve(d);
+        }).fail(function(d) {
+            $("nav.navbar ul.nav li a[href='login.html']").parent().removeClass("hidden");
+        });
+
+        var jspromise = $.Deferred();
+
+        loginpromise.done(function() {
+            if (typeof $.fn.helferliste === 'function') {
+                jspromise.resolve();
+            } else {
+                injectScripts(['/intern/js/helferliste.js']).done(function() {
+                    jspromise.resolve();
+                });
+            }
+        });
+
+        $.when(loginpromise,jspromise).done(function(e,f) {
+            if ( $("article[data-content='intern']").length === 0 ) $("article").last().after($.parseHTML(e));
+            if (url) {
+                gototarget(url);
+                rade.login();
+            }
+        });
+    }
+
     $(document).ready(function () {
 
         // event handler für Buttons hinzufügen, die ein href Attribut haben und kein rel=external
@@ -525,40 +570,6 @@ rade = {};
                 }
             });
             return this;
-        }
-
-        var checklogin = function(url) {
-            var loginpromise = $.Deferred();
-
-            $.ajax({type: 'GET', url: '/intern/auth'}).done(function(d) {
-                loginpromise.resolve(d);
-            }).fail(function(d) {
-                $("nav.navbar ul.nav li a[href='login.html']").parent().removeClass("hidden");
-            });
-
-            var jspromise = $.Deferred();
-
-            loginpromise.done(function() {
-                if (typeof $.fn.helferliste === 'function') {
-                    jspromise.resolve();
-                } else {
-                    $.ajax({
-                        url: '/intern/js/helferliste.js',
-                        dataType: "script",
-                        cache:true
-                    }).done(function() {
-                        jspromise.resolve();
-                    });
-                }
-            });
-
-            $.when(loginpromise,jspromise).done(function(e,f) {
-                if ( $("article[data-content='intern']").length === 0 ) $("article").last().after($.parseHTML(e));
-                if (url) {
-                    gototarget(url);
-                    rade.login();
-                }
-            });
         }
 
         checklogin();

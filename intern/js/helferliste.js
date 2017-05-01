@@ -1,44 +1,8 @@
 ;(function($) {
-    var momentpromise = $.Deferred();
-    var momentdepromise = $.Deferred();
-    var datepickerpromise = $.Deferred();
-
-    $.ajax({
-        url: '/intern/js/moment.min.js',
-        dataType: "script",
-        cache:true
-    }).done(function() {
-        momentpromise.resolve();
-    });
-
-    $.when(momentpromise).done(function() {
-        $.ajax({
-            url: '/intern/js/moment.de.js',
-            dataType: "script",
-            cache:true
-        }).done(function() {
-            momentdepromise.resolve();
-        });
-    });
-
-    $.when(momentdepromise).done(function() {
-        $.ajax({
-            url: '/intern/js/bootstrap-datetimepicker.min.js',
-            dataType: "script",
-            cache:true
-        }).done(function() {
-            datepickerpromise.resolve();
-        });
-    });
+    var assets = rade.injectScripts(['/intern/js/moment.min.js','/intern/js/moment.de.js','/intern/js/bootstrap-datetimepicker.min.js','/intern/css/bootstrap-datetimepicker.min.css']);
 
     var login = function() {
-
         $("nav.navbar ul.nav li a[href='login.html']").attr("href","intern.html").attr("title",$("article[data-content='intern']").data("doctitle")).html("Helferliste").parent().removeClass("hidden");
-
-        if ( $("link[href='/intern/css/bootstrap-datetimepicker.min.css']").length === 0 ) {
-            var d = document, c = d.getElementsByTagName('style')[0];
-            var h = d.createElement('link'); h.type = 'text/css'; h.href = '/intern/css/bootstrap-datetimepicker.min.css'; h.rel = 'stylesheet'; c.parentNode.insertBefore(h, c);
-        }
     }
 
     rade.login = login;
@@ -647,9 +611,7 @@
         login();
 
         $intern.on("helferliste", function () {
-            console.log("triggered helferliste");
-            $.when(momentpromise, momentdepromise, datepickerpromise).done(function() {
-                console.log("triggered helferliste + promise");
+            $.when(assets).done(function() {
                 $intern.find("div.helferliste").helferliste();
             });
         });
