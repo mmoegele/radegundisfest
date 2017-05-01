@@ -484,7 +484,7 @@ rade = {};
         });
 
         inview.trigger("unveil");
-        imgs = imgs.not(inview).not("[data-src]");
+        imgs = imgs.not(inview);
         }
         // alte Window "unveil" events löschen und neue Events aktivieren
         var uevents = "scroll.unveil resize.unveil lookup.unveil"
