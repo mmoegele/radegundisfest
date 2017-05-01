@@ -45,281 +45,487 @@ SocialShareKit.init();
 rade = {};
 
 ;(function($) {
-		var ismodern = !!(window.history && history.pushState);
-		var firstload = true;
-		
-		//ismodern = false;
-		
-	$.fn.animateCss = function (animationName, opts, func) {
-		var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-		var $this = $(this);
-		if (typeof opts === 'object') {
-			if ( opts.delay ) $this.css("animation-delay",opts.delay);
-			if ( opts.duration ) $this.css("animation-duration",opts.duration);
-		} else {
-			func = opts
-		}
-		$this.addClass('animated ' + animationName).one(animationEnd, function() {
-			$this.removeClass('animated ' + animationName);
-			if (typeof opts === 'object') {
-				if ( opts.delay ) $this.css("animation-delay","");
-				if ( opts.duration ) $this.css("animation-duration","");
-				if ( $this.attr("style") === "" ) $this.removeAttr("style");
-			}
-			if (typeof func  === "function") func();
-		});
-	}
-		
-		var getpath = function (full) {
-			if (full) {
-				return window.location.href.replace(window.location.href.split('/').pop(),"");
-			} else {
-				var port = ( !!window.location.port ) ? ":"+window.location.port : "";
-				return window.location.href.replace(window.location.href.split('/').pop(),"").replace(window.location.protocol + "//" + window.location.hostname + port,"");
-			}
-		}
-		
-		var gototarget = function (url) {
-			var currentpath = getpath();
+    var ismodern = !!(window.history && history.pushState);
+    var firstload = true;
 
-			url = url || "";
+    //ismodern = false;
 
-			if (url.charAt(0) !== "/") url = currentpath+url 
-
-			var newpath = url.substring(0,url.lastIndexOf("/")+1);
-			
-			if ( newpath === currentpath) {
-				var target = url.replace(newpath,"").split(".html")[0];
-
-				if ( target === "") {
-					url = currentpath;
-					target = "landing";
-				}
-
-				if ( ismodern ) {
-					history.pushState({}, '', url);
-					render();
-				} else { 
-					window.location.hash = target;
-				}
-			} else {
-				window.location.href = window.location.protocol + "//" + window.location.hostname + url ;
-			}
-		}
-
-		rade.gototarget = gototarget;
-		
-		var render = function() {
-			
-			var hash = window.location.hash.slice(1);
-			var url = (window.location.href.split('/').pop().split(".html")[0]).replace(window.location.hash,"");
-			
-			if (url && !ismodern) {
-				var hname = url ? "#"+url : "";
-				
-				// Force a page refresh with hashtag
-				window.location.href = getpath()+hname;
-			}
-			
-			if (hash && ismodern) {
-				
-				// Force a page refresh with url
-				window.location.href = getpath()+hash+".html";
-			}
-			
-			var target = hash ? hash : url;
-			
-			// Suche nach Seite
-			target = target || "landing";
-			var targetelement = $("body > article[data-content="+target+"]");
-			
-			// Falls nicht gefunden
-			if (targetelement.length === 0) targetelement = $("body > article[data-content=404]");
-			
-			// Doctitle abfragen
-			var doctitle = $(targetelement).data("doctitle");
-			if (!doctitle) doctitle = target.charAt(0).toUpperCase() + target.slice(1); // Fallback
-			
-			// Content anzeigen
-			//$("body > article[data-content]").addClass("hidden");
-			//targetelement.removeClass("hidden");
-			var $articles = $("body > article[data-content]:not(.hidden)");
-			
-			if ( firstload ) {
-				$articles.addClass("hidden");
-				targetelement.removeClass("hidden");
-				firstload = false;
-			} else {
-                $articles.animateCss("fadeOutRight",function() {
-                    $articles.addClass("hidden");
-                    if ($articles.data("emptyme")){
-                        $articles.find($articles.data("emptyme")).empty();
-                    }
-                    targetelement.removeClass("hidden").animateCss("fadeInLeft");
-                });
-			}
-
-			// Navbar Menüitem active setzen
-			var $li = $("nav.navbar li").removeClass("active");
-			$li.has("a[href='"+target+".html']").addClass("active");
-			if (target === "landing") $li.has("a[href='/']").addClass("active");
-
-			// Document Title ändern
-			document.title = doctitle;
-            $("meta[property=og\\:title]").attr("content",doctitle);
-            
-            // Meta-Description per JS setzen
-            $("meta[name=description]").attr("content",targetelement.data("desc"));
-            $("meta[property=og\\:description]").attr("content",targetelement.data("desc"));
-
-            $("meta[property=og\\:url]").attr("content",window.location.href);
-
-			// Cookie Richtlinien umsetzen (erster Track ohne Cookies)
-			if (!Cookies.get('rade-consent')) {
-				if ($("#cookiewarning").length === 0) {
-					var cookiecontainer = $('<div id="cookiewarning" style="padding-top:5px; border-bottom:3px solid #f1ce00;padding-bottom: 5px" class="container-fluid">');
-					$('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der <a href="/cookies.html">Nutzung von Cookies</a> zu. ').css('color', '#333').appendTo(cookiecontainer);
-					var cookiebutton =$('<a class="btn btn-success btn-xs">').html('<i class="glyphicon glyphicon-ok"></i> <strong>Ich stimme zu.</strong>').appendTo(cookiecontainer);
-					
-					cookiecontainer.hide().prependTo($("nav.navbar")).slideDown();
-					
-					cookiebutton.on("click", function() {
-						Cookies.set('rade-consent', '1', { expires: 365, domain: '.radegundisfest.de', path: '/',secure: true});
-						cookiecontainer.slideUp("fast",function() {
-							cookiecontainer.remove();
-						});
-						_paq.push(['trackEvent', 'Cookies', 'Einwilligen', 'Click']);
-					});
-				}
-				_paq.push(['disableCookies']);
-			}
-			
-			// Piwik vorbereiten
-			_paq.push(['setDocumentTitle', doctitle]);
-			_paq.push(['setCustomUrl', window.location.href]);
-			
-			// Piwik tracken
-			_paq.push(['trackPageView']);
-
-			// Scroll to top of site
-			$("html,body").animate({ scrollTop: 0 }, "fast");
-			
-			// Event triggern, der per "data-exec" spezifiziert wurde
-			var exec = targetelement.data("exec");
-			if (exec) targetelement.trigger(exec);
-
-			// Lazy load images
-			// Damit das korrekt funktionniert, muss eine Bildhöhe definiert sein, die durch das Dummy-Bild festgelegt ist
-			// Aktiviere LazyLoad nur bei Bildern, die nicht schon geladen sind! (geladen: element hat kein data-src mehr!)
-			$("img[data-src]",targetelement).add($("footer .sponsoren div[data-src]")).add($("div[data-src]",targetelement)).unveil();
-		};
-
-		var swformfield = function (options) {
-			var div = $('<div class="form-group">');
-			var divi = $('<div class="input-group">').appendTo(div);
-			
-			
-			var formfield = $('<'+options.el+'>',{
-				type: options.type,
-				class: 'form-control',
-				name: options.name,
-				autocorrect: options.autocor,
-				autocapitalize: options.autocap,
-				autocomplete: options.autocomp,
-				placeholder: options.placeh,
-				style: options.style,
-				rows: options.rows,
-				value: options.value
-			});
-			
-			if ( options.type === 'hidden' ) {
-				formfield.removeClass('form-control');
-				formfield.appendTo(options.container);
-			} else if (options.type === 'checkbox') {
-				$("<label>").append(formfield).append($('<span>'+options.text+'</span>')).appendTo(divi);
-				div.appendTo(options.container);
-			} else {
-				$('<span class="input-group-addon">').html(options.text).appendTo(divi);
-				formfield.appendTo(divi);
-				$('<span class="glyphicon form-control-feedback" aria-hidden="true">').appendTo(divi);
-				if (options.extra) options.extra.appendTo(divi);
-				div.appendTo(options.container);
-			}
-			
-			return formfield;
-		}
-        rade.swformfield = swformfield;
-        
-        var injectScripts = function(scripts) {
-            var xhrs = scripts.map(function(src) {
-                var p = $.Deferred();
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = false;
-                script.addEventListener('load', function() {
-                    p.resolve();
-                });
-                script.addEventListener('error', function () {
-                    return p.reject('Error loading script.');
-                });
-                script.addEventListener('abort', function () {
-                    return p.reject('Script loading aborted.');
-                });
-                document.head.appendChild(script);
-                return p;
-            });
-        
-            return $.when.apply($, xhrs);
+    $.fn.animateCss = function (animationName, opts, func) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        var $this = $(this);
+        if (typeof opts === 'object') {
+            if ( opts.delay ) $this.css("animation-delay",opts.delay);
+            if ( opts.duration ) $this.css("animation-duration",opts.duration);
+        } else {
+            func = opts
         }
-	
-	$(document).ready(function () {
-		
-		// event handler für Buttons hinzufügen, die ein href Attribut haben und kein rel=external
-		$("body").on("click", "a",function(event) {
-			$el = $(event.currentTarget);
-			
-			if ( $el.attr("href") && $el.attr("rel") !== "external" && $el.attr("href").lastIndexOf("javascript", 0) !== 0) {
-				gototarget($el.attr("href"));
-				
-				// no click event
-				event.preventDefault();
-			}
-		});
+        $this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $this.removeClass('animated ' + animationName);
+            if (typeof opts === 'object') {
+                if ( opts.delay ) $this.css("animation-delay","");
+                if ( opts.duration ) $this.css("animation-duration","");
+                if ( $this.attr("style") === "" ) $this.removeAttr("style");
+            }
+            if (typeof func  === "function") func();
+        });
+    }
 
-		// Karte einmalig anzeigen
-		$("button.mapbtn").one("click", function(event) {
-			var maps = $("div.maps").removeClass("hidden");
-			var mform = $("div.mform").removeClass("hidden");
-			$("div.mdirections").removeClass("hidden");
-			var location = swformfield({container:mform, el:'input', text: '<span class="glyphicon glyphicon-map-marker"></span>', type: 'text', autocor: 'off', placeh: "Startpunkt hier eingeben und auf <Route suchen> drücken"});
-			var search = $('<a class="btn btn-success" type="button" name="search" role="button">').html('Route suchen!').on("click", function() {maps.swgetroute(location.val())});
-			var reset = $('<a class="btn btn-warning" type="button" name="reset" role="button">').html('Route zurücksetzen!').on("click", function() {maps.swmaps()});
-			$('<div class="btn-group btn-group-justified">').append(search).append(reset).appendTo(mform);
-			
-			//Show Map
-			maps.swmaps();
-			
-			// Remove Button
-			$(event.target).remove();
-		});
-        
+    var getpath = function (full) {
+        if (full) {
+            return window.location.href.replace(window.location.href.split('/').pop(),"");
+        } else {
+            var port = ( !!window.location.port ) ? ":"+window.location.port : "";
+            return window.location.href.replace(window.location.href.split('/').pop(),"").replace(window.location.protocol + "//" + window.location.hostname + port,"");
+        }
+    }
+
+    var gototarget = function (url) {
+        var currentpath = getpath();
+
+        url = url || "";
+
+        if (url.charAt(0) !== "/") url = currentpath+url
+
+        var newpath = url.substring(0,url.lastIndexOf("/")+1);
+
+        if ( newpath === currentpath) {
+            var target = url.replace(newpath,"").split(".html")[0];
+
+            if ( target === "") {
+                url = currentpath;
+                target = "landing";
+            }
+
+            if ( ismodern ) {
+                history.pushState({}, '', url);
+                render();
+            } else {
+                window.location.hash = target;
+            }
+        } else {
+            window.location.href = window.location.protocol + "//" + window.location.hostname + url ;
+        }
+    }
+
+    rade.gototarget = gototarget;
+
+    var render = function() {
+
+        var hash = window.location.hash.slice(1);
+        var url = (window.location.href.split('/').pop().split(".html")[0]).replace(window.location.hash,"");
+
+        if (url && !ismodern) {
+            var hname = url ? "#"+url : "";
+
+            // Force a page refresh with hashtag
+            window.location.href = getpath()+hname;
+        }
+
+        if (hash && ismodern) {
+
+            // Force a page refresh with url
+            window.location.href = getpath()+hash+".html";
+        }
+
+        var target = hash ? hash : url;
+
+        // Suche nach Seite
+        target = target || "landing";
+        var targetelement = $("body > article[data-content="+target+"]");
+
+        // Falls nicht gefunden
+        if (targetelement.length === 0) targetelement = $("body > article[data-content=404]");
+
+        // Doctitle abfragen
+        var doctitle = $(targetelement).data("doctitle");
+        if (!doctitle) doctitle = target.charAt(0).toUpperCase() + target.slice(1); // Fallback
+
+        // Content anzeigen
+        //$("body > article[data-content]").addClass("hidden");
+        //targetelement.removeClass("hidden");
+        var $articles = $("body > article[data-content]:not(.hidden)");
+
+        if ( firstload ) {
+            $articles.addClass("hidden");
+            targetelement.removeClass("hidden");
+            firstload = false;
+        } else {
+            $articles.animateCss("fadeOutRight",function() {
+                $articles.addClass("hidden");
+                if ($articles.data("emptyme")){
+                    $articles.find($articles.data("emptyme")).empty();
+                }
+                targetelement.removeClass("hidden").animateCss("fadeInLeft");
+            });
+        }
+
+        // Navbar Menüitem active setzen
+        var $li = $("nav.navbar li").removeClass("active");
+        $li.has("a[href='"+target+".html']").addClass("active");
+        if (target === "landing") $li.has("a[href='/']").addClass("active");
+
+        // Document Title ändern
+        document.title = doctitle;
+        $("meta[property=og\\:title]").attr("content",doctitle);
+
+        // Meta-Description per JS setzen
+        $("meta[name=description]").attr("content",targetelement.data("desc"));
+        $("meta[property=og\\:description]").attr("content",targetelement.data("desc"));
+
+        $("meta[property=og\\:url]").attr("content",window.location.href);
+
+        // Cookie Richtlinien umsetzen (erster Track ohne Cookies)
+        if (!Cookies.get('rade-consent')) {
+            if ($("#cookiewarning").length === 0) {
+                var cookiecontainer = $('<div id="cookiewarning" style="padding-top:5px; border-bottom:3px solid #f1ce00;padding-bottom: 5px" class="container-fluid">');
+                $('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der <a href="/cookies.html">Nutzung von Cookies</a> zu. ').css('color', '#333').appendTo(cookiecontainer);
+                var cookiebutton =$('<a class="btn btn-success btn-xs">').html('<i class="glyphicon glyphicon-ok"></i> <strong>Ich stimme zu.</strong>').appendTo(cookiecontainer);
+
+                cookiecontainer.hide().prependTo($("nav.navbar")).slideDown();
+
+                cookiebutton.on("click", function() {
+                    Cookies.set('rade-consent', '1', { expires: 365, domain: '.radegundisfest.de', path: '/',secure: true});
+                    cookiecontainer.slideUp("fast",function() {
+                        cookiecontainer.remove();
+                    });
+                    _paq.push(['trackEvent', 'Cookies', 'Einwilligen', 'Click']);
+                });
+            }
+            _paq.push(['disableCookies']);
+        }
+
+        // Piwik vorbereiten
+        _paq.push(['setDocumentTitle', doctitle]);
+        _paq.push(['setCustomUrl', window.location.href]);
+
+        // Piwik tracken
+        _paq.push(['trackPageView']);
+
+        // Scroll to top of site
+        $("html,body").animate({ scrollTop: 0 }, "fast");
+
+        // Event triggern, der per "data-exec" spezifiziert wurde
+        var exec = targetelement.data("exec");
+        if (exec) targetelement.trigger(exec);
+
+        // Lazy load images
+        // Damit das korrekt funktionniert, muss eine Bildhöhe definiert sein, die durch das Dummy-Bild festgelegt ist
+        // Aktiviere LazyLoad nur bei Bildern, die nicht schon geladen sind! (geladen: element hat kein data-src mehr!)
+        $("img[data-src]",targetelement).add($("footer .sponsoren div[data-src]")).add($("div[data-src]",targetelement)).unveil();
+    };
+
+    var swformfield = function (options) {
+        var div = $('<div class="form-group">');
+        var divi = $('<div class="input-group">').appendTo(div);
+
+
+        var formfield = $('<'+options.el+'>',{
+            type: options.type,
+            class: 'form-control',
+            name: options.name,
+            autocorrect: options.autocor,
+            autocapitalize: options.autocap,
+            autocomplete: options.autocomp,
+            placeholder: options.placeh,
+            style: options.style,
+            rows: options.rows,
+            value: options.value
+        });
+
+        if ( options.type === 'hidden' ) {
+            formfield.removeClass('form-control');
+            formfield.appendTo(options.container);
+        } else if (options.type === 'checkbox') {
+            $("<label>").append(formfield).append($('<span>'+options.text+'</span>')).appendTo(divi);
+            div.appendTo(options.container);
+        } else {
+            $('<span class="input-group-addon">').html(options.text).appendTo(divi);
+            formfield.appendTo(divi);
+            $('<span class="glyphicon form-control-feedback" aria-hidden="true">').appendTo(divi);
+            if (options.extra) options.extra.appendTo(divi);
+            div.appendTo(options.container);
+        }
+
+        return formfield;
+    }
+    rade.swformfield = swformfield;
+
+    var injectScripts = function(scripts) {
+        var xhrs = scripts.map(function(src) {
+            var p = $.Deferred();
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = false;
+            script.addEventListener('load', function() {
+                p.resolve();
+            });
+            script.addEventListener('error', function () {
+                return p.reject('Error loading script.');
+            });
+            script.addEventListener('abort', function () {
+                return p.reject('Script loading aborted.');
+            });
+            document.head.appendChild(script);
+            return p;
+        });
+
+        return $.when.apply($, xhrs);
+    }
+
+    rade.injectScripts = injectScripts;
+
+    var ar2obj = function (arr) {
+        var obj = {};
+        $.each(arr,function(i, el){obj[el.name] = el.value;});
+        return obj;
+    };
+
+    $.fn.swmaps = function () {
+        if (this.length === 0) return;
+        var $that = $(this);
+        injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function() {
+            $("div.mdirections").empty()
+            $that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
+            $that.gmap3({
+                map:{options:{center:[48.249228,10.695875],zoom:16},
+                    events: {
+                        zoom_changed: function () {
+                            if ( $that.gmap3("get").getZoom() < 14 ) {
+                                $that.gmap3({
+                                get: {
+                                    name: 'overlay',
+                                    all: true,
+                                    callback: function (ov) {
+                                        $.each(ov,function(i,v){v.hide();});
+                                    }
+                                }
+                                })
+                            } else {
+                                $that.gmap3({
+                                get: {
+                                    name: 'overlay',
+                                    all: true,
+                                    callback: function (ov) {
+                                        $.each(ov,function(i,v){v.show();});
+                                    }
+                                }
+                                })
+                            }
+                        }
+                    }	
+                },
+                overlay:{
+                    values: [
+                        {latLng: [48.24974,10.69707],options:{content:'<span style="color:#00F;font-size:2em">P1</span>',offset:{y:5,x:5}}},
+                        {latLng: [48.25182,10.69732],options:{content:'<span style="color:#00F;font-size:2em">P2</span>',offset:{y:5,x:5}}},
+                        {latLng: [48.24786,10.69425],options:{content:'<span style="color:#00F;font-size:2em">P3</span>',offset:{y:5,x:5}}},
+                        {latLng: [48.2493,10.69667],options:{content:'<span style="color:#F00;font-size:2em">Festzelt</span>',offset:{y:5,x:5}}},
+                    ]
+                },
+                polygon:{
+                values: [
+                        {options:{
+                            strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
+                            paths:[
+                                [48.24986,10.6967],
+                                [48.24966,10.69656],
+                                [48.24956,10.69702],
+                                [48.24974,10.69707],
+                                [48.2498,10.69701]
+                                ]
+                            }
+                        },
+                        {options:{
+                            strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
+                            paths:[
+                                [48.25187,10.69706],
+                                [48.25188,10.69691],
+                                [48.25183,10.69687],
+                                [48.25182,10.69704],
+                                [48.25162,10.69705],
+                                [48.25162,10.69706],
+                                [48.25156,10.69705],
+                                [48.25155,10.69712],
+                                [48.25182,10.69732],
+                                [48.25183,10.69713]
+                                ]
+                            }
+                        },
+                        {options:{
+                            strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
+                            paths:[
+                                [48.24838,10.69372],
+                                [48.24834,10.69367],
+                                [48.24802,10.69394],
+                                [48.24797,10.69393],
+                                [48.24794,10.69387],
+                                [48.24793,10.69373],
+                                [48.24787,10.69373],
+                                [48.24789,10.69395],
+                                [48.24786,10.69425],
+                                [48.2479,10.69427],
+                                [48.24795,10.69406]
+                                ]
+                            }
+                        },
+                        {options:{
+                            strokeColor: "#F00",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#F00",fillOpacity: 0.35,
+                            paths:[
+                                [48.24962,10.69656],
+                                [48.24932,10.69645],
+                                [48.2493,10.69667],
+                                [48.2496,10.69677]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            });
+        });
+    };
+
+    $.fn.swgetroute = function(origin) {
+        if (this.length === 0) return;
+        var $that = $(this);
+        swmapswrapper(function() {
+            $that.gmap3({clear:"directionsrenderer"});
+            $that.gmap3({
+                getroute:{
+                    options:{
+                        origin:origin,
+                        destination:{latLng: [48.2493,10.69667]},
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    },
+                    callback: function(results){
+                    var directioncontainer = $("div.mdirections").empty();
+                    if (!results) {
+                        $('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Ort "'+origin+'" nicht gefunden!</div>').appendTo($("div.mform").find("div.swalert").empty());
+                        return
+                    };
+                    $("div.mform").find("div.swalert").empty();
+                    $that.gmap3({
+                        directionsrenderer:{
+                        container: directioncontainer,
+                        options:{directions:results}
+                        }
+                    });
+                    }
+                }
+            });
+        });
+    }
+
+    $.fn.swcarousel = function () {
+        var carousel = $(this);
+        carousel.carousel();
+        //carousel.carousel('pause');
+    }
+
+/**
+ * jQuery Unveil
+ * A very lightweight jQuery plugin to lazy load images
+ * http://luis-almeida.github.com/unveil
+ *
+ * Licensed under the MIT license.
+ * Copyright 2013 Luís Almeida
+ * https://github.com/luis-almeida
+ */
+
+    $.fn.unveil = function(threshold, callback) {
+
+        var $w = $(window),
+            th = threshold || 0,
+            attrib = "data-src",
+            imgs = this;
+
+        imgs.one("unveil", function() {
+            var $this = this;
+            var source = $this.getAttribute(attrib);
+            if (!source) return;
+
+            $this.removeAttribute("data-src"); // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
+            if ($this.tagName === "IMG") {
+                $this.setAttribute("src", source);
+            } else {
+                var $new = document.createElement('img');
+                $new.setAttribute("src", source);
+                $new.setAttribute("class", "img-responsive");
+                $this.parentNode.replaceChild($new,$this);
+            }
+        });
+
+        $w.one("hashchange", function() {
+            imgs.off("unveil"); // "unveil" events der Bilder bei Seitenwechsel wieder entfernen
+        });
+
+        function unveil() {
+        var inview = imgs.filter(function() {
+            var $e = $(this),
+                wt = $w.scrollTop(),
+                wb = wt + $w.height(),
+                et = $e.offset().top,
+                eb = et + $e.height();
+            return eb >= wt - th && et <= wb + th;
+        });
+
+        inview.trigger("unveil");
+        imgs = imgs.not(inview).not("[data-src]");
+        }
+        // alte Window "unveil" events löschen und neue Events aktivieren
+        var uevents = "scroll.unveil resize.unveil lookup.unveil"
+        $w.off(uevents).on(uevents, unveil);
+        unveil();
+        return this;
+    };
+
+    $(document).ready(function () {
+
+        // event handler für Buttons hinzufügen, die ein href Attribut haben und kein rel=external
+        $("body").on("click", "a",function(event) {
+            $el = $(event.currentTarget);
+
+            if ( $el.attr("href") && $el.attr("rel") !== "external" && $el.attr("href").lastIndexOf("javascript", 0) !== 0) {
+                gototarget($el.attr("href"));
+
+                // no click event
+                event.preventDefault();
+            }
+        });
+
+        // Karte einmalig anzeigen
+        $("button.mapbtn").one("click", function(event) {
+            var maps = $("div.maps").removeClass("hidden");
+            var mform = $("div.mform").removeClass("hidden");
+            $("div.mdirections").removeClass("hidden");
+            var location = swformfield({container:mform, el:'input', text: '<span class="glyphicon glyphicon-map-marker"></span>', type: 'text', autocor: 'off', placeh: "Startpunkt hier eingeben und auf <Route suchen> drücken"});
+            var search = $('<a class="btn btn-success" type="button" name="search" role="button">').html('Route suchen!').on("click", function() {maps.swgetroute(location.val())});
+            var reset = $('<a class="btn btn-warning" type="button" name="reset" role="button">').html('Route zurücksetzen!').on("click", function() {maps.swmaps()});
+            $('<div class="btn-group btn-group-justified">').append(search).append(reset).appendTo(mform);
+
+            //Show Map
+            maps.swmaps();
+
+            // Remove Button
+            $(event.target).remove();
+        });
+
         // Carousel
         $('#swcarousel').swcarousel();
 
-		// Back-Button auf allen anderen Seiten hinzufügen
-		var backbtn = $("<div class='row'><div class='col-md-12'><a href='"+getpath()+"'class='btn btn-sm btn-default'>Zurück Zur Übersicht &raquo;</a></div></div>");
-		$("article[data-content]:not([data-content=landing])").append(backbtn);
-		
-		$.fn.swvalid = function(check) {
-			$(this).each(function(i,el) {
-				if (check) {
-					$(el).closest("div.form-group").removeClass("has-error").addClass("has-success").find("span.glyphicon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
-				} else {
-					$(el).closest("div.form-group").removeClass("has-success").addClass("has-error").find("span.glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
-				}
-			});
-			return this;
-		}
+        // Back-Button auf allen anderen Seiten hinzufügen
+        var backbtn = $("<div class='row'><div class='col-md-12'><a href='"+getpath()+"'class='btn btn-sm btn-default'>Zurück Zur Übersicht &raquo;</a></div></div>");
+        $("article[data-content]:not([data-content=landing])").append(backbtn);
+
+        $.fn.swvalid = function(check) {
+            $(this).each(function(i,el) {
+                if (check) {
+                    $(el).closest("div.form-group").removeClass("has-error").addClass("has-success").find("span.glyphicon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
+                } else {
+                    $(el).closest("div.form-group").removeClass("has-success").addClass("has-error").find("span.glyphicon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
+                }
+            });
+            return this;
+        }
 
         var checklogin = function(url) {
             var loginpromise = $.Deferred();
@@ -357,308 +563,104 @@ rade = {};
 
         checklogin();
 
-		// Exec-Events
-		$("article[data-exec=showlogin]").on("showlogin", function() {
-			
-			$.ajax({type: 'GET', url: '/intern/auth'}).done(function() {
-				gototarget("/intern.html");
-			}).fail(function() {
-				var logincontainer = $("<div>");
-				var swalert = $('<div class="swalert">').appendTo(logincontainer);
-				var form = $('<form class="swform">').appendTo(logincontainer);
-				var elogin = swformfield({container:form, el:'input', text: 'Login', type: 'text', name: 'login', autocor: 'off', autocap:'none'});
-				var epassword = swformfield({container:form, el:'input', text: 'Passwort', type: 'password', name: 'password', autocomp: 'off'});
-				var eemail = swformfield({container:form, el:'input', text: 'Email (optional)', type: 'email', name: 'email'});
-				
-				var data = {task: 'login'};
+        // Exec-Events
+        $("article[data-exec=showlogin]").on("showlogin", function() {
 
-				form.on("submit", function(e) {
-					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
-					$.ajax({type: 'POST', url: '/intern/auth', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
-						swalert.empty();
-						
-						if (d.success) {
-							e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
-							elogin.swvalid(true);
-							epassword.swvalid(true);
-							eemail.swvalid(true);
-							setTimeout(function() {e.dialog.close();checklogin("/intern.html")}
-							,1000);
-						} else {
-							e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
-							$.each([
-								{el: elogin, status: d.login, msg: 'Login "'+elogin.val()+'" ungültig!'},
-								{el: epassword, status: d.password, msg: 'Passwort ungültig!'},
-								{el: eemail, status: d.email, msg: 'Emailadresse "'+eemail.val()+'" ungültig!!'}] ,function (i, obj) {
-								if (!obj.status) {
-									$('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+obj.msg+'</div>').appendTo(swalert);
-									obj.el.val("").swvalid(false);
-								} else {
-									obj.el.swvalid(true);
-								}
-							});
-						}
-					}).fail(function() {
-						
-					});
-				});
-				
-				var dialogref = BootstrapDialog.show({
-					title: "Bitte Einloggen!",
-					message: logincontainer,
-					spinicon: 'glyphicon glyphicon-refresh',
-					buttons : [
-					{
-						id: 'submit',
-						label: "Login",
-						cssClass: 'btn-primary',
-						autospin: true,
-						action: function(dialog) {
-							dialog.enableButtons(false).setClosable(false);
-							form.trigger({type:'submit',dialog:dialog});
-						}
-					},
-					{label: 'Schließen!', cssClass: 'btn-default', action: function(dialog) {dialog.close();gototarget();}}
-					]
-				});
-				
-				// Dialog schließen bei Back button
-				$(window).one("hashchange popstate", function () {
-					dialogref.close();
-				});
-			});
-		});
-		
-		$("article[data-exec=shuffle]").on("shuffle", function() {
-			var par = $(this).find("div.shuffle");
-			var divs = par.children();
-			while (divs.length) {
-				par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
-			}
-		});
-		
-		var par = $("footer div.sponsoren");
-		var divs = par.children();
-		while (divs.length) {
-			par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
-		}
-		
-		// Routing beim Laden der Seite
-		render();
+            $.ajax({type: 'GET', url: '/intern/auth'}).done(function() {
+                gototarget("/intern.html");
+            }).fail(function() {
+                var logincontainer = $("<div>");
+                var swalert = $('<div class="swalert">').appendTo(logincontainer);
+                var form = $('<form class="swform">').appendTo(logincontainer);
+                var elogin = swformfield({container:form, el:'input', text: 'Login', type: 'text', name: 'login', autocor: 'off', autocap:'none'});
+                var epassword = swformfield({container:form, el:'input', text: 'Passwort', type: 'password', name: 'password', autocomp: 'off'});
+                var eemail = swformfield({container:form, el:'input', text: 'Email (optional)', type: 'email', name: 'email'});
 
-		// Routing bei hashchange bzw. Seitenwechsel(funktionniert auch bei Back- & Forward-Funktion des Browsers, mit allen Browsern kompatibel)
-		$(window).on("hashchange", function (e, data) {
-			render();
-		});
-		
-		$(window).on("popstate", function (e, data) {
-			if (!ismodern) return false;
-			render();
-		});
-	});
+                var data = {task: 'login'};
 
-	var ar2obj = function (arr) {
-		var obj = {};
-		$.each(arr,function(i, el){obj[el.name] = el.value;});
-		return obj;
-	};
+                form.on("submit", function(e) {
+                    e.preventDefault();
+                    $.extend(data,ar2obj(form.serializeArray()));
+                    $.ajax({type: 'POST', url: '/intern/auth', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
+                        swalert.empty();
 
-	$.fn.swmaps = function () {
-		if (this.length === 0) return;
-		var $that = $(this);
-		injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function() {
-			$("div.mdirections").empty()
-			$that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
-			$that.gmap3({
-				map:{options:{center:[48.249228,10.695875],zoom:16},
-					events: {
-						zoom_changed: function () {
-							if ( $that.gmap3("get").getZoom() < 14 ) {
-								$that.gmap3({
-								get: {
-									name: 'overlay',
-									all: true,
-									callback: function (ov) {
-										$.each(ov,function(i,v){v.hide();});
-									}
-								}
-								})
-							} else {
-								$that.gmap3({
-								get: {
-									name: 'overlay',
-									all: true,
-									callback: function (ov) {
-										$.each(ov,function(i,v){v.show();});
-									}
-								}
-								})
-							}
-						}
-					}	
-				},
-				overlay:{ 
-					values: [
-						{latLng: [48.24974,10.69707],options:{content:'<span style="color:#00F;font-size:2em">P1</span>',offset:{y:5,x:5}}},
-						{latLng: [48.25182,10.69732],options:{content:'<span style="color:#00F;font-size:2em">P2</span>',offset:{y:5,x:5}}},
-						{latLng: [48.24786,10.69425],options:{content:'<span style="color:#00F;font-size:2em">P3</span>',offset:{y:5,x:5}}},
-						{latLng: [48.2493,10.69667],options:{content:'<span style="color:#F00;font-size:2em">Festzelt</span>',offset:{y:5,x:5}}},
-					]
-				},
-				polygon:{
-				values: [
-						{options:{
-							strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
-							paths:[
-								[48.24986,10.6967],
-								[48.24966,10.69656],
-								[48.24956,10.69702],
-								[48.24974,10.69707],
-								[48.2498,10.69701]
-								]
-							}
-						},
-						{options:{
-							strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
-							paths:[
-								[48.25187,10.69706],
-								[48.25188,10.69691],
-								[48.25183,10.69687],
-								[48.25182,10.69704],
-								[48.25162,10.69705],
-								[48.25162,10.69706],
-								[48.25156,10.69705],
-								[48.25155,10.69712],
-								[48.25182,10.69732],
-								[48.25183,10.69713]
-								]
-							}
-						},
-						{options:{
-							strokeColor: "#0000FF",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#00F",fillOpacity: 0.35,
-							paths:[
-								[48.24838,10.69372],
-								[48.24834,10.69367],
-								[48.24802,10.69394],
-								[48.24797,10.69393],
-								[48.24794,10.69387],
-								[48.24793,10.69373],
-								[48.24787,10.69373],
-								[48.24789,10.69395],
-								[48.24786,10.69425],
-								[48.2479,10.69427],
-								[48.24795,10.69406]
-								]
-							}
-						},
-						{options:{
-							strokeColor: "#F00",strokeOpacity: 0.8,strokeWeight: 2,fillColor: "#F00",fillOpacity: 0.35,
-							paths:[
-								[48.24962,10.69656],
-								[48.24932,10.69645],
-								[48.2493,10.69667],
-								[48.2496,10.69677]
-								]
-							}
-						}
-					]
-				}
-			});
-		});
-	};
-	
-	$.fn.swgetroute = function(origin) {
-		if (this.length === 0) return;
-		var $that = $(this);
-		swmapswrapper(function() {
-			$that.gmap3({clear:"directionsrenderer"});
-			$that.gmap3({
-				getroute:{
-					options:{
-						origin:origin,
-						destination:{latLng: [48.2493,10.69667]},
-						travelMode: google.maps.DirectionsTravelMode.DRIVING
-					},
-					callback: function(results){
-					var directioncontainer = $("div.mdirections").empty();
-					if (!results) {
-						$('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Ort "'+origin+'" nicht gefunden!</div>').appendTo($("div.mform").find("div.swalert").empty());
-						return
-					};
-					$("div.mform").find("div.swalert").empty();
-					$that.gmap3({
-						directionsrenderer:{
-						container: directioncontainer,
-						options:{directions:results} 
-						}
-					});
-					}
-				}
-			});
-		});
-	}
+                        if (d.success) {
+                            e.dialog.setType(BootstrapDialog.TYPE_SUCCESS);
+                            elogin.swvalid(true);
+                            epassword.swvalid(true);
+                            eemail.swvalid(true);
+                            setTimeout(function() {e.dialog.close();checklogin("/intern.html")}
+                            ,1000);
+                        } else {
+                            e.dialog.setType(BootstrapDialog.TYPE_DANGER).enableButtons(true).getButton('submit').stopSpin();
+                            $.each([
+                                {el: elogin, status: d.login, msg: 'Login "'+elogin.val()+'" ungültig!'},
+                                {el: epassword, status: d.password, msg: 'Passwort ungültig!'},
+                                {el: eemail, status: d.email, msg: 'Emailadresse "'+eemail.val()+'" ungültig!!'}] ,function (i, obj) {
+                                if (!obj.status) {
+                                    $('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+obj.msg+'</div>').appendTo(swalert);
+                                    obj.el.val("").swvalid(false);
+                                } else {
+                                    obj.el.swvalid(true);
+                                }
+                            });
+                        }
+                    }).fail(function() {
 
-	$.fn.swcarousel = function () {
-		var carousel = $(this);
-		carousel.carousel();
-		//carousel.carousel('pause');
-	}
+                    });
+                });
 
-/**
- * jQuery Unveil
- * A very lightweight jQuery plugin to lazy load images
- * http://luis-almeida.github.com/unveil
- *
- * Licensed under the MIT license.
- * Copyright 2013 Luís Almeida
- * https://github.com/luis-almeida
- */
+                var dialogref = BootstrapDialog.show({
+                    title: "Bitte Einloggen!",
+                    message: logincontainer,
+                    spinicon: 'glyphicon glyphicon-refresh',
+                    buttons : [
+                    {
+                        id: 'submit',
+                        label: "Login",
+                        cssClass: 'btn-primary',
+                        autospin: true,
+                        action: function(dialog) {
+                            dialog.enableButtons(false).setClosable(false);
+                            form.trigger({type:'submit',dialog:dialog});
+                        }
+                    },
+                    {label: 'Schließen!', cssClass: 'btn-default', action: function(dialog) {dialog.close();gototarget();}}
+                    ]
+                });
 
-  $.fn.unveil = function(threshold, callback) {
+                // Dialog schließen bei Back button
+                $(window).one("hashchange popstate", function () {
+                    dialogref.close();
+                });
+            });
+        });
 
-    var $w = $(window),
-        th = threshold || 0,
-        attrib = "data-src",
-        imgs = this;
+        $("article[data-exec=shuffle]").on("shuffle", function() {
+            var par = $(this).find("div.shuffle");
+            var divs = par.children();
+            while (divs.length) {
+                par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+            }
+        });
 
-    imgs.one("unveil", function() {
-        var $this = this;
-        var source = $this.getAttribute(attrib);
-        if (!source) return;
-
-        $this.removeAttribute("data-src"); // Wichtig, mit das Bild beim erneuten Seitenbesucht nicht nochmals ersetzt wird!
-        if ($this.tagName === "IMG") {
-            $this.setAttribute("src", source);
-        } else {
-            var $new = document.createElement('img');
-            $new.setAttribute("src", source);
-            $new.setAttribute("class", "img-responsive");
-            $this.parentNode.replaceChild($new,$this);
+        var par = $("footer div.sponsoren");
+        var divs = par.children();
+        while (divs.length) {
+            par.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
         }
+
+        // Routing beim Laden der Seite
+        render();
+
+        // Routing bei hashchange bzw. Seitenwechsel(funktionniert auch bei Back- & Forward-Funktion des Browsers, mit allen Browsern kompatibel)
+        $(window).on("hashchange", function (e, data) {
+            render();
+        });
+
+        $(window).on("popstate", function (e, data) {
+            if (!ismodern) return false;
+            render();
+        });
     });
-
-    $w.one("hashchange", function() {
-        imgs.off("unveil"); // "unveil" events der Bilder bei Seitenwechsel wieder entfernen
-    });
-
-    function unveil() {
-      var inview = imgs.filter(function() {
-        var $e = $(this),
-            wt = $w.scrollTop(),
-            wb = wt + $w.height(),
-            et = $e.offset().top,
-            eb = et + $e.height();
-        return eb >= wt - th && et <= wb + th;
-      });
-
-      inview.trigger("unveil");
-      imgs = imgs.not(inview).not("[data-src]");
-    }
-    // alte Window "unveil" events löschen und neue Events aktivieren
-    var uevents = "scroll.unveil resize.unveil lookup.unveil"
-    $w.off(uevents).on(uevents, unveil);
-    unveil();
-    return this;
-  };
 })(jQuery);
