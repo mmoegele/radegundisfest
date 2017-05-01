@@ -5,10 +5,9 @@ google5527f4b248d7aad2.html
 home.min.html
 home.pre.html
 js/home.min.js
-css/bootstrap.combo.*
 js/j.min.js
-css/home-noncritical.min.css
-css/home-critical.min.css
+css/home-noncritical.css
+css/home-critical.css
 intern/intern.min.html
 .precompiled
 sitemap.xml
