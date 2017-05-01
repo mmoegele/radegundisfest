@@ -504,10 +504,11 @@ rade = {};
 
         var jspromise = $.Deferred();
 
-        loginpromise.done(function() {
+        loginpromise.done(function(d) {
             if (typeof $.fn.helferliste === 'function') {
                 jspromise.resolve();
             } else {
+                if ( $("article[data-content='intern']").length === 0 ) $("article").last().after($.parseHTML(d));
                 injectScripts(['/intern/js/helferliste.js']).done(function() {
                     jspromise.resolve();
                 });
@@ -515,7 +516,6 @@ rade = {};
         });
 
         $.when(loginpromise,jspromise).done(function(e,f) {
-            if ( $("article[data-content='intern']").length === 0 ) $("article").last().after($.parseHTML(e));
             if (url) {
                 gototarget(url);
                 rade.login();
