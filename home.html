@@ -1168,9 +1168,11 @@
             var p = document.createElement('script'); p.type = 'text/javascript'; p.async = true; p.defer = true; p.src = '/0.js'; document.head.appendChild(p);
         })();
     </script>
-    <noscript><link rel="stylesheet" href="css/home-noncritical.css"></noscript>
-    <!-- Piwik Zählpixel bei deaktiviertem JS -->
-    <noscript><p><img src="/0.php?idsite=9" style="border:0;" alt="Pixel" /></p></noscript>
-    <!-- End Piwik Code -->
+    <noscript>
+        <!-- Stylesheet bei deaktiviertem JS -->
+        <link rel="stylesheet" href="css/home-noncritical.css">
+        <!-- Piwik Zählpixel bei deaktiviertem JS -->
+        <p><img src="/0.php?idsite=9" style="border:0;" alt="p" /></p>
+    </noscript>
 </body>
 </html>
