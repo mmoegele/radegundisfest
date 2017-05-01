@@ -124,6 +124,9 @@ button,
 select {
   text-transform: none;
 }
+
+/* non-critical:start */
+
 button,
 html input[type="button"],
 input[type="reset"],
@@ -187,6 +190,8 @@ td,
 th {
   padding: 0;
 }
+
+/* non-critical:end */
 
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 
@@ -1331,11 +1336,13 @@ small,
 .small {
   font-size: 85%;
 }
+/* non-critical:start */
 mark,
 .mark {
   padding: .2em;
   background-color: #fcf8e3;
 }
+/* non-critical:end */
 .text-left {
   text-align: left;
 }
@@ -1345,6 +1352,7 @@ mark,
 .text-center {
   text-align: center;
 }
+/* non-critical:start */
 .text-justify {
   text-align: justify;
 }
@@ -1366,8 +1374,6 @@ mark,
 .text-primary {
   color: #337ab7;
 }
-
-/* non-critical:start */
 
 a.text-primary:hover,
 a.text-primary:focus {

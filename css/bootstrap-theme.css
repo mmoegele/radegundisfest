@@ -1504,7 +1504,7 @@ dt, kbd kbd, label {
 .text-center {
     text-align: center;
 }
-
+/* non-critical:start */
 .text-justify {
     text-align: justify;
 }
@@ -1528,8 +1528,6 @@ dt, kbd kbd, label {
 .text-muted {
     color: #b3b3b3;
 }
-
-/* non-critical:start */
 
 .text-primary {
     color: #4582ec;
