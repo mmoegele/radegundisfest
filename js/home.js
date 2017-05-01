@@ -131,6 +131,7 @@ rade = {};
 
         // Suche nach Seite
         target = target || "landing";
+        target = /^[a-z0-9]+$/.test(target) ? target : "landing";
         var targetelement = $("body > article[data-content="+target+"]");
 
         // Falls nicht gefunden
