@@ -1,17 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- meta-description wird vom jeweiligen article übernommen -->
-    <meta name="description" content="">
+    <meta name="description" content="" />
     <meta name="keywords" content="Radegundisfest, Waldberg, St. Radegundis, Schwarzachtaler, Live, Badeentenrennen, Napolean Gasgrill, Radegundis, Kletterturm, Bierzelt, Blasmusik, Bobingen, Kreuzanger, Humpa Bumpa, Musikverein, Familie, günstige Preise, Maß Bier, familienfreundlich, Kinder, Bierzelt, Volksfest, Curry Wurst, Gockel, Hähnchen, Spaß, gute Laune, Party, Kinderschminken, Spiel, Happy Hour, Radegundis, Film, Kino, Findet Dorie" />
-    <meta name="author" content="Michael Mögele, Andreas Fischer">
-    <meta charset="UTF-8">
+    <meta name="author" content="Michael Mögele, Andreas Fischer" />
+    <meta name="robots" content="index, follow" />
+    <meta charset="UTF-8" />
     <!--facebook-->
-    <meta property="og:title" content="">
-    <meta property="og:description" content="">
-    <meta property="og:url" content="">
-    <meta property="fb:app_id" content="203225530180358">
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="" />
+    <meta property="fb:app_id" content="203225530180358" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://www.radegundisfest.de/img/flyer/landing3_1080_420-text.jpg" />
     <!-- DNS Prefetch
@@ -39,7 +40,7 @@
         })();
     </script>
 </head>
-<body>
+<body itemscope itemtype="http://schema.org/Event">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -80,7 +81,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <header class="page-header hidden-xs">
         <div class="container">
-            <h1>Radegundisfest <small>30. Juni - 3. Juli 2017</small></h1>
+            <h1 itemprop="name">Radegundisfest <small itemprop="startDate" content="2017-06-30T19:00">30. Juni -</small><small itemprop="endDate" content="2017-07-03T12:00"> 3. Juli 2017</small></h1>
         </div>
     </header>
     <!--Landing Content-->
@@ -140,8 +141,8 @@
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                 <img data-src="/img/happyhour2.jpg" class="img-responsive" alt="Happy Hour" />
             </div>
-            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-                <p class="text-left">am Sonntag ab 18:00, z.B. 1 Maß Bier mit Brotzeit zum unschlagbarem Preis von 8,90 EUR</p>
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                <p class="text-left">am Sonntag ab 18:00, z.B. 1 Maß Bier mit Brotzeit zum unschlagbarem Preis von <span itemprop="price" content="13.00">8,90</span><span itemprop="priceCurrency" content="EUR"> €</span></p>
             </div>
         </div>
         <hr />
@@ -313,8 +314,8 @@
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                 <img data-src="/img/happyhour2.jpg" class="img-responsive" alt="Happy Hour" />
             </div>
-            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-                <p class="text-left">am Sonntag ab 18:00, z.B. 1 Maß Bier mit Brotzeit zum unschlagbarem Preis von 8,90 EUR</p>
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                <p class="text-left">am Sonntag ab 18:00, z.B. 1 Maß Bier mit Brotzeit zum unschlagbarem Preis von <span itemprop="price" content="13.00">8,90</span><span itemprop="priceCurrency" content="EUR"> €</span></p>
             </div>
         </div>
         <hr />
@@ -1270,8 +1271,11 @@
             </div>
             <div class="row copyright">
                 <div class="col-md-12">
-                    <p class="text-right">
-                        &copy; Musikverein D'Schwarzachtaler e.V. 2017 | <a href='kontakt.html' title="Kontaktaddressen des Eventteams">Kontakt zum Eventteam</a> |
+                    <p class="text-right" itemprop="location" itemscope itemtype="http://schema.org/Place">
+                        &copy; <span itemprop="name"> Musikverein D'Schwarzachtaler e.V.</span> 2017,  <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                            <span itemprop="streetAddress">Bauerngasse </span>, <span itemprop="postalCode">86399</span> 
+                            <span itemprop="addressLocality">Bobingen</span>
+                        </span>| <a href='kontakt.html' title="Kontaktaddressen des Eventteams">Kontakt zum Eventteam</a> |
                         <a rel="external" title="Musikverein D'Schwarzachtaler Impressum" href="https://www.dschwarzachtaler.de/kontakt/impressum.html">Impressum</a>
                     </p>
                 </div>
