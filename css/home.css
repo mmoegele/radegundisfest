@@ -375,18 +375,23 @@ h1 small
 }
 
 .radeimg1 {
-	background: url("../img/flyer/landing4_1080_420.jpg") no-repeat center top;
+	background: url("../img/flyer/landing5_1080_420.jpg") no-repeat center top;
 }
 
 /* non-critical:start */
-
 .radeimg2 {
-	background: url("../img/flyer/landing2_1080_420.jpg") no-repeat center top;
+	background: url("../img/flyer/landing6_680_420.jpg") no-repeat center top;
 }
 .radeimg3 {
-	background: url("../img/flyer/landing3_1080_420.jpg") no-repeat center top;
+	background: url("../img/flyer/landing4_1080_420.jpg") no-repeat center top;
 }
 .radeimg4 {
+	background: url("../img/flyer/landing2_1080_420.jpg") no-repeat center top;
+}
+.radeimg5 {
+	background: url("../img/flyer/landing3_1080_420.jpg") no-repeat center top;
+}
+.radeimg6 {
 	background: url("../img/flyer/landing1_1080_420.jpg") no-repeat center top;
 }
 
