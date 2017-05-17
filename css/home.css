@@ -216,13 +216,6 @@
   animation-name: fadeOutRight;
 }
 
-.jumbotron {
-    background-color: #292c19;
-    color: #ffffff;
-    margin: 0em;
-    padding: 0em;
-}
-
 h3 {
     color: #2ea3f2;
 }
@@ -482,6 +475,40 @@ nav .navbar-brand {
     background: url("../img/kinder.png") no-repeat center top;
 }
 
+.premium, .gold, .silber, .bronze {
+    padding: 48px 60px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    margin-bottom: 30px;
+}
+
+.premium p, .gold p, .silber p, .bronze p {
+    margin:0;
+    font-size: 24px;
+    font-weight: 200;
+}
+
+.premium {
+    background-color: rgba(160, 170, 191, 0.4);
+}
+
+.gold {
+    background-color: rgba(212, 175, 55, 0.4);
+}
+
+.silber {
+    background-color: rgba(192, 192, 192, 0.4);
+}
+
+.bronze {
+    background-color: rgba(205, 127, 50, 0.4);
+}
+
+span.blau {
+    color:#4582ec;
+    font-weight:bold;
+}
+
 .swform input[type=checkbox], .swform input[type="radio"] {
     display: none;
 }
@@ -527,6 +554,7 @@ nav .navbar-brand {
 
 footer .sponsoren img {
     max-width:120px;
+    width:100%;
 }
 
 @media print {
