@@ -193,7 +193,7 @@
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					if (data.timestart) data.timestart = moment(data.timestart,llll).unix();
 					if (data.timeend) data.timeend = moment(data.timeend,llll).unix();
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
@@ -303,7 +303,7 @@
 
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
@@ -355,7 +355,7 @@
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {

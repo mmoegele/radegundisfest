@@ -296,6 +296,8 @@ rade = {};
         return obj;
     };
 
+    rade.ar2obj = ar2obj
+
     $.fn.swmaps = function () {
         if (this.length === 0) return;
         var $that = $(this);
