@@ -32,7 +32,7 @@
 		
 		var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
 		
-		$.getJSON("/intern/helferliste",function(d) {
+		$.ajax({url:"/intern/helferliste",cache: false,dataType: "json"}).done(function(d) {
 			var auth = d.auth;
 			var email = d.email;
 			var authname = d.authname;
