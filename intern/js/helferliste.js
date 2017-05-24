@@ -22,17 +22,19 @@
 		// Scroll-Position speichern, um sie nach dem Rendern wiederherzustellen
 		var lastposition = $(window).scrollTop();
 		
-		var parentcontainer = $(this).empty();
-		
-		var row = $("<div class='row'>").appendTo(parentcontainer);
-		
-		var topcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row).css("margin-bottom", "20px");
-		
-		var listcontainer = $("<div class='col-md-12 panel-container'>").appendTo(row).css("margin-bottom","20px");
-		
-		var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
-		
+		var parentcontainer = $(this);
+
 		$.ajax({url:"/intern/helferliste",cache: false,dataType: "json"}).done(function(d) {
+			parentcontainer.empty();
+
+			var row = $("<div class='row'>").appendTo(parentcontainer);
+
+			var topcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row).css("margin-bottom", "20px");
+
+			var listcontainer = $("<div class='col-md-12 panel-container'>").appendTo(row).css("margin-bottom","20px");
+
+			var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
+
 			var auth = d.auth;
 			var email = d.email;
 			var authname = d.authname;
@@ -489,6 +491,14 @@
 							};
 						})();
 					};
+					if (auth === 1) {
+						$.each(shiftinquiries,function(l,litem) {
+							var tr = $("<tr>").appendTo(table);
+							$("<td></td>").appendTo(tr);
+							$("<td><span class='hidden-print'><strong>Mein Vorschlag:</strong> " + litem.name + "</span></td>").appendTo(tr);
+							var td = $("<td>").appendTo(tr);
+						});
+					}
 	
 					if (auth === 4) {
 						//Vorschläge anzeigen, wenn Schicht voll ist!
