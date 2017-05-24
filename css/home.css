@@ -550,6 +550,11 @@ ul.dots span + span {
     z-index: 1
 }
 
+img.happyhour {
+    max-width:80px;
+    margin-right:5px
+}
+
 .swform input[type=checkbox], .swform input[type="radio"] {
     display: none;
 }

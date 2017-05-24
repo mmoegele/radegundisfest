@@ -437,7 +437,7 @@
 						$("<span class='label label-default'><i class='glyphicon glyphicon-info-sign'></i> "+item.description+"</span>").appendTo(panel_h);
 					}
 					var panel_b = $('<div class="panel-body">').appendTo(panel);
-					var table = $("<table class='table table-striped'>").appendTo(panel_b);
+					var table = $("<table class='table table-striped'><tbody>").appendTo(panel_b);
 
 					var shifthelpers = helpers.filter(function(k){return k.shiftid === item.shiftid});
 					var shiftinquiries = inquiries.filter(function(k){return k.shiftid === item.shiftid});
@@ -545,7 +545,7 @@
 				}
 				
 				//Belegung
-				var table = $("<table class='table table-striped'>").appendTo(listcontainer);
+				var table = $("<table class='table table-striped'><tbody>").appendTo(listcontainer);
 					$("<caption>Belegung</caption>").appendTo(table);
 				var thead = $("<thead>").appendTo(table);
 				var tbody = $("<tbody>").appendTo(table);
@@ -563,7 +563,7 @@
 				});
 				
 				//Fehlende Zuordnung
-				var table = $("<table class='table table-striped'>").appendTo(listcontainer);
+				var table = $("<table class='table table-striped'><tbody>").appendTo(listcontainer);
 					$("<caption>Fehlende Zuordnung</caption>").appendTo(table);
 				var thead = $("<thead>").appendTo(table);
 				var tbody = $("<tbody>").appendTo(table);
@@ -588,7 +588,7 @@
 						$("<span class='label label-default'><i class='glyphicon glyphicon-info-sign'></i> "+item.description+"</span>").appendTo(panel_h);
 					}
 					var panel_b = $('<div class="panel-body">').appendTo(panel);
-					var table = $("<table class='table table-striped'>").appendTo(panel_b);
+					var table = $("<table class='table table-striped'><tbody>").appendTo(panel_b);
 	
 					var shifthelpers = helpers_prev.filter(function(k){return k.shiftid === item.shiftid});
 	
