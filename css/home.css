@@ -522,6 +522,34 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+ul.dots {
+    padding: 0;
+    overflow-x: hidden;
+    list-style: none
+}
+
+ul.dots li:after {
+    float: left;
+    width: 0;
+    white-space: nowrap;
+    content:
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "
+ ". . . . . . . . . . . . . . . . . . . . "}
+ul.dots span:first-child {
+    padding-right: 0.33em;
+    background: white
+}
+ul.dots span + span {
+    float: right;
+    padding-left: 0.33em;
+    background: white;
+        position: relative;
+    z-index: 1
+}
+
 .swform input[type=checkbox], .swform input[type="radio"] {
     display: none;
 }
