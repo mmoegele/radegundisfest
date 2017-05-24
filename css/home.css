@@ -481,7 +481,6 @@ nav .navbar-brand {
 }
 
 .premium, .gold, .silber, .bronze {
-    padding: 48px 60px;
     border: 1px solid #999;
     border-radius: 6px;
     margin-bottom: 30px;

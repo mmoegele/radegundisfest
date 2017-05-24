@@ -22,17 +22,19 @@
 		// Scroll-Position speichern, um sie nach dem Rendern wiederherzustellen
 		var lastposition = $(window).scrollTop();
 		
-		var parentcontainer = $(this).empty();
-		
-		var row = $("<div class='row'>").appendTo(parentcontainer);
-		
-		var topcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row).css("margin-bottom", "20px");
-		
-		var listcontainer = $("<div class='col-md-12 panel-container'>").appendTo(row).css("margin-bottom","20px");
-		
-		var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
-		
-		$.getJSON("/intern/helferliste",function(d) {
+		var parentcontainer = $(this);
+
+		$.ajax({url:"/intern/helferliste",cache: false,dataType: "json"}).done(function(d) {
+			parentcontainer.empty();
+
+			var row = $("<div class='row'>").appendTo(parentcontainer);
+
+			var topcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row).css("margin-bottom", "20px");
+
+			var listcontainer = $("<div class='col-md-12 panel-container'>").appendTo(row).css("margin-bottom","20px");
+
+			var bottomcontainer = $("<div class='col-md-12 hidden-print'>").appendTo(row);
+
 			var auth = d.auth;
 			var email = d.email;
 			var authname = d.authname;
@@ -193,7 +195,7 @@
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					if (data.timestart) data.timestart = moment(data.timestart,llll).unix();
 					if (data.timeend) data.timeend = moment(data.timeend,llll).unix();
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
@@ -303,7 +305,7 @@
 
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
@@ -355,7 +357,7 @@
 				
 				form.on("submit", function(e) {
 					e.preventDefault();
-					$.extend(data,ar2obj(form.serializeArray()));
+					$.extend(data,rade.ar2obj(form.serializeArray()));
 					$.ajax({type: 'POST', url: '/intern/helferliste', data: JSON.stringify(data), contentType: 'application/json', dataType: 'json'}).done(function(d) {
 						swalert.empty();
 						if (d.success) {
@@ -489,6 +491,14 @@
 							};
 						})();
 					};
+					if (auth === 1) {
+						$.each(shiftinquiries,function(l,litem) {
+							var tr = $("<tr>").appendTo(table);
+							$("<td></td>").appendTo(tr);
+							$("<td><span class='hidden-print'><strong>Mein Vorschlag:</strong> " + litem.name + "</span></td>").appendTo(tr);
+							var td = $("<td>").appendTo(tr);
+						});
+					}
 	
 					if (auth === 4) {
 						//Vorschläge anzeigen, wenn Schicht voll ist!
