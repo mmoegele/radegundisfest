@@ -514,6 +514,15 @@ span.blau {
     font-weight:bold;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .swform input[type=checkbox], .swform input[type="radio"] {
     display: none;
 }
