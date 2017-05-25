@@ -555,6 +555,14 @@ img.happyhour {
     margin-right:5px
 }
 
+.div-speisekarte h3 {
+    font-size:21px;
+}
+
+.div-speisekarte h4 {
+    color: #000;
+}
+
 .swform input[type=checkbox], .swform input[type="radio"] {
     display: none;
 }
