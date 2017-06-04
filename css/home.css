@@ -617,6 +617,10 @@ footer .sponsoren img {
     clear:both
 }
 
+@media(max-width:767px){
+    body {padding-bottom:46px}
+}
+
 @media print {
 	body {padding-top:0}
 
