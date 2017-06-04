@@ -611,6 +611,12 @@ footer .sponsoren img {
     width:100%;
 }
 
+.div-badeenten .seperator {
+    border-top: 3px solid #000;
+    padding-top: 5px;
+    clear:both
+}
+
 @media print {
 	body {padding-top:0}
 
