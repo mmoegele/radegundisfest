@@ -78,7 +78,7 @@
 				$("<div class='progress-bar "+progressclass(progresspercentage)+" progress-bar-striped' role='progressbar' style='width:0%;min-width:15%;'>"+aquiredhelpers+" von "+neededhelpers+" Jobs vergeben!</div>").appendTo(progresscontainer).animate({width:progresspercentage+"%"},{duration: 100,easing: "linear"});
 			}
 
-			var menubuttongroup = $("<div class='btn-group btn-group-justified'>").appendTo(topcontainer).css("margin-bottom","20px");
+			var menubuttongroup = $("<div class='btn-group btn-group-lg btn-group-helferliste'>").appendTo(topcontainer).css("margin-bottom","20px");
 			$("<a type='button' class='btn btn-default'>Helferliste Festbetrieb</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste();});
 			$("<a type='button' class='btn btn-default'>Helferliste Auf/Abbau</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("aufabbau");});
 
