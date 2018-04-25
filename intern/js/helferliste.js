@@ -84,7 +84,7 @@
 
 			if (auth === 4) {
 				$("<a type='button' class='btn btn-default'>Helferbelegung</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lazyasses");});
-				$("<a type='button' class='btn btn-default'>Helferliste 2016</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("2016");});
+				$("<a type='button' class='btn btn-default'>Helferliste 2017</a>").appendTo(menubuttongroup).on("click", function() {parentcontainer.helferliste("lastyear");});
 			}
 			
 			var rendershift2 = function (shiftid,options) {
@@ -580,7 +580,7 @@
 				$("<button class='btn btn-primary'>Zuordnung hinzufügen!</button>").appendTo(listcontainer).on("click", function() {
 					peopleinsert({title: 'Personen zum Verzeichnis hinzufügen', label: 'Person hinzufügen!', success: 'Neue Person erfolgreich hinzugefügt!', view: view});
 				});
-			} else if (view === '2016') {
+			} else if (view === 'lastyear') {
 				$.each(shifts_prev, function (i,item) {
 					var panel = $('<div class="panel panel-default">');
 					var panel_h = $('<div class="panel-heading">').appendTo(panel).html("<h4>"+rendershift2(item)+"</h4");
