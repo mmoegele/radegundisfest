@@ -280,6 +280,7 @@ body {
     padding-top: 50px;
     color:#30110a;
     background: #fff;
+    overflow-x: hidden;
 }
 
 .metro-cell
