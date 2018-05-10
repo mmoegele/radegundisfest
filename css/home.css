@@ -443,6 +443,10 @@ nav .navbar-brand {
     background: url("../img/duck.png") no-repeat center top;
 }
 
+.oldtimer {
+    background: url("../img/oldtimer.png") no-repeat center top;
+}
+
 .email {
     background: url("../img/email.png") no-repeat center top;
 }
