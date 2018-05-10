@@ -333,9 +333,10 @@ h1 small
 	margin: 0 auto 20px;
 }
 
-.radecard {
+.radecard, .radecard:hover, .radecard:visited {
     display:block;
     padding:10px;
+    margin-bottom:20px;
     border:2px solid #ccc;
     border-radius:5px;
     background:#f3f3f3;
