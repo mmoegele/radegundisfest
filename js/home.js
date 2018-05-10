@@ -303,8 +303,8 @@ rade = {};
     $.fn.swmaps = function () {
         if (this.length === 0) return;
         var $that = $(this);
-        injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function() {
-            rade.swmapsready.resolve()
+        
+        $.when(rade.swmapsready).done((function() {
             $("div.mdirections").empty()
             $that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
             $that.gmap3({
@@ -545,6 +545,9 @@ rade = {};
 
         // Karte einmalig anzeigen
         $("button.mapbtn").one("click", function(event) {
+            injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function(){
+                rade.swmapsready.resolve()
+            })
             var maps = $("div.maps").removeClass("hidden");
             var mform = $("div.mform").removeClass("hidden");
             $("div.mdirections").removeClass("hidden");
