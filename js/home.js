@@ -297,11 +297,14 @@ rade = {};
     };
 
     rade.ar2obj = ar2obj
+    
+    rade.swmapsready = $.Deferred()
 
     $.fn.swmaps = function () {
         if (this.length === 0) return;
         var $that = $(this);
         injectScripts(['js/gmap3.min.js','https://maps.google.com/maps/api/js?language=de']).then(function() {
+            rade.swmapsready.resolve()
             $("div.mdirections").empty()
             $that.gmap3({clear:["directionsrenderer","polygon","overlay"]});
             $that.gmap3({
@@ -405,7 +408,7 @@ rade = {};
     $.fn.swgetroute = function(origin) {
         if (this.length === 0) return;
         var $that = $(this);
-        swmapswrapper(function() {
+        $.when(rade.swmapsready).done(function() {
             $that.gmap3({clear:"directionsrenderer"});
             $that.gmap3({
                 getroute:{
