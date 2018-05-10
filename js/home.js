@@ -296,9 +296,9 @@ rade = {};
         return obj;
     };
 
-    rade.ar2obj = ar2obj
+    rade.ar2obj = ar2obj;
     
-    rade.swmapsready = $.Deferred()
+    rade.swmapsready = $.Deferred();
 
     $.fn.swmaps = function () {
         if (this.length === 0) return;
