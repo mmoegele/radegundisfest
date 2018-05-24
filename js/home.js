@@ -179,9 +179,11 @@ rade = {};
         if (!Cookies.get('rade-consent')) {
             if ($("#cookiewarning").length === 0) {
                 var cookiecontainer = $('<div id="cookiewarning" style="padding-top:5px; border-bottom:3px solid #f1ce00;padding-bottom: 5px" class="container-fluid">');
-                $('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der <a href="/cookies.html">Nutzung von Cookies</a> zu. ').css('color', '#333').appendTo(cookiecontainer);
-                var cookiebutton =$('<a class="btn btn-success btn-xs">').html('<i class="glyphicon glyphicon-ok"></i> <strong>Ich stimme zu.</strong>').appendTo(cookiecontainer);
-
+                $('<span>').html('Diese Seite verwendet Cookies, um Ihnen die bestmöglichste Bedienbarkeit zu ermöglichen. Wenn Sie auf dieser Seite weitersurfen stimmen Sie der Nutzung von Cookies zu.').css('color', '#333').appendTo(cookiecontainer);
+                var cookiebutton =$('<a class="btn btn-success btn-xs">').css("margin-left","5px").html('<i class="glyphicon glyphicon-ok"></i> <strong>Ich stimme zu.</strong>').appendTo(cookiecontainer);
+                var datenschutz = $('<a class="btn btn-success btn-xs" href="/datenschutz.html">').css("margin-left","5px").html("Datenschutz").appendTo(cookiecontainer);
+                var impressum = $('<a class="btn btn-success btn-xs" href="/impressum.html">').css("margin-left","5px").html("Impressum").appendTo(cookiecontainer);
+                
                 cookiecontainer.hide().prependTo($("nav.navbar")).slideDown();
 
                 cookiebutton.on("click", function() {
